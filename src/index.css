@@ -1,0 +1,331 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------
+   SWISF 2027 — global styles
+   Colour tokens mirror tailwind.config.ts so plain CSS can use them.
+------------------------------------------------------------------- */
+:root {
+  --navy: #0e1a3d;
+  --navy-deep: #0a1230;
+  --cream: #faf6ee;
+  --cream-2: #f4ede0;
+  --gold: #c9a24a;
+  --gold-soft: #e6cf94;
+  --saffron: #e07b39;
+  --royal: #3b5bb5;
+  --teal: #1f7a6a;
+  --violet: #7a4fb0;
+  --crimson: #b5122b;
+  --ink-muted: #4a5068;
+  --line: #e7dcc8;
+  --night: #1a1240;
+  --night-2: #2a1a5e;
+  --nav-h: 76px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-h) + 16px);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--cream);
+    color: var(--ink-muted);
+    font-family: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(224, 123, 57, 0.22);
+    color: var(--navy);
+  }
+
+  /* Visible, on-brand focus ring for keyboard users */
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Max content width 1200px; gutters 16 / 32 / 64 */
+  .container-x {
+    width: 100%;
+    max-width: calc(1200px + 2 * 64px);
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+
+  /* Vertical rhythm for sections: 56–72px mobile, 80–120px desktop */
+  .section-y {
+    padding-block: 64px;
+  }
+
+  /* Two-line section heading (line 1 navy, line 2 saffron) */
+  .heading-2 {
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.05;
+  }
+
+  /* Spaced eyebrow / divider labels */
+  .eyebrow {
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    line-height: 1.6;
+  }
+
+  .card-title {
+    font-weight: 600;
+    font-size: 14.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.45;
+    color: var(--navy);
+  }
+
+  .body-copy {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink-muted);
+  }
+
+  .lead-copy {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--navy);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -100px;
+    z-index: 100;
+    border-radius: 9999px;
+    background: var(--navy);
+    color: var(--cream);
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: top 0.2s ease;
+  }
+
+  .skip-link:focus {
+    top: 12px;
+  }
+
+  /* Hide scrollbars on horizontally-scrollable chip bars but keep them scrollable */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Responsive steps live inside the layer so utilities can still override them */
+  @media (min-width: 640px) {
+    .eyebrow {
+      font-size: 13px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .container-x {
+      padding-inline: 32px;
+    }
+
+    .section-y {
+      padding-block: 88px;
+    }
+
+    .body-copy {
+      font-size: 17px;
+    }
+
+    .lead-copy {
+      font-size: 20px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-x {
+      padding-inline: 64px;
+    }
+
+    .section-y {
+      padding-block: 112px;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+   Ornament animations (SVG + decorative). All disabled under
+   prefers-reduced-motion at the bottom of this file.
+------------------------------------------------------------------- */
+
+/* Circuit traces: a faint glow travelling along each path */
+@keyframes circuit-dash {
+  from {
+    stroke-dashoffset: 200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.circuit-glow {
+  stroke-dasharray: 16 184;
+  animation: circuit-dash var(--dur, 6s) linear var(--delay, 0s) infinite;
+  filter: drop-shadow(0 0 3px rgba(230, 207, 148, 0.9));
+}
+
+/* Sunrise emblem: rays fade in one after another, then gently pulse */
+@keyframes ray-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rays-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.sun-ray {
+  opacity: 0;
+  animation: ray-in 0.6s ease-out var(--d, 0s) forwards;
+}
+
+.sun-rays-pulse {
+  animation: rays-pulse 5s ease-in-out 2.4s infinite;
+}
+
+@keyframes sun-rise {
+  from {
+    transform: translateY(22px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.sun-disc {
+  animation: sun-rise 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both;
+}
+
+/* Glowing city nodes on the globe */
+@keyframes node-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.25);
+  }
+}
+
+.globe-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: node-pulse 3.2s ease-in-out var(--delay, 0s) infinite;
+}
+
+/* Concert laser shimmer */
+@keyframes laser-sweep {
+  0%,
+  100% {
+    transform: rotate(-14deg);
+    opacity: 0.25;
+  }
+  50% {
+    transform: rotate(14deg);
+    opacity: 0.7;
+  }
+}
+
+.laser-beam {
+  transform-origin: 50% 100%;
+  animation: laser-sweep var(--dur, 6s) ease-in-out var(--delay, 0s) infinite;
+  mix-blend-mode: screen;
+}
+
+/* Slowly rotating dashed ring (Northeast diagram) */
+@keyframes ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ring-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ring-spin 90s linear infinite;
+}
+
+/* Meghalaya host-state pulse (SVG) */
+@keyframes svg-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+.svg-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: svg-pulse 2.2s ease-out infinite;
+}
+
+/* Hanging ornaments sway from their top edge */
+.origin-top-center {
+  transform-origin: 50% 0%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .circuit-glow,
+  .laser-beam,
+  .svg-pulse {
+    display: none;
+  }
+}
