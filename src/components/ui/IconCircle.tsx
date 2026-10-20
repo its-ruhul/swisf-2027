@@ -2,9 +2,10 @@ import type { LucideIcon } from 'lucide-react';
 import { accentHoverTint, accentLine, accentLineBright, type Accent } from '../../lib/accents';
 import { cn } from '../../lib/cn';
 
-export type IconCircleSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type IconCircleSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 const box: Record<IconCircleSize, string> = {
+  '2xs': 'h-8 w-8',
   xs: 'h-10 w-10',
   sm: 'h-11 w-11',
   md: 'h-14 w-14',
@@ -12,7 +13,7 @@ const box: Record<IconCircleSize, string> = {
   xl: 'h-[76px] w-[76px] sm:h-[88px] sm:w-[88px]',
 };
 
-const iconPx: Record<IconCircleSize, number> = { xs: 18, sm: 20, md: 24, lg: 30, xl: 34 };
+const iconPx: Record<IconCircleSize, number> = { '2xs': 15, xs: 18, sm: 20, md: 24, lg: 30, xl: 34 };
 
 type IconCircleProps = {
   icon: LucideIcon;

@@ -5,9 +5,9 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { navLinks, partnerCta, site } from '../../data/site';
 import { cn } from '../../lib/cn';
 import CircuitTraces from '../ornaments/CircuitTraces';
-import SunriseRays from '../ornaments/SunriseRays';
 import Button from '../ui/Button';
 import SocialLinks from '../ui/SocialLinks';
+import SunrayLockup from '../ui/SunrayLockup';
 
 type MobileSidebarProps = {
   open: boolean;
@@ -138,11 +138,7 @@ export default function MobileSidebar({ open, onClose, returnFocusRef }: MobileS
             <span aria-hidden="true" className="absolute inset-y-0 left-0 w-px bg-gold/40" />
 
             <div className="relative flex items-start justify-between gap-4 px-6 pt-6">
-              <div className="flex flex-col items-start">
-                <SunriseRays animated={false} star={false} rays={25} className="w-24" />
-                <p className="mt-1 font-display text-2xl font-medium tracking-[0.08em] text-cream">{site.wordmark}</p>
-                <p className="mt-1 text-[10.5px] font-medium uppercase tracking-[0.3em] text-crimson-light">{site.subWordmark}</p>
-              </div>
+              <SunrayLockup tone="dark" className="w-32" />
               <button
                 ref={closeRef}
                 type="button"

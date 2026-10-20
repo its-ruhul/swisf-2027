@@ -50,6 +50,12 @@ const config: Config = {
       fontFamily: {
         sans: ['Poppins', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
         display: ['"Cormorant Garamond"', 'Cormorant', 'Georgia', 'Times New Roman', 'serif'],
+        /** Brush-style kanji/hanzi for decorative seals and watermarks */
+        glyph: ['"Yuji Syuku"', '"Yu Mincho"', '"Hiragino Mincho ProN"', '"Songti SC"', 'SimSun', 'serif'],
+      },
+      minHeight: {
+        /** One full screen below the sticky navbar */
+        panel: 'calc(100svh - var(--nav-h))',
       },
       maxWidth: {
         content: '1200px',
@@ -82,8 +88,35 @@ const config: Config = {
           '0%': { transform: 'scale(1)', opacity: '0.55' },
           '100%': { transform: 'scale(2.6)', opacity: '0' },
         },
+        kenburns: {
+          '0%': { transform: 'scale(1)' },
+          '100%': { transform: 'scale(1.1)' },
+        },
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
+        },
+        bob: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+        sheen: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        'glow-pulse': {
+          '0%, 100%': { opacity: '0.65', transform: 'scale(1)' },
+          '50%': { opacity: '1', transform: 'scale(1.08)' },
+        },
       },
       animation: {
+        'spin-slow': 'spin 60s linear infinite',
+        'spin-slower': 'spin 120s linear infinite',
+        kenburns: 'kenburns 32s ease-in-out infinite alternate',
+        marquee: 'marquee var(--marquee-dur, 40s) linear infinite',
+        bob: 'bob 4s ease-in-out infinite',
+        sheen: 'sheen 8s ease-in-out infinite',
+        'glow-pulse': 'glow-pulse 6s ease-in-out infinite',
         drift: 'drift 12s ease-in-out infinite',
         'drift-slow': 'drift 16s ease-in-out infinite',
         sway: 'sway 5s ease-in-out infinite',

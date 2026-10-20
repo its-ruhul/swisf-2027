@@ -77,6 +77,43 @@
     line-height: 1.05;
   }
 
+  /* Inside one-screen panels the heading also scales with the viewport height */
+  .panel .heading-2 {
+    font-size: clamp(1.85rem, min(4vw, 6vh), 3.25rem);
+  }
+
+  /* Body copy that shrinks a little on short screens so a panel fits in one view */
+  .panel-copy {
+    font-size: clamp(14.5px, 1.95vh, 17px);
+    line-height: 1.65;
+    color: var(--ink-muted);
+  }
+
+  /* Saffron → gold gradient text with a slow sheen */
+  .text-sun {
+    background-image: linear-gradient(100deg, #f6c76b 0%, #e07b39 35%, #f29a5e 55%, #e6cf94 80%, #f6c76b 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: sheen 9s ease-in-out infinite;
+  }
+
+  /* Gold gradient pill (primary call to action on dark backgrounds) */
+  .btn-sun {
+    background-image: linear-gradient(100deg, #f6c76b 0%, #e07b39 50%, #f6c76b 100%);
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    transition: background-position 0.6s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 10px 30px -8px rgba(224, 123, 57, 0.6);
+  }
+
+  .btn-sun:hover {
+    background-position: 100% 50%;
+    box-shadow: 0 14px 36px -8px rgba(224, 123, 57, 0.85);
+    transform: translateY(-2px);
+  }
+
   /* Spaced eyebrow / divider labels */
   .eyebrow {
     font-weight: 500;
@@ -192,48 +229,6 @@
   filter: drop-shadow(0 0 3px rgba(230, 207, 148, 0.9));
 }
 
-/* Sunrise emblem: rays fade in one after another, then gently pulse */
-@keyframes ray-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes rays-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.55;
-  }
-}
-
-.sun-ray {
-  opacity: 0;
-  animation: ray-in 0.6s ease-out var(--d, 0s) forwards;
-}
-
-.sun-rays-pulse {
-  animation: rays-pulse 5s ease-in-out 2.4s infinite;
-}
-
-@keyframes sun-rise {
-  from {
-    transform: translateY(22px);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-.sun-disc {
-  animation: sun-rise 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both;
-}
-
 /* Glowing city nodes on the globe */
 @keyframes node-pulse {
   0%,
@@ -308,6 +303,213 @@
   transform-origin: 50% 0%;
 }
 
+@keyframes sheen {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Gold dust drifting upwards (hero, banners) */
+@keyframes dust-rise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--o, 0.8);
+  }
+  80% {
+    opacity: var(--o, 0.8);
+  }
+  100% {
+    transform: translate3d(var(--sway, 20px), var(--rise, -70vh), 0);
+    opacity: 0;
+  }
+}
+
+.dust {
+  animation: dust-rise var(--dur, 14s) linear var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+/* Plum petals falling with a gentle sway */
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(var(--sway, 60px), var(--fall, 110vh), 0) rotate(var(--spin, 540deg));
+    opacity: 0;
+  }
+}
+
+.petal {
+  animation: petal-fall var(--dur, 14s) linear var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+/* Tibetan prayer flags in the wind */
+@keyframes flutter {
+  0%,
+  100% {
+    transform: rotate(-4deg) skewX(-3deg);
+  }
+  50% {
+    transform: rotate(5deg) skewX(4deg);
+  }
+}
+
+.flag {
+  transform-origin: 50% 0%;
+  animation: flutter var(--dur, 3s) ease-in-out var(--delay, 0s) infinite;
+}
+
+/* Sky lanterns floating up through the night */
+@keyframes lantern-rise {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-3deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(var(--sway, 30px), var(--rise, -105%), 0) rotate(4deg);
+    opacity: 0;
+  }
+}
+
+.sky-lantern {
+  animation: lantern-rise var(--dur, 22s) linear var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes lantern-flicker {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 0.7;
+  }
+}
+
+.lantern-flicker {
+  animation: lantern-flicker 2.4s ease-in-out infinite;
+}
+
+/* Fireworks: burst, hang, fade — then wait for the next cycle */
+@keyframes firework {
+  0% {
+    transform: scale(0.15);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  30% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  45%,
+  100% {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+}
+
+.firework {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: firework var(--dur, 6s) ease-out var(--delay, 0s) infinite;
+}
+
+/* Low fog drifting across the hero photo */
+@keyframes fog-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.fog {
+  animation: fog-drift var(--dur, 90s) linear infinite;
+}
+
+/* A glint of light sweeping across the SWISF emblem */
+@keyframes glint {
+  0%,
+  55% {
+    background-position: 130% 0;
+  }
+  100% {
+    background-position: -30% 0;
+  }
+}
+
+.glint {
+  background-image: linear-gradient(105deg, transparent 38%, rgba(255, 249, 228, 0.95) 50%, transparent 62%);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation: glint var(--dur, 7s) ease-in-out var(--delay, 1.2s) infinite;
+}
+
+/* "Scroll to explore" line */
+@keyframes scroll-cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.scroll-cue {
+  animation: scroll-cue 2.4s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+
+/* Soft god-rays turning around the sun */
+.god-rays {
+  background: repeating-conic-gradient(from 0deg, rgba(255, 220, 150, 0.16) 0deg 3deg, transparent 3deg 13deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.6) 25%, transparent 68%);
+  mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.6) 25%, transparent 68%);
+}
+
+/* Pause marquees on hover so a phrase can be read */
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -325,7 +527,12 @@
 
   .circuit-glow,
   .laser-beam,
-  .svg-pulse {
+  .svg-pulse,
+  .dust,
+  .petal,
+  .sky-lantern,
+  .firework,
+  .glint {
     display: none;
   }
 }

@@ -9,6 +9,7 @@ const C = SIZE / 2;
 const RING_R = 150;
 const LABEL_R = 176;
 const CORE_R = 84;
+const HUB_R = 24;
 
 type StatesRingProps = {
   states: StateItem[];
@@ -17,7 +18,8 @@ type StatesRingProps = {
 
 /**
  * "One stage for eight states": the eight Northeast states around a central
- * navy sun. Hover or tap a state to enlarge its dot and show a tooltip;
+ * dharma wheel whose eight spokes point at them (東北 = "northeast" at the hub).
+ * Hover or tap a state to enlarge its dot, light its spoke and show a tooltip;
  * Meghalaya (host state) pulses continuously.
  */
 export default function StatesRing({ states, className }: StatesRingProps) {
@@ -45,7 +47,9 @@ export default function StatesRing({ states, className }: StatesRingProps) {
 
   return (
     <div className={cn('relative', className)}>
-      <MandalaWatermark className="absolute inset-[4%] h-[92%] w-[92%]" opacity={0.22} color="#D9C29A" />
+      <div className="absolute inset-[4%] motion-safe:animate-spin-slower">
+        <MandalaWatermark className="h-full w-full" opacity={0.22} color="#D9C29A" />
+      </div>
       <svg viewBox={`0 0 ${SIZE} ${SIZE}`} role="img" aria-label={`The eight Northeast states around one stage: ${summary}`} className="relative block h-auto w-full overflow-visible">
         {/* faint outer circle */}
         <circle cx={C} cy={C} r={232} fill="none" stroke="#E7DCC8" strokeWidth="1" />
@@ -60,33 +64,51 @@ export default function StatesRing({ states, className }: StatesRingProps) {
         {/* dashed saffron ring (slowly turning) */}
         <circle cx={C} cy={C} r={RING_R} fill="none" stroke="#E07B39" strokeWidth="1.5" strokeDasharray="5 7" className="ring-spin" />
 
-        {/* centre: navy sun */}
+        {/* centre: a dharma wheel — one spoke for each of the eight states */}
         <circle cx={C} cy={C} r={CORE_R + 10} fill="none" stroke="#E7DCC8" strokeWidth="1" />
         <circle cx={C} cy={C} r={CORE_R} fill="#0E1A3D" stroke="#C9A24A" strokeWidth="2" />
-        <g stroke="#C9A24A" strokeLinecap="round">
-          {Array.from({ length: 17 }, (_, i) => {
-            const a = Math.PI * (0.08 + (i / 16) * 0.84);
-            const long = i % 2 === 0;
-            const r0 = 24;
-            const r1 = long ? 50 : 42;
+        <circle cx={C} cy={C} r={CORE_R - 9} fill="none" stroke="#C9A24A" strokeWidth="1" opacity="0.55" />
+        <g strokeLinecap="round">
+          {points.map((p) => {
+            const isActive = active === p.i;
+            const ux = (p.x - C) / RING_R;
+            const uy = (p.y - C) / RING_R;
             return (
-              <line
-                key={i}
-                x1={C - Math.cos(a) * r0}
-                y1={C + 6 - Math.sin(a) * r0}
-                x2={C - Math.cos(a) * r1}
-                y2={C + 6 - Math.sin(a) * r1}
-                strokeWidth={long ? 1.3 : 0.9}
-                opacity={0.9}
-              />
+              <g key={`wheel-${p.name}`}>
+                <line
+                  x1={C + ux * HUB_R}
+                  y1={C + uy * HUB_R}
+                  x2={C + ux * (CORE_R - 9)}
+                  y2={C + uy * (CORE_R - 9)}
+                  stroke={isActive ? '#F29A5E' : '#C9A24A'}
+                  strokeWidth={isActive ? 3 : 1.6}
+                  className="transition-all duration-200"
+                />
+                {/* the knob where each spoke meets the rim */}
+                <circle
+                  cx={C + ux * CORE_R}
+                  cy={C + uy * CORE_R}
+                  r={isActive ? 5.5 : 4}
+                  fill={isActive ? '#F29A5E' : '#E9B954'}
+                  stroke="#0E1A3D"
+                  strokeWidth="1.5"
+                  className="transition-all duration-200"
+                />
+              </g>
             );
           })}
         </g>
-        <path d={`M${C - 15} ${C + 6}A15 15 0 0 1 ${C + 15} ${C + 6}Z`} fill="#E9B954" />
-        <line x1={C - 46} y1={C + 6} x2={C + 46} y2={C + 6} stroke="#C9A24A" strokeWidth="1.2" />
-        <rect x={C - 3.5} y={C + 2.5} width="7" height="7" fill="#B5122B" transform={`rotate(45 ${C} ${C + 6})`} />
-        <text x={C} y={C + 32} textAnchor="middle" fill="#FAF6EE" fontSize="12" fontWeight="500" letterSpacing="3.2">
-          NORTHEAST
+        <circle cx={C} cy={C} r={HUB_R} fill="#0A1230" stroke="#C9A24A" strokeWidth="1.5" />
+        <text
+          x={C}
+          y={C + 1}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill="#E6CF94"
+          fontSize="16"
+          className="font-glyph"
+        >
+          東北
         </text>
 
         {/* states */}

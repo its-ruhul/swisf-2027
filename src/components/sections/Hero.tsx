@@ -1,202 +1,283 @@
-import { Fragment } from 'react';
-import { ArrowRight, CalendarDays } from 'lucide-react';
-import heritageBand from '../../assets/images/ne-heritage-band.webp';
-import pagodaSketch from '../../assets/images/pagoda-sketch.webp';
-import worldMapDots from '../../assets/images/world-map-dots.webp';
+import { useRef, type PointerEvent } from 'react';
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { ArrowRight, CalendarDays, Landmark, MapPin } from 'lucide-react';
+import sunriseBanner from '../../assets/images/sunrise-banner.webp';
+import { hero } from '../../data/home';
 import { site } from '../../data/site';
-import { accentText } from '../../lib/accents';
+import { cn } from '../../lib/cn';
 import CircuitTraces from '../ornaments/CircuitTraces';
-import DottedGlobe from '../ornaments/DottedGlobe';
 import GoldCloud from '../ornaments/GoldCloud';
-import SkylineStrip from '../ornaments/SkylineStrip';
-import SunriseRays from '../ornaments/SunriseRays';
+import { GoldDust } from '../ornaments/Particles';
+import StarField from '../ornaments/StarField';
 import Button from '../ui/Button';
 import Countdown from '../ui/Countdown';
-import DividerLabel from '../ui/DividerLabel';
-import LogoLockup from '../ui/LogoLockup';
-import Motto from '../ui/Motto';
+import { Diamond } from '../ui/DividerLabel';
+import Marquee from '../ui/Marquee';
+import { GlyphWatermark } from '../ui/Seal';
+import SwisfEmblem from '../ui/SwisfEmblem';
 
-/* Navy panel with a flowing S-curve right edge (viewBox 0–100, stretched to fit). */
-const PANEL_PATH = 'M0 0H76C72 13 50 22 50 40C50 57 100 62 100 77C100 90 66 95 58 100H0Z';
-const EDGE_PATH = 'M76 0C72 13 50 22 50 40C50 57 100 62 100 77C100 90 66 95 58 100';
-/* The panel's tail continues behind the skyline and narrows towards the bottom. */
-const TAIL_PATH = 'M0 0H58C50 18 30 40 30 66C30 84 36 94 40 100H0Z';
-const TAIL_EDGE = 'M58 0C50 18 30 40 30 66C30 84 36 94 40 100';
+/* Where the sun sits in sunrise-banner.webp (1588 × 584), as a fraction of the image. */
+const SUN_X = 0.508;
+const SUN_Y = 0.277;
 
-/** Brochure cover: navy S-curve panel, sunrise emblem, SUNRAY wordmark, dates and CTAs. */
+/* Soft banks of low cloud, repeated so the drift can loop seamlessly. */
+const FOG =
+  'radial-gradient(ellipse 22% 38% at 12% 62%, rgba(255,255,255,0.55), transparent 70%),' +
+  'radial-gradient(ellipse 18% 30% at 38% 48%, rgba(255,246,230,0.45), transparent 70%),' +
+  'radial-gradient(ellipse 26% 42% at 66% 66%, rgba(255,255,255,0.5), transparent 70%),' +
+  'radial-gradient(ellipse 16% 28% at 90% 52%, rgba(255,240,220,0.4), transparent 70%)';
+
+const lineReveal = {
+  hidden: { y: '105%' },
+  show: (i: number) => ({ y: '0%', transition: { duration: 0.9, ease: [0.2, 0.7, 0.2, 1], delay: 0.15 + i * 0.09 } }),
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 18 },
+  show: (d: number) => ({ opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut', delay: d } }),
+};
+
+/**
+ * Full-screen hero: the Meghalaya sunrise over a sea of clouds, slowly
+ * zooming, with god-rays turning around the sun, drifting fog, gold dust,
+ * the SWISF emblem rising on the horizon, a live countdown and a ticker.
+ * The navbar floats transparently over it.
+ */
 export default function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+
+  // scroll: the photo sinks slower than the page, the content lifts and fades
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  const photoY = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['0%', '22%']);
+  const contentY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -90]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, reduce ? 1 : 0]);
+
+  // pointer: a few layers lean towards the cursor
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const sx = useSpring(px, { stiffness: 50, damping: 18 });
+  const sy = useSpring(py, { stiffness: 50, damping: 18 });
+  const nearX = useTransform(sx, (v) => v * -26);
+  const nearY = useTransform(sy, (v) => v * -14);
+  const farX = useTransform(sx, (v) => v * 12);
+  const farY = useTransform(sy, (v) => v * 8);
+
+  const onPointerMove = (e: PointerEvent<HTMLElement>) => {
+    if (reduce || e.pointerType !== 'mouse') return;
+    const r = e.currentTarget.getBoundingClientRect();
+    px.set((e.clientX - r.left) / r.width - 0.5);
+    py.set((e.clientY - r.top) / r.height - 0.5);
+  };
+
+  const scrollToWelcome = () => {
+    document.getElementById('welcome')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  };
+
+  const registerHref = `mailto:${site.contact.email}?subject=${encodeURIComponent(hero.register.subject)}`;
+  const priorityAttrs = { fetchpriority: 'high' };
+
   return (
-    <section aria-labelledby="hero-title" className="relative overflow-hidden bg-cream">
-      {/* ── Mobile & tablet: navy band with a curved bottom edge ── */}
-      <div className="relative overflow-hidden bg-navy-deep pb-14 pt-8 lg:hidden">
-        <CircuitTraces className="absolute -left-2 top-0 w-44 opacity-70 sm:w-56" />
-        <CircuitTraces flip="x" density="light" className="absolute -right-2 top-0 w-32 opacity-50 sm:w-44" />
-        <div className="container-x relative flex flex-col items-center gap-6">
-          <Motto orientation="horizontal" />
-          <DottedGlobe variant="dark" priority className="w-[78%] max-w-[340px]" />
-        </div>
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          viewBox="0 0 400 40"
-          preserveAspectRatio="none"
-          className="absolute inset-x-0 bottom-0 h-10 w-full"
-        >
-          <path d="M0 40V24C96 -2 236 46 400 12V40Z" fill="#FAF6EE" />
-          <path d="M0 24C96 -2 236 46 400 12" fill="none" stroke="#C9A24A" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-        </svg>
-      </div>
-
-      {/* ── Cover ── */}
-      <div className="relative z-10 lg:min-h-[max(640px,calc(100svh_-_76px))]">
-        {/* Desktop navy panel */}
-        <div className="absolute inset-y-0 left-0 hidden w-[34%] max-w-[600px] lg:block">
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            className="absolute inset-0 h-full w-full"
+    <section
+      ref={ref}
+      aria-labelledby="hero-title"
+      onPointerMove={onPointerMove}
+      className="relative isolate -mt-[var(--nav-h)] flex min-h-[100svh] flex-col overflow-hidden bg-navy-deep text-cream"
+    >
+      {/* ── Photo, sized like object-fit: cover but anchored on the sun ── */}
+      <motion.div aria-hidden="true" style={{ y: photoY }} className="absolute inset-0 -z-30">
+        <motion.div style={{ x: farX, y: farY }} className="absolute inset-[-3%]">
+          <div
+            className="absolute top-1/2 left-1/2 -translate-y-1/2 max-lg:-translate-x-[50.8%] lg:left-[68%] lg:-translate-x-[50.8%]"
+            style={{ aspectRatio: '1588 / 584', height: 'max(100%, 53vw)' }}
           >
-            <path d={PANEL_PATH} fill="#0A1230" />
-            <path d={EDGE_PATH} fill="none" stroke="#C9A24A" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-          </svg>
-          <CircuitTraces className="absolute left-0 top-0 w-[64%] max-w-[300px]" />
-          <Motto className="absolute left-[13%] top-[44%] bg-navy-deep" />
-        </div>
-
-        {/* Desktop globe overflowing the curve */}
-        <div className="pointer-events-none absolute -bottom-[3%] -left-[4%] hidden w-[36%] max-w-[620px] lg:block xl:w-[38%]">
-          <DottedGlobe variant="dark" priority />
-        </div>
-
-        {/* Faint dotted world map behind the centre content */}
-        <img
-          src={worldMapDots}
-          alt=""
-          aria-hidden="true"
-          width={1100}
-          height={435}
-          decoding="async"
-          className="pointer-events-none absolute left-1/2 top-[44%] w-[120%] max-w-none -translate-x-1/2 select-none opacity-35 lg:left-[67%] lg:top-[46%] lg:w-[58%]"
-        />
-
-        {/* Centre content */}
-        <div className="relative px-4 sm:px-8 lg:ml-[34%] lg:px-10 xl:px-16">
-          <div className="mx-auto flex max-w-[680px] flex-col items-center pb-12 pt-8 text-center sm:pt-10 lg:pb-16 lg:pt-12">
-            <LogoLockup size="hero" />
-
-            <p className="mt-6 text-[13px] font-medium uppercase tracking-[0.6em] text-navy [margin-right:-0.6em]">{site.presents}</p>
-
-            <div className="relative mt-3 w-[78%] max-w-[340px]">
-              <GoldCloud variant="a" eager className="-left-[58%] top-[18%] w-[66%] opacity-90" />
-              <GoldCloud variant="b" eager flip className="-right-[60%] -top-[4%] w-[62%] opacity-90" />
-              <SunriseRays className="relative w-full" />
-            </div>
-
-            <h1 id="hero-title" className="flex flex-col items-center">
-              <span className="font-display text-[clamp(3.5rem,9vw,7rem)] font-medium leading-[0.95] tracking-[0.08em] text-navy [margin-right:-0.08em]">
-                {site.wordmark}
-              </span>
-              <span className="mt-4 text-[14px] font-medium uppercase leading-[1.6] tracking-[0.16em] text-gold-ink [margin-right:-0.16em] xs:text-[15px] sm:text-lg sm:tracking-[0.3em] sm:[margin-right:-0.3em] lg:text-2xl lg:text-gold-ink-lg">
-                {site.subtitleLines.map((line) => (
-                  <span key={line} className="block">
-                    {line}
-                  </span>
-                ))}
-              </span>
-            </h1>
-
-            <p className="mt-3 text-sm font-medium uppercase tracking-[0.45em] text-crimson [margin-right:-0.45em] sm:text-base">
-              {site.subWordmark}
-            </p>
-
-            <DividerLabel diamonds className="mt-6 w-full">
-              {site.tagline}
-            </DividerLabel>
-
-            <p className="mt-5 flex flex-col items-center justify-center gap-x-3 gap-y-1 text-[12px] font-medium uppercase tracking-[0.18em] sm:flex-row sm:flex-wrap sm:text-[13px]">
-              {site.pillars.map((pillar, i) => (
-                <Fragment key={pillar.label}>
-                  {i > 0 && (
-                    <span aria-hidden="true" className="hidden text-saffron sm:inline">
-                      •
-                    </span>
-                  )}
-                  <span className={accentText[pillar.accent]}>{pillar.label}</span>
-                </Fragment>
-              ))}
-            </p>
-
-            <CalendarDays aria-hidden="true" size={30} strokeWidth={1.5} className="mt-7 text-saffron" />
-            <p className="mt-2 text-[clamp(1.5rem,3.2vw,2.25rem)] font-bold uppercase leading-tight text-navy">{site.dates.label}</p>
-            <p className="mt-1.5 text-[13px] font-medium uppercase tracking-[0.18em] text-royal sm:text-[15px] sm:tracking-[0.3em]">
-              {site.dates.year} · {site.location.full}
-            </p>
-            <span aria-hidden="true" className="mt-5 h-0.5 w-14 bg-saffron" />
-
-            <div className="mt-7 flex w-full flex-col items-stretch justify-center gap-3 xs:w-auto xs:items-center sm:flex-row">
-              <Button to="/experience" size="lg" icon={ArrowRight}>
-                Explore the Experience
-              </Button>
-              <Button to="/sponsors" variant="secondary" size="lg">
-                Partner With Us
-              </Button>
-            </div>
-
-            {site.countdown.enabled && (
-              <Countdown
-                className="mt-8"
-                target={site.countdown.target}
-                targetLabel={site.countdown.targetLabel}
-                tba={site.countdown.datesToBeAnnounced}
+            <div className="absolute inset-0 motion-safe:animate-kenburns" style={{ transformOrigin: `${SUN_X * 100}% ${SUN_Y * 100}%` }}>
+              <img
+                src={sunriseBanner}
+                alt=""
+                width={1588}
+                height={584}
+                decoding="async"
+                className="h-full w-full select-none"
+                draggable={false}
+                {...priorityAttrs}
               />
-            )}
+              {/* god-rays turning around the sun */}
+              <div
+                className="god-rays absolute aspect-square w-[46%] -translate-x-1/2 -translate-y-1/2 mix-blend-screen motion-safe:animate-spin-slower"
+                style={{ left: `${SUN_X * 100}%`, top: `${SUN_Y * 100}%` }}
+              />
+              {/* breathing glow */}
+              <div
+                className="absolute aspect-square w-[22%] -translate-x-1/2 -translate-y-1/2 rounded-full mix-blend-screen motion-safe:animate-glow-pulse"
+                style={{
+                  left: `${SUN_X * 100}%`,
+                  top: `${SUN_Y * 100}%`,
+                  background: 'radial-gradient(circle, rgba(255,214,140,0.75) 0%, rgba(242,154,94,0.35) 28%, transparent 66%)',
+                }}
+              />
+              {/* the SWISF emblem rising on the horizon */}
+              <div
+                className="absolute w-[19%] -translate-x-1/2 mix-blend-screen"
+                style={{ left: `${SUN_X * 100}%`, bottom: `${(1 - SUN_Y) * 100 - 1.9}%` }}
+              >
+                <motion.div
+                  initial={reduce ? false : { y: '30%', opacity: 0 }}
+                  animate={{ y: '0%', opacity: 0.6 }}
+                  transition={{ duration: 2.4, ease: [0.2, 0.7, 0.2, 1], delay: 0.4 }}
+                >
+                  <SwisfEmblem source="lg" eager glint glintDelay={2.6} className="w-full" />
+                </motion.div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      <div className="relative">
-        {/* Desktop: the navy panel's tail continues down the left edge */}
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          className="absolute inset-y-0 left-0 hidden h-full w-[34%] max-w-[600px] lg:block"
+      {/* ── Navy wash for legibility (left-heavy on desktop, bottom-heavy on mobile) ── */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-20 hidden lg:block"
+        style={{
+          background:
+            'linear-gradient(90deg, rgba(10,18,48,0.94) 0%, rgba(10,18,48,0.82) 30%, rgba(10,18,48,0.35) 58%, rgba(10,18,48,0.12) 78%, rgba(10,18,48,0.3) 100%)',
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-20"
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(10,18,48,0.7) 0%, rgba(10,18,48,0.15) 22%, rgba(10,18,48,0.25) 55%, rgba(10,18,48,0.92) 100%)',
+        }}
+      />
+      <div aria-hidden="true" className="absolute inset-0 -z-20 bg-navy-deep/45 lg:hidden" />
+
+      {/* ── Atmosphere ── */}
+      <StarField count={60} seed={41} className="absolute inset-x-0 top-0 -z-10 h-[45%] opacity-50 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-[6%] -z-10 h-[46%] overflow-hidden opacity-[0.22] mix-blend-screen">
+        <div className="fog absolute inset-y-0 left-0 w-[200%]" style={{ backgroundImage: FOG, backgroundSize: '50% 100%', backgroundRepeat: 'repeat-x' }} />
+      </div>
+      {/*<CircuitTraces className="absolute -left-2 top-0 -z-10 w-40 opacity-50 sm:w-56 lg:w-64" />*/}
+      <motion.div aria-hidden="true" style={{ x: nearX, y: nearY }} className="pointer-events-none absolute inset-0 -z-10">
+        <GoldCloud variant="a" eager className="-left-24 bottom-[14%] w-72 opacity-[0.22] sm:w-96" />
+        <GoldCloud variant="b" eager flip className="-right-16 top-[30%] hidden w-80 opacity-[0.28] md:block lg:w-[26rem]" />
+      </motion.div>
+      <GlyphWatermark glyphs="日出" className="right-[3%] top-[18%] hidden text-[clamp(5rem,13vh,9rem)] text-cream/[0.07] lg:block" />
+      <GoldDust count={32} className="-z-10" />
+
+      {/* ── Content ── */}
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="container-x relative flex flex-1 flex-col pb-[calc(52px+clamp(12px,2vh,34px))] pt-[calc(var(--nav-h)+clamp(8px,1.8vh,44px))]"
+      >
+        <div className="flex max-w-[56rem] flex-1 flex-col justify-center">
+          <motion.p
+            variants={fadeUp}
+            custom={0.05}
+            initial={reduce ? false : 'hidden'}
+            animate="show"
+            className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.34em] text-gold-soft sm:text-[13px]"
+          >
+            <span aria-hidden="true" className="h-px w-8 bg-gold sm:w-12" />
+            {site.tagline}
+            <Diamond className="bg-saffron" />
+          </motion.p>
+
+          <h1 id="hero-title" className="mt-[clamp(8px,1.5vh,24px)] text-[clamp(2.55rem,min(7.4vw,8.2vh),7rem)] font-bold uppercase leading-[0.92] tracking-[-0.01em]">
+            {hero.titleLines.map((line, i) => (
+              <span key={line} className="block overflow-hidden pb-[0.04em]">
+                <motion.span
+                  className={cn('block', i >= 2 ? 'text-sun' : 'text-cream')}
+                  variants={lineReveal}
+                  custom={i}
+                  initial={reduce ? false : 'hidden'}
+                  animate="show"
+                >
+                  {line}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
+
+          <motion.p
+            variants={fadeUp}
+            custom={0.6}
+            initial={reduce ? false : 'hidden'}
+            animate="show"
+            className="mt-[clamp(10px,1.8vh,26px)] text-[clamp(1.02rem,2.4vh,1.5rem)] font-light text-cream/90"
+          >
+            {hero.coPowered}
+          </motion.p>
+
+          <motion.div
+            variants={fadeUp}
+            custom={0.75}
+            initial={reduce ? false : 'hidden'}
+            animate="show"
+            className="mt-[clamp(14px,2.4vh,36px)] flex flex-wrap gap-3 sm:gap-4"
+          >
+            <Button href={registerHref} variant="sun" size="lg" icon={ArrowRight}>
+              {hero.register.label}
+            </Button>
+            <Button to={hero.explore.to} variant="glass" size="lg">
+              {hero.explore.label}
+            </Button>
+          </motion.div>
+        </div>
+
+        <motion.div
+          variants={fadeUp}
+          custom={0.95}
+          initial={reduce ? false : 'hidden'}
+          animate="show"
+          className="mt-[clamp(26px,3.6vh,40px)] flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
         >
-          <path d={TAIL_PATH} fill="#0A1230" />
-          <path d={TAIL_EDGE} fill="none" stroke="#C9A24A" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-        </svg>
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:gap-9">
+            {site.countdown.enabled && (
+              <Countdown target={site.countdown.target} targetLabel={site.countdown.targetLabel} tba={site.countdown.datesToBeAnnounced} />
+            )}
+            <ul className="space-y-2 whitespace-nowrap text-[14px] text-cream/90 sm:text-[15.5px]">
+              <li className="flex items-center gap-3">
+                <CalendarDays size={18} strokeWidth={1.6} className="shrink-0 text-gold-soft" aria-hidden="true" />
+                {site.dates.full}
+              </li>
+              <li className="flex items-center gap-3">
+                <MapPin size={18} strokeWidth={1.6} className="shrink-0 text-gold-soft" aria-hidden="true" />
+                {site.location.full}
+              </li>
+              <li className="flex items-center gap-3">
+                <Landmark size={18} strokeWidth={1.6} className="shrink-0 text-gold-soft" aria-hidden="true" />
+                {hero.organiser}
+              </li>
+            </ul>
+          </div>
 
-        {/* ── Skyline with reflection across the cream side ── */}
-        <div className="relative px-4 lg:ml-[30%] lg:px-10">
-          <SkylineStrip className="mx-auto max-w-[1000px]" />
-        </div>
+          <a
+            href="#welcome"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToWelcome();
+            }}
+            className="group hidden items-center gap-4 self-end pb-2 text-[11px] xl:flex font-medium uppercase tracking-[0.36em] text-cream/75 transition hover:text-cream"
+          >
+            {hero.scrollLabel}
+            <span aria-hidden="true" className="relative h-12 w-px overflow-hidden bg-cream/20">
+              <span className="scroll-cue absolute inset-0 bg-gold-soft" />
+            </span>
+          </a>
+        </motion.div>
+      </motion.div>
 
-        {/* ── Northeast heritage illustration band ── */}
-        <div className="relative -mt-6 sm:-mt-10 lg:ml-[22%]">
-          <img
-            src={heritageBand}
-            alt="Illustrated Northeast heritage: a monastery, waterfalls, orchids, a living root bridge, limestone caves, a train, a satellite and a globe"
-            width={1024}
-            height={341}
-            loading="lazy"
-            decoding="async"
-            className="mx-auto block w-full max-w-[1200px] [mask-image:linear-gradient(to_bottom,transparent,black_18%)] lg:[-webkit-mask-composite:source-in] lg:[mask-composite:intersect] lg:[mask-image:linear-gradient(to_bottom,transparent,black_18%),linear-gradient(to_right,transparent,black_9%)]"
-          />
-          <img
-            src={pagodaSketch}
-            alt=""
-            aria-hidden="true"
-            width={540}
-            height={594}
-            loading="lazy"
-            decoding="async"
-            className="pointer-events-none absolute bottom-0 right-0 hidden w-[20%] max-w-[260px] select-none md:block"
-          />
-        </div>
-      </div>
+      {/* ── Ticker ── */}
+      <Marquee
+        items={hero.ticker}
+        label="SWISF 2027 highlights"
+        duration={48}
+        className="absolute inset-x-0 bottom-0 h-[52px] items-center border-t border-gold/30 bg-navy-deep/70 backdrop-blur-md"
+        itemClassName="text-[11px] font-medium uppercase tracking-[0.3em] text-cream/80 sm:text-[12px]"
+        diamondClassName="bg-gold"
+      />
     </section>
   );
 }

@@ -5,7 +5,6 @@
 import chineseKnot from '../../assets/images/chinese-knot.webp';
 import crimsonCloud from '../../assets/images/crimson-cloud.webp';
 import festivalPattern from '../../assets/images/festival-pattern.webp';
-import flowerOrnament from '../../assets/images/flower-ornament.webp';
 import knotCorner from '../../assets/images/knot-corner.webp';
 import lanternFrame from '../../assets/images/lantern-frame.webp';
 import medallionStrip from '../../assets/images/medallion-strip.webp';
@@ -80,11 +79,6 @@ export function ChineseKnot({ className, eager }: OrnamentProps) {
 /** Tall red frame with a lantern (left edge of the Summit page). */
 export function LanternFrame({ className, eager }: OrnamentProps) {
   return <DecorImage src={lanternFrame} width={160} height={758} className={className} eager={eager} />;
-}
-
-/** Magenta and saffron flower motif. */
-export function FlowerOrnament({ className }: OrnamentProps) {
-  return <DecorImage src={flowerOrnament} width={560} height={382} className={className} />;
 }
 
 /** Red plum-blossom branch (flip for the right-hand corner). */

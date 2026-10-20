@@ -1,45 +1,39 @@
+import logoDark from '../../assets/logos/swisf-logo-dark.webp';
+import logoLight from '../../assets/logos/swisf-logo.webp';
 import { site } from '../../data/site';
+import { cssVars } from '../../lib/cssVars';
 import { cn } from '../../lib/cn';
-import SunriseRays from '../ornaments/SunriseRays';
 
 type SunrayLockupProps = {
+  /** light = navy wordmark for cream backgrounds, dark = cream wordmark for navy backgrounds */
   tone?: 'light' | 'dark';
-  size?: 'sm' | 'md';
+  /** A glint of light sweeping across the logo */
+  glint?: boolean;
+  /** Width class, e.g. "w-48" — the height follows the artwork's 800 × 718 proportions */
   className?: string;
-  animated?: boolean;
 };
 
-/** Sunrise emblem + SUNRAY wordmark + "World Innovation Summit & Festival" + "SWISF · 2027". */
-export default function SunrayLockup({ tone = 'light', size = 'md', className, animated = false }: SunrayLockupProps) {
-  const dark = tone === 'dark';
+/** The full official logo: sunrise emblem, SUNRAY, World Innovation Summit & Festival, SWISF · 2027. */
+export default function SunrayLockup({ tone = 'light', glint = false, className }: SunrayLockupProps) {
+  const src = tone === 'dark' ? logoDark : logoLight;
   return (
-    <div className={cn('flex flex-col items-center text-center', className)}>
-      <SunriseRays animated={animated} className={size === 'sm' ? 'w-32' : 'w-44 sm:w-52'} />
-      <p
-        className={cn(
-          'mt-1 font-display font-medium leading-none tracking-[0.08em]',
-          size === 'sm' ? 'text-3xl' : 'text-4xl sm:text-[2.75rem]',
-          dark ? 'text-cream' : 'text-navy',
-        )}
-      >
-        {site.wordmark}
-      </p>
-      <p
-        className={cn(
-          'mt-3 max-w-[18rem] text-[11px] font-medium uppercase leading-relaxed tracking-[0.3em] [margin-right:-0.3em]',
-          dark ? 'text-gold-soft' : 'text-gold-ink',
-        )}
-      >
-        World Innovation Summit &amp; Festival
-      </p>
-      <p
-        className={cn(
-          'mt-2 text-[12px] font-medium uppercase tracking-[0.35em] [margin-right:-0.35em]',
-          dark ? 'text-crimson-light' : 'text-crimson',
-        )}
-      >
-        {site.subWordmark}
-      </p>
-    </div>
+    <span className={cn('relative inline-block', className ?? 'w-48 sm:w-56')} style={{ aspectRatio: '800 / 718' }}>
+      <img
+        src={src}
+        alt={`${site.wordmark} — ${site.subtitle} (SWISF · 2027)`}
+        width={800}
+        height={718}
+        loading="lazy"
+        decoding="async"
+        className="block h-full w-full"
+      />
+      {glint && (
+        <span
+          aria-hidden="true"
+          className="glint pointer-events-none absolute inset-0"
+          style={cssVars({ '--dur': '9s' }, { WebkitMaskImage: `url(${src})`, maskImage: `url(${src})` })}
+        />
+      )}
+    </span>
   );
 }

@@ -3,7 +3,7 @@ import type { LucideIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '../../lib/cn';
 
-type Variant = 'primary' | 'secondary' | 'light' | 'outline-light';
+type Variant = 'primary' | 'secondary' | 'light' | 'outline-light' | 'sun' | 'glass';
 type Size = 'sm' | 'md' | 'lg';
 
 type BaseProps = {
@@ -46,6 +46,10 @@ const variants: Record<Variant, string> = {
   // for dark backgrounds
   light: 'border border-cream bg-cream text-navy hover:ring-1 hover:ring-inset hover:ring-gold',
   'outline-light': 'border border-gold/70 bg-transparent text-cream hover:border-gold hover:bg-white/10',
+  // saffron → gold gradient with a glow (hero, dark banners)
+  sun: 'btn-sun border border-gold-soft/60 font-semibold text-navy-deep',
+  // frosted outline over photos
+  glass: 'border border-cream/45 bg-white/[0.06] font-semibold text-cream backdrop-blur-sm hover:border-gold-soft hover:bg-white/[0.14]',
 };
 
 /** Rounded-full, uppercase, tracked button that renders a Link, an anchor or a button. */

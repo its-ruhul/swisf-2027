@@ -1,79 +1,77 @@
-import { ArrowRight, Download, Mail, Phone } from 'lucide-react';
+import { Download, Mail, Phone } from 'lucide-react';
 import { partners, partnersPage } from '../../data/partners';
 import { site } from '../../data/site';
-import { accentText } from '../../lib/accents';
-import { cn } from '../../lib/cn';
 import { PatternBorder, PeachCloud, PlumBlossom } from '../ornaments/Decor';
 import GoldCloud from '../ornaments/GoldCloud';
 import { HangingLanterns } from '../ornaments/Lantern';
+import { FallingPetals, GoldDust } from '../ornaments/Particles';
+import Seigaiha from '../ornaments/Seigaiha';
+import StarField from '../ornaments/StarField';
 import Button from '../ui/Button';
-import { CardWithIcon } from '../ui/Card';
 import DividerLabel from '../ui/DividerLabel';
 import IconCircle from '../ui/IconCircle';
 import Reveal, { RevealItem } from '../ui/Reveal';
+import Seal, { GlyphWatermark } from '../ui/Seal';
 import SectionHeading from '../ui/SectionHeading';
 
-const enquiryHref = (tier: string) =>
-  `mailto:${site.contact.email}?subject=${encodeURIComponent(`SWISF 2027 – ${tier} enquiry`)}`;
-
-/** Brochure page 9: Our Partners. */
+/** Our Partners: co-powered by BSE, partner categories (coming soon), collaborate banner and logo wall. */
 export default function Partners() {
   const p = partnersPage;
   return (
     <section aria-labelledby="partners-heading" className="relative overflow-hidden bg-cream">
+      <Seigaiha background="#FAF6EE" className="opacity-25" />
       {/* hanging red paper lanterns along a string */}
-      <HangingLanterns variant="string" className="h-28 sm:h-36 lg:h-44" />
-      <GoldCloud variant="b" className="-right-14 top-48 hidden w-72 sm:block lg:top-56" />
+      <HangingLanterns variant="string" className="relative h-24 sm:h-28 lg:h-32" />
+      <GoldCloud variant="b" className="-right-14 top-40 hidden w-72 sm:block" />
       <PeachCloud className="absolute -left-24 top-56 w-72 opacity-60 sm:w-96" />
+      <GlyphWatermark glyphs="合作" className="left-[2%] top-[30%] hidden text-[clamp(5rem,12vh,8rem)] text-crimson/[0.06] xl:block" />
+      <FallingPetals count={12} seed={17} />
 
-      <div className="container-x relative pb-20 pt-6 sm:pb-24 lg:pb-28">
-        <Reveal>
-          <SectionHeading as="h1" id="partners-heading" line1={p.heading.line1} line2={p.heading.line2} />
+      <div className="container-x relative pb-16 pt-4 sm:pb-20">
+        <Reveal className="flex items-end justify-center gap-5">
+          <SectionHeading as="h1" id="partners-heading" align="center" line1={p.heading.line1} line2={p.heading.line2} />
+          <Seal glyphs="合作" meaning="Partnership" size="md" className="mb-1" />
         </Reveal>
 
         {/* Co-powered by BSE */}
-        <DividerLabel className="mt-14" as="h2">
+        <DividerLabel className="mt-12" as="h2">
           {p.coPoweredLabel}
         </DividerLabel>
-        <Reveal className="mx-auto mt-8 max-w-md">
-          <div className="flex items-center justify-center rounded-2xl border border-line bg-white px-10 py-10 shadow-card">
-            <img src={p.coPowered.logo} alt={p.coPowered.name} width={p.coPowered.width} height={p.coPowered.height} loading="lazy" className="h-24 w-auto sm:h-28" />
+        <Reveal className="mx-auto mt-8 max-w-lg">
+          <div className="group relative rounded-[22px] bg-gradient-to-br from-gold-soft via-gold to-saffron p-[1.5px] shadow-lift">
+            <div className="relative flex flex-col items-center overflow-hidden rounded-[21px] bg-white px-10 py-10">
+              <span aria-hidden="true" className="pointer-events-none absolute inset-2.5 rounded-[16px] border border-gold/30" />
+              {/* a sweep of light across the card on hover */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-gold-soft/40 to-transparent transition-transform duration-1000 ease-out group-hover:translate-x-[320%]"
+              />
+              <img src={p.coPowered.logo} alt={p.coPowered.name} width={p.coPowered.width} height={p.coPowered.height} loading="lazy" className="relative h-24 w-auto sm:h-28" />
+              <p className="eyebrow relative mt-5 text-[11px] text-gold-ink">Bombay Stock Exchange</p>
+            </div>
           </div>
         </Reveal>
-        <p className="mx-auto mt-8 max-w-3xl text-center text-lg font-medium leading-snug text-navy sm:text-xl">{p.coPoweredLine}</p>
-
-        <Reveal as="ul" stagger className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
-          {p.contributions.map((item) => (
-            <RevealItem as="li" key={item.text} className="group flex flex-col items-center text-center">
-              <IconCircle icon={item.icon} accent={item.accent} size="md" fill="white" />
-              <p className="mt-4 max-w-[14rem] text-[15px] leading-snug text-ink-muted">{item.text}</p>
-            </RevealItem>
-          ))}
-        </Reveal>
-
-        <hr className="mt-16 border-line" />
+        <p className="mx-auto mt-7 max-w-2xl text-center text-lg font-medium leading-snug text-navy sm:text-xl">{p.coPoweredLine}</p>
 
         {/* Partner with us */}
-        <div id="partner-with-us" className="pt-14">
+        <div id="partner-with-us" className="pt-16">
           <DividerLabel as="h2">{p.partnerLabel}</DividerLabel>
-          <p className="mx-auto mt-5 max-w-2xl text-center text-[17px] text-ink-muted">{p.partnerIntro}</p>
+          <p className="mx-auto mt-4 max-w-2xl text-center text-[17px] text-ink-muted">{p.partnerIntro}</p>
 
-          <Reveal as="ul" stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <Reveal as="ul" stagger className="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
             {p.tiers.map((tier) => (
-              <RevealItem as="li" key={tier.title} className="h-full">
-                <CardWithIcon icon={tier.icon} accent={tier.accent} title={tier.title} text={tier.text} hoverLift className="h-full">
-                  <a
-                    href={enquiryHref(tier.title)}
-                    className={cn(
-                      'mt-4 inline-flex min-h-[44px] items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.16em] underline-offset-4 hover:underline',
-                      accentText[tier.accent],
-                    )}
-                  >
-                    {p.enquireLabel}
-                    <span className="sr-only"> about the {tier.title}</span>
-                    <ArrowRight size={14} strokeWidth={1.75} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" />
-                  </a>
-                </CardWithIcon>
+              <RevealItem
+                as="li"
+                key={tier.title}
+                className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-line bg-white/90 p-5 shadow-card transition duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-lift"
+              >
+                <IconCircle icon={tier.icon} accent={tier.accent} size="md" fill="white" />
+                <div className="min-w-0">
+                  <h3 className="card-title">{tier.title}</h3>
+                  <p className="mt-1.5 animate-sheen bg-gradient-to-r from-ink-muted/35 via-gold/80 to-ink-muted/35 bg-[length:220%_100%] bg-clip-text text-[12px] font-medium uppercase tracking-[0.3em] text-transparent">
+                    {p.comingSoon}
+                  </p>
+                </div>
               </RevealItem>
             ))}
           </Reveal>
@@ -81,13 +79,15 @@ export default function Partners() {
 
         {/* Collaborate banner */}
         <Reveal className="mt-14">
-          <div className="relative overflow-hidden rounded-2xl bg-navy-deep px-6 py-10 text-cream sm:px-10 lg:flex lg:items-center lg:justify-between lg:gap-10 lg:py-12">
+          <div className="relative isolate overflow-hidden rounded-2xl bg-navy-deep px-6 py-10 text-cream ring-1 ring-gold/40 sm:px-10 lg:flex lg:items-center lg:justify-between lg:gap-10 lg:py-12">
+            <StarField count={40} seed={9} className="absolute inset-0 -z-10 h-full w-full opacity-50" />
+            <GoldDust count={12} seed={13} className="-z-10" />
             <span aria-hidden="true" className="absolute -right-24 -top-24 h-64 w-64 rounded-full border border-gold/20" />
             <span aria-hidden="true" className="absolute -right-10 -top-10 h-36 w-36 rounded-full border border-gold/20" />
             <div className="relative">
               <p className="eyebrow text-saffron-bright">{p.collaborate.eyebrow}</p>
               <h2 className="mt-3 text-2xl font-medium text-cream sm:text-3xl">{p.collaborate.title}</h2>
-              <Button href={site.brochurePdf} download variant="light" icon={Download} iconPosition="left" className="mt-7">
+              <Button href={site.brochurePdf} download variant="sun" icon={Download} iconPosition="left" className="mt-7">
                 {p.collaborate.download}
               </Button>
             </div>
@@ -141,9 +141,9 @@ export default function Partners() {
       </div>
 
       {/* bottom: plum blossoms in both corners + small pattern border */}
-      <div className="relative h-28 sm:h-36">
-        <PlumBlossom className="absolute bottom-5 left-0 w-44 sm:w-60" />
-        <PlumBlossom flip className="absolute bottom-5 right-0 w-44 sm:w-60" />
+      <div className="relative h-24 sm:h-32">
+        <PlumBlossom className="absolute bottom-5 left-0 w-40 sm:w-56" />
+        <PlumBlossom flip className="absolute bottom-5 right-0 w-40 sm:w-56" />
       </div>
       <PatternBorder />
     </section>

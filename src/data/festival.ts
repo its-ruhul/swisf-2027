@@ -18,9 +18,4 @@ export const festival = {
     { icon: Trophy, accent: 'royal', title: 'On-stage moments', text: 'Pitch winners and partners celebrated before the crowd' },
   ] as { icon: LucideIcon; accent: Accent; title: string; text: string }[],
   closing: { day: 'Ideas by day', night: 'Music by night', caption: 'Three nights of concerts in the concert capital of India' },
-  lineup: {
-    title: 'Artist line-up to be announced',
-    text: 'Follow E-Cell NIT Meghalaya for the first names.',
-    slots: 3,
-  },
 };

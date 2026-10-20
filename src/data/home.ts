@@ -11,7 +11,6 @@ import {
   HandCoins,
   Lightbulb,
   Map as MapIcon,
-  Mic,
   Mountain,
   Music,
   Presentation,
@@ -26,6 +25,31 @@ import type { Accent } from '../lib/accents';
 
 export type IconItem = { icon: LucideIcon; accent: Accent; title: string; text: string };
 
+/** Home hero (full-screen sunrise over the sea of clouds). */
+export const hero = {
+  /** Set on four lines; the last two are drawn in the saffron-gold gradient */
+  titleLines: ['World', 'Innovation', 'Summit &', 'Festival'],
+  coPowered: 'Co-powered by Bombay Stock Exchange',
+  /** Until registrations open, "Register" sends an email to the organisers */
+  register: { label: 'Register Interest', subject: 'SWISF 2027 – Register my interest' },
+  explore: { label: 'Explore SWISF', to: '/experience' },
+  organiser: 'Organised by E-Cell, NIT Meghalaya',
+  photoAlt: 'Sunrise over a sea of clouds in the Meghalaya hills, with people gathered on a ridge to watch',
+  scrollLabel: 'Scroll to explore',
+  /** The ticker running along the bottom of the hero */
+  ticker: [
+    'Ignite Innovation',
+    'Unlock Capital',
+    'Celebrate Culture',
+    'Keynotes & Fireside Chats',
+    'Startup Pitch Arena',
+    'Investor Connect',
+    'Concerts all three nights',
+    'Eight states · One stage',
+    'Co-powered by BSE',
+  ],
+};
+
 export const welcome = {
   heading: { line1: 'Welcome', line2: 'to SWISF 2027' },
   salutation: 'Dear Innovators,',
@@ -36,7 +60,6 @@ export const welcome = {
     'Join us where India’s sun rises first.',
   ],
   signOff: { regards: 'Warm regards,', name: 'Organising committee', org: 'SWISF 2027' },
-  bannerAlt: 'Sunrise over a sea of clouds in the Meghalaya hills, with a ridge of people watching the sun come up',
   pillarsTitle: 'Our three pillars',
   pillars: [
     { icon: Lightbulb, accent: 'royal', title: 'Innovation', text: 'Ideas, startups and the people building them' },
@@ -61,27 +84,7 @@ export const about = {
     { icon: MapIcon, accent: 'teal', value: null, display: '∞', label: 'Ideas', caption: 'One stage for the whole of India' },
     { icon: Building2, accent: 'violet', value: 1, display: '1', label: 'City', caption: 'Shillong, the concert capital of India' },
   ] as { icon: LucideIcon; accent: Accent; value: number | null; display: string; label: string; caption: string }[],
-  cards: [
-    {
-      icon: Mic,
-      accent: 'royal',
-      eyebrow: 'By day',
-      title: 'The Summit',
-      text: 'Keynotes, panels, a startup pitch arena, investor connect and an expo of stalls.',
-      to: '/experience#summit',
-    },
-    {
-      icon: Music,
-      accent: 'saffron',
-      eyebrow: 'By night',
-      title: 'The Festival',
-      text: 'Concerts on all three nights, jam sessions and a night market.',
-      to: '/experience#festival',
-    },
-  ] as { icon: LucideIcon; accent: Accent; eyebrow: string; title: string; text: string; to: string }[],
   globeBadge: 'Shillong · 25.6°N 91.9°E',
-  bandAlt:
-    'Line illustration of technology and culture: wind turbines, solar panels, a rocket, satellite, atoms, a city skyline, a bridge, a handshake and a brain',
 };
 
 export type StateItem = { name: string; accent: Accent; host?: boolean };
@@ -128,11 +131,13 @@ export const northeast = {
 
 export const homeCta = {
   eyebrow: 'Late April – Early May 2027 · Shillong',
-  title: 'Be part of SWISF 2027',
+  /** The highlight is set in the saffron-gold gradient */
+  title: { lead: 'Be part of', highlight: 'SWISF 2027' },
   text: 'Three days of ideas, capital and celebration, where India’s sun rises first.',
+  /** The first link is the main (gold) button */
   links: [
-    { label: 'What You Experience', to: '/experience', variant: 'light' },
-    { label: 'Project Sunray', to: '/project-sunray', variant: 'outline-light' },
-    { label: 'Partner With Us', to: '/sponsors', variant: 'outline-light' },
-  ] as { label: string; to: string; variant: 'light' | 'outline-light' }[],
+    { label: 'What You Experience', to: '/experience' },
+    { label: 'Project Sunray', to: '/project-sunray' },
+    { label: 'Partner With Us', to: '/sponsors' },
+  ],
 };

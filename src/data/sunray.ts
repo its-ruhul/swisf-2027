@@ -51,5 +51,4 @@ export const nextGeneration = {
     register: { label: 'Register Interest', subject: 'Project Sunray – School Registration' },
     mentor: { label: 'Become a Mentor', subject: 'Project Sunray – Mentor' },
   },
-  eyeAlt: 'Close-up of an eye reflecting glowing orange circuit lines — a futuristic light band',
 };

@@ -1,16 +1,12 @@
 /**
- * Sponsors page: co-powering partner (BSE), partnership tiers and the
+ * Sponsors page: co-powering partner (BSE), partner categories and the
  * partner logo wall.
  */
 import {
   BedDouble,
-  BookOpen,
   Crown,
-  Handshake,
   Lightbulb,
-  Mic,
   Music,
-  Presentation,
   Radio,
   Rocket,
   type LucideIcon,
@@ -28,23 +24,18 @@ export const partnersPage = {
     height: 246,
   },
   coPoweredLine: 'With BSE alongside, SWISF 2027 brings the Northeast closer to India’s capital markets.',
-  contributions: [
-    { icon: Mic, accent: 'royal', text: 'Leadership keynotes and panel discussions' },
-    { icon: Presentation, accent: 'saffron', text: 'Mentorship from capital-markets experts' },
-    { icon: Handshake, accent: 'teal', text: 'Investor and VC connect for founders' },
-    { icon: BookOpen, accent: 'violet', text: 'Financial literacy and investor awareness' },
-  ] as { icon: LucideIcon; accent: Accent; text: string }[],
   partnerLabel: 'Partner with us',
   partnerIntro: 'SWISF 2027 welcomes collaborators who share our vision for the Northeast.',
+  /** Partner categories — each shows a faded "Coming soon" until the partner is announced */
   tiers: [
-    { icon: Crown, accent: 'saffron', title: 'Associate Partner', text: 'Presence across all three days' },
-    { icon: Rocket, accent: 'royal', title: 'Startup Arena Partner', text: 'Powering the pitch competition' },
-    { icon: Music, accent: 'violet', title: 'Festival Partner', text: 'The concerts and night market' },
-    { icon: Lightbulb, accent: 'teal', title: 'Knowledge Partner', text: 'Masterclasses and sessions' },
-    { icon: BedDouble, accent: 'teal', title: 'Hospitality Partner', text: 'Hosting speakers and guests' },
-    { icon: Radio, accent: 'royal', title: 'Media Partner', text: 'Telling the story nationwide' },
-  ] as { icon: LucideIcon; accent: Accent; title: string; text: string }[],
-  enquireLabel: 'Enquire',
+    { icon: Crown, accent: 'saffron', title: 'Associate Partner' },
+    { icon: Rocket, accent: 'royal', title: 'Startup Arena Partner' },
+    { icon: Music, accent: 'violet', title: 'Festival Partner' },
+    { icon: Lightbulb, accent: 'teal', title: 'Knowledge Partner' },
+    { icon: BedDouble, accent: 'teal', title: 'Hospitality Partner' },
+    { icon: Radio, accent: 'royal', title: 'Media Partner' },
+  ] as { icon: LucideIcon; accent: Accent; title: string }[],
+  comingSoon: 'Coming soon',
   collaborate: {
     eyebrow: 'To collaborate',
     title: 'Let’s build SWISF 2027 together',

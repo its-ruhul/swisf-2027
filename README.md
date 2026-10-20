@@ -8,10 +8,10 @@ two-tone headings, gold cloud and circuit ornaments, outlined icon circles and t
 
 | Route | Page |
 | --- | --- |
-| `/` | Home: hero (brochure cover), welcome letter, About SWISF 2027, Why the Northeast, closing banner |
-| `/experience` | The Summit by Day + Who Comes Together + The Festival by Night (the background turns to night as you scroll) |
-| `/project-sunray` | The Next Generation: Project Centre journey and schools sign-up |
-| `/sponsors` | Co-powered by BSE, partnership tiers (`#partner-with-us`), collaborate banner, partner logo wall |
+| `/` | Home: full-screen sunrise hero with countdown and ticker, then one-screen panels: welcome letter, About SWISF 2027, Why the Northeast; boxed closing banner |
+| `/experience` | One screen with a **Day / Night** switch: the Summit by Day, or the Festival by Night (`/experience#festival` opens at night) |
+| `/project-sunray` | One screen: The Next Generation, the Project Centre journey and schools sign-up |
+| `/sponsors` | Co-powered by BSE, partner categories marked “Coming soon” (`#partner-with-us`), collaborate banner, partner logo wall |
 | `/team` | Leadership and departments, filterable by department |
 | anything else | 404: "The sun hasn't risen here" |
 
@@ -60,12 +60,12 @@ All text, lists and icons live in typed data files. You don't need to touch any 
 
 | File | What it controls |
 | --- | --- |
-| `src/data/site.ts` | Event name, dates, location, **countdown**, phone, email, **social links**, navigation, organiser blurb, per-page `<title>`/description |
-| `src/data/home.ts` | Welcome letter, three pillars, About text, "At a glance" stats, Day/Night cards, Why the Northeast, the eight states, region/SWISF lists, closing banner |
-| `src/data/summit.ts` | Experience page intro, Summit activities (8), conversation topics, Who Comes Together, agenda placeholder |
-| `src/data/festival.ts` | Festival copy, highlights, closing line, line-up placeholder |
+| `src/data/site.ts` | Event name, tagline, dates, location, **countdown**, phone, email, **social links**, navigation, organiser blurb, per-page `<title>`/description |
+| `src/data/home.ts` | **Hero** (title lines, buttons, ticker), welcome letter, three pillars, About text, "At a glance" stats, Why the Northeast, the eight states, region/SWISF lists, closing banner |
+| `src/data/summit.ts` | Experience page title and Day/Night labels, Summit activities (8), conversation topics |
+| `src/data/festival.ts` | Festival copy, highlights, closing line |
 | `src/data/sunray.ts` | Project Sunray copy, the four journey steps, schools call-to-action |
-| `src/data/partners.ts` | BSE contributions, partnership tiers, **partner logo list** |
+| `src/data/partners.ts` | BSE card, partner categories (“Coming soon”), **partner logo list** |
 | `src/data/team.ts` | Departments and **team members** |
 
 Icons are [Lucide](https://lucide.dev/icons/) components. To change one, import another name from `lucide-react` at the top of the data file.
@@ -83,6 +83,11 @@ countdown: {
   datesToBeAnnounced: true,               // shows "Dates to be announced"
 },
 ```
+
+### Hero buttons
+
+`hero.register` in `src/data/home.ts`. Until registrations open, **Register Interest** opens an email to the organisers.
+When a registration page exists, point the button in `src/components/sections/Hero.tsx` at it.
 
 ### Social links
 
@@ -129,7 +134,12 @@ The "Download Brochure (PDF)" buttons link to `public/swisf-2027-brochure.pdf`. 
 Every image is in `src/assets/images/` or `src/assets/logos/` as WebP. **[`src/assets/images/README.md`](src/assets/images/README.md)** lists each file, what it shows, where it's used and where it came from.
 To swap an image, replace the file and keep the same name (ideally similar proportions).
 
-Social sharing image: `public/og-image.jpg` (1200×630). Favicon: `public/favicon.svg` and `public/apple-touch-icon.png`.
+The official SWISF logo lives in `src/assets/logos/` in four crops, all cut from the supplied artwork without stretching:
+`swisf-emblem.webp` / `swisf-emblem-sm.webp` (the sunrise emblem only — navbar, hero, 404), `swisf-logo.webp` (full logo with the
+navy wordmark, for cream) and `swisf-logo-dark.webp` (cream wordmark, for navy — footer, mobile menu, closing banner).
+Render them with the `SwisfEmblem` and `SunrayLockup` components, which keep the artwork's proportions.
+
+Social sharing image: `public/og-image.jpg` (1200×630). Favicon: `public/favicon.png` and `public/apple-touch-icon.png` (centre of the emblem on navy).
 
 ## 6. Project structure
 
@@ -139,18 +149,20 @@ src/
   routes/                              Home, Experience, ProjectSunray, Sponsors, Team, NotFound
   components/
     layout/                            Navbar, MobileSidebar, Footer, PageShell, ScrollToTop
-    ui/                                SectionHeading, Eyebrow, IconCircle, Card, Pill, Button, DividerLabel,
-                                       Reveal, LogoLockup, SunrayLockup, Countdown, Motto, SocialLinks, icons
-    ornaments/                         GoldCloud, CircuitTraces, SunriseRays, DottedGlobe, SkylineStrip, Lantern,
-                                       LatticeBorder, MandalaWatermark, ArcFrame, StarField, Decor
+    ui/                                SectionHeading, Eyebrow, IconCircle, Button, DividerLabel, Reveal, LogoLockup,
+                                       SunrayLockup, SwisfEmblem, Countdown, Marquee, Seal (+ GlyphWatermark), Motto,
+                                       SocialLinks, icons
+    ornaments/                         GoldCloud, CircuitTraces, DottedGlobe, SkylineStrip, Lantern, LatticeBorder,
+                                       MandalaWatermark, ArcFrame, StarField, Decor, Particles (GoldDust, FallingPetals,
+                                       SkyLanterns), PrayerFlags, Seigaiha, Fireworks, AtomOrbit, Enso
     sections/                          Hero, Welcome, AboutSwisf, WhyNortheast, StatesRing, HomeCta,
-                                       ExperienceHero, SummitByDay, WhoComesTogether, FestivalByNight,
-                                       NextGeneration, Partners, TeamGrid, StatCounter
+                                       DayNightToggle, SummitByDay, FestivalByNight, NextGeneration, Partners,
+                                       TeamGrid, StatCounter
   data/                                site, home, summit, festival, sunray, partners, team
   hooks/                               useCountdown, useScrolled, usePageMeta
-  lib/                                 accents (colour → class maps), cn, cssVars
+  lib/                                 accents (colour → class maps), cn, cssVars, random (seeded ornaments)
   assets/images, assets/logos          WebP artwork
-public/                                .htaccess, favicon.svg, apple-touch-icon.png, og-image.jpg,
+public/                                .htaccess, favicon.png, apple-touch-icon.png, og-image.jpg,
                                        robots.txt, sitemap.xml, swisf-2027-brochure.pdf
 ```
 
@@ -171,9 +183,28 @@ Defined in `tailwind.config.ts` (and mirrored as CSS variables in `src/index.css
 Brochure saffron and gold are too light for small text on cream, so text uses slightly deeper `*-ink` versions of the same hues
 (`saffron-ink`, `gold-ink`, `teal-ink`) to pass WCAG AA. Ornaments, icons and borders keep the exact brochure colours.
 
+### Layout: one screen per section
+
+On desktop, the Home panels, the Experience page and Project Sunray are each exactly one screen tall below the navbar
+(`min-h-panel` = `100svh − 76px`); the home hero fills the whole screen behind a transparent navbar. Inside a panel
+(`.panel`), headings, copy and spacing scale with the viewport height (`vh` clamps), so the content fits from 1024×768 up to
+1920×1080. On phones the panels simply grow with their content. If you add copy to a panel, check it at 1366×768 and 1024×768.
+
+### Cultural motifs
+
+Seigaiha waves, prayer flags (lung ta), a dharma wheel at the centre of the eight-states diagram, an ensō brush circle,
+hanko seals and faint brush calligraphy sit alongside the brochure's clouds, knots and lanterns. The calligraphy uses a
+tiny subset of the **Yuji Syuku** font containing only these characters:
+日出 (sunrise) · 歓迎 (welcome) · 創新 (innovation) · 東北 (northeast) · 昼 夜 (day, night) · 祭 (festival) · 未来 (future) ·
+合作 (partnership) · 無 (nothing — 404) · 光 (light) · 縁 (bond). To use a new character, add it (URL-encoded) to the `text=`
+parameter of the Yuji Syuku link in `index.html`.
+
 ## 8. Accessibility and motion
 
 - Semantic landmarks, one `<h1>` per page, skip link, alt text on every meaningful image (decorative art has empty alt).
 - Gold focus rings; all buttons and links have touch targets of 44px or more.
 - Mobile menu: focus is trapped inside, Esc / overlay / link click closes it, focus returns to the menu button, and body scroll is locked.
-- `prefers-reduced-motion` turns off every non-essential animation (clouds, lanterns, rays, globe, reveals, page transitions).
+- The Day / Night switch is a tablist: arrow keys, Home and End move between the two.
+- `prefers-reduced-motion` turns off every non-essential animation (photo zoom, god-rays, fog, gold dust, petals, flags, fireworks,
+  sky lanterns, glints, tickers, clouds, lanterns, globe, reveals, page transitions). Looping effects animate only
+  `transform` and `opacity`, and particles are seeded so they never re-shuffle between renders.

@@ -1,15 +1,14 @@
-import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import festivalConcert from '../../assets/images/festival-concert.webp';
 import { festival } from '../../data/festival';
+import { accentTextBright } from '../../lib/accents';
 import { cssVars } from '../../lib/cssVars';
+import { cn } from '../../lib/cn';
 import ArcFrame from '../ornaments/ArcFrame';
-import { FestivalBand } from '../ornaments/Decor';
-import Lantern from '../ornaments/Lantern';
-import StarField from '../ornaments/StarField';
-import { CardWithIcon } from '../ui/Card';
-import DividerLabel, { Diamond } from '../ui/DividerLabel';
+import { Diamond } from '../ui/DividerLabel';
+import IconCircle from '../ui/IconCircle';
 import Reveal, { RevealItem } from '../ui/Reveal';
+import Seal from '../ui/Seal';
 import SectionHeading from '../ui/SectionHeading';
 
 const LASERS = [
@@ -19,26 +18,24 @@ const LASERS = [
   { angle: 30, dur: 5.8, delay: 2, colour: 'rgba(255, 196, 140, 0.8)' },
 ];
 
-/** Circular concert illustration with a saffron arc frame, slow parallax and a laser shimmer. */
+/** The jam-session concert illustration in a circle, with a saffron arc frame and sweeping lasers. */
 function ConcertCircle() {
-  const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [28, -28]);
-  const scale = useTransform(scrollYProgress, [0, 1], reduce ? [1, 1] : [1.08, 1]);
-
   return (
-    <div ref={ref} className="relative mx-auto aspect-square w-[86%] max-w-[480px]">
-      <ArcFrame className="absolute -inset-[9%] h-[118%] w-[118%]" color="#F29A5E" />
-      <div className="relative h-full w-full overflow-hidden rounded-full shadow-[0_30px_80px_rgba(0,0,0,0.45)] ring-1 ring-gold/40">
+    <div className="relative mx-auto aspect-square w-[min(80vw,360px)] sm:w-[min(70vw,420px)] lg:w-[min(100%,50vh,480px)]">
+      <ArcFrame className="absolute -inset-[9%] h-[118%] w-[118%] motion-safe:animate-spin-slow" color="#F29A5E" />
+      {/* soft stage glow behind */}
+      <span aria-hidden="true" className="absolute inset-[-12%] rounded-full bg-violet/30 blur-3xl motion-safe:animate-glow-pulse" />
+      <div className="relative h-full w-full overflow-hidden rounded-full shadow-[0_30px_80px_rgba(0,0,0,0.5)] ring-1 ring-gold/50">
         <motion.img
           src={festivalConcert}
           alt={festival.imageAlt}
           width={900}
           height={900}
-          loading="lazy"
           decoding="async"
-          style={{ y, scale }}
+          initial={reduce ? false : { scale: 1.15 }}
+          animate={{ scale: 1.03 }}
+          transition={{ duration: 6, ease: 'easeOut' }}
           className="h-full w-full object-cover"
         />
         {/* laser-beam shimmer */}
@@ -60,123 +57,55 @@ function ConcertCircle() {
           ))}
         </div>
       </div>
+      <Seal glyphs="祭" meaning="Festival" size="md" className="absolute -left-1 bottom-[8%]" />
     </div>
   );
 }
 
-/** A blurred performer silhouette for the "line-up to be announced" cards. */
-function Silhouette({ variant }: { variant: number }) {
-  const instrument =
-    variant === 0 ? (
-      <path d="M70 150l46-34 6 8-42 40z" />
-    ) : variant === 1 ? (
-      <path d="M100 96v62h6V96z M96 88h14v12H96z" />
-    ) : (
-      <path d="M58 168h84v18H58z M64 150h72v14H64z" />
-    );
-  return (
-    <svg aria-hidden="true" focusable="false" viewBox="0 0 200 220" className="absolute inset-x-0 bottom-0 h-[82%] w-full blur-[5px]">
-      <defs>
-        <linearGradient id={`sil-${variant}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#7A4FB0" />
-          <stop offset="1" stopColor="#1A1240" />
-        </linearGradient>
-      </defs>
-      <g fill={`url(#sil-${variant})`}>
-        <circle cx="100" cy="62" r="24" />
-        <path d="M44 220c0-56 24-108 56-108s56 52 56 108z" />
-        {instrument}
-      </g>
-    </svg>
-  );
-}
-
-/** Brochure page 6: The Festival by Night. */
+/** Night half of the Experience page: the festival, its highlights and the jam-session illustration. */
 export default function FestivalByNight() {
-  const { heading, lead, body, highlightsLabel, highlights, closing, lineup } = festival;
+  const { heading, lead, highlights, highlightsLabel, closing } = festival;
   return (
-    <section id="festival" aria-labelledby="festival-heading" className="relative overflow-hidden text-cream">
-      <FestivalBand position="center 18%" />
+    <div className="flex flex-1 flex-col text-cream">
+      <div className="grid flex-1 items-center gap-10 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-7 xl:col-span-6">
+          <SectionHeading id="festival-heading" tone="dark" line1={heading.line1} line2={heading.line2} />
+          <p className="mt-[clamp(12px,2.2vh,22px)] max-w-[34rem] text-[clamp(16px,2.1vh,19px)] font-semibold leading-snug text-cream">{lead}</p>
 
-      <div
-        className="relative"
-        style={{ background: 'linear-gradient(180deg, rgba(26,18,64,0) 0%, rgba(42,26,94,0.75) 45%, rgba(26,18,64,0.35) 100%)' }}
-      >
-        <StarField className="absolute inset-0 h-full w-full" />
-        <div className="absolute right-[6%] top-0 hidden gap-6 md:flex" aria-hidden="true">
-          <Lantern className="w-10" stringLength={30} />
-          <Lantern className="w-14" stringLength={70} delay={0.8} />
-          <Lantern className="w-9" stringLength={18} delay={1.6} />
-        </div>
-
-        <div className="container-x section-y relative">
-          <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
-            <div className="lg:col-span-6">
-              <Reveal>
-                <SectionHeading id="festival-heading" tone="dark" line1={heading.line1} line2={heading.line2} />
-              </Reveal>
-              <Reveal delay={0.05}>
-                <p className="lead-copy mt-6 text-cream">{lead}</p>
-                <p className="body-copy mt-4 max-w-[52ch] text-cream/80">{body}</p>
-              </Reveal>
-            </div>
-            <div className="lg:col-span-6">
-              <ConcertCircle />
-            </div>
-          </div>
-
-          <DividerLabel align="left" tone="cream" className="mt-20" as="h3">
-            {highlightsLabel}
-          </DividerLabel>
-          <Reveal stagger className="mt-8 grid gap-5 md:grid-cols-2">
+          <h3 className="sr-only">{highlightsLabel}</h3>
+          <Reveal as="ul" stagger amount={0.1} className="mt-[clamp(14px,2.8vh,28px)] grid gap-3 sm:grid-cols-2">
             {highlights.map((item) => (
-              <RevealItem key={item.title}>
-                <CardWithIcon tone="dark" icon={item.icon} accent={item.accent} title={item.title} text={item.text} className="h-full" />
+              <RevealItem
+                as="li"
+                key={item.title}
+                className="group flex items-start gap-3 rounded-2xl border border-gold/35 bg-white/[0.05] p-3.5 backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-gold hover:bg-white/[0.09]"
+              >
+                <IconCircle icon={item.icon} accent={item.accent} size="xs" tone="dark" />
+                <div className="min-w-0">
+                  <p className={cn('text-[13px] font-semibold uppercase tracking-[0.1em]', accentTextBright[item.accent])}>{item.title}</p>
+                  <p className="mt-0.5 text-[13px] leading-snug text-cream/75">{item.text}</p>
+                </div>
               </RevealItem>
             ))}
           </Reveal>
+        </div>
 
-          {/* closing line */}
-          <Reveal className="mt-20">
-            <div className="flex items-center gap-3 sm:gap-5">
-              <span aria-hidden="true" className="h-px flex-1 bg-saffron/60" />
-              <Diamond className="bg-saffron" />
-              <p className="text-center text-base font-medium uppercase tracking-[0.24em] sm:text-xl sm:tracking-[0.3em]">
-                <span className="text-royal-bright">{closing.day}</span>
-                <Diamond className="mx-3 bg-cream sm:mx-5" />
-                <span className="text-saffron-bright">{closing.night}</span>
-              </p>
-              <Diamond className="bg-saffron" />
-              <span aria-hidden="true" className="h-px flex-1 bg-saffron/60" />
-            </div>
-            <p className="mt-4 text-center text-[15px] tracking-[0.08em] text-cream/75">{closing.caption}</p>
-          </Reveal>
-
-          {/* line-up placeholder */}
-          <div className="mt-20">
-            <div className="text-center">
-              <p className="eyebrow text-gold-soft">Line-up</p>
-              <h3 className="mt-3 text-2xl font-semibold text-cream sm:text-3xl">{lineup.title}</h3>
-              <p className="mt-3 text-cream/75">{lineup.text}</p>
-            </div>
-            <ul className="mt-10 grid gap-5 sm:grid-cols-3">
-              {Array.from({ length: lineup.slots }, (_, i) => (
-                <li key={i} className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-gold/30 bg-white/[0.04]">
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0"
-                    style={{ background: 'radial-gradient(circle at 50% 30%, rgba(242,154,94,0.28), transparent 60%)' }}
-                  />
-                  <Silhouette variant={i} />
-                  <span className="eyebrow absolute inset-x-0 bottom-5 text-center text-gold-soft">To be announced</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="lg:col-span-5 xl:col-span-6">
+          <ConcertCircle />
         </div>
       </div>
 
-      <FestivalBand position="center 82%" />
-    </section>
+      {/* closing line */}
+      <div className="mt-[clamp(16px,3vh,32px)] flex items-center gap-3 sm:gap-5">
+        <span aria-hidden="true" className="h-px flex-1 bg-saffron/50" />
+        <p className="text-center text-[12px] font-medium uppercase tracking-[0.24em] sm:text-[14px] sm:tracking-[0.3em]">
+          <span className="text-royal-bright">{closing.day}</span>
+          <Diamond className="mx-3 bg-saffron sm:mx-5" />
+          <span className="text-saffron-bright">{closing.night}</span>
+          <span className="mt-1 block text-[10.5px] normal-case tracking-[0.08em] text-cream/60 sm:text-[12px]">{closing.caption}</span>
+        </p>
+        <span aria-hidden="true" className="h-px flex-1 bg-saffron/50" />
+      </div>
+    </div>
   );
 }

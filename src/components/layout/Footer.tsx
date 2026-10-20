@@ -34,7 +34,7 @@ export default function Footer() {
         {/* Top row: heading + SUNRAY lockup */}
         <div className="flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
           <SectionHeading as="h2" id="footer-heading" line1="See you" line2="in Shillong" tone="dark" />
-          <SunrayLockup tone="dark" className="self-start md:self-auto" />
+          <SunrayLockup tone="dark" glint className="w-44 self-start sm:w-52 md:self-auto" />
         </div>
 
         {/* Middle: contacts | organisers | quick links */}

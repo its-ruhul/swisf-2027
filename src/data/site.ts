@@ -2,7 +2,6 @@
  * Site-wide content: event facts, contacts, social links, navigation and SEO.
  * Edit text here — components read from this file.
  */
-import type { Accent } from '../lib/accents';
 
 /** Public URL from `.env` (VITE_SITE_URL). Used for canonical/OG/JSON-LD. */
 export const SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://example.com').replace(/\/$/, '');
@@ -12,22 +11,10 @@ export const site = {
   name: 'SUNRAY – World Innovation Summit & Festival 2027',
   wordmark: 'SUNRAY',
   subtitle: 'World Innovation Summit & Festival 2027',
-  /** The hero sets the subtitle on two lines, as on the brochure cover */
-  subtitleLines: ['World Innovation Summit &', 'Festival 2027'],
-  subWordmark: 'SWISF · 2027',
-  presents: 'Presents',
   tagline: 'Where India’s sun rises first',
-  /** Three-colour tagline under the hero */
-  pillars: [
-    { label: 'Ignite Innovation', accent: 'royal' },
-    { label: 'Unlock Capital', accent: 'saffron' },
-    { label: 'Celebrate Culture', accent: 'teal' },
-  ] as { label: string; accent: Accent }[],
   motto: ['Innovate', 'Inspire', 'Celebrate'],
 
   dates: {
-    label: 'Late April – Early May',
-    year: '2027',
     full: 'Late April – Early May 2027',
   },
   location: {

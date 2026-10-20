@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react';
 // Upload the *contents* of `dist/` to `public_html/` (see README).
 export default defineConfig({
   plugins: [react()],
+  base: '/swisf-demo/',
   build: {
     target: 'es2020',
     assetsInlineLimit: 4096,
