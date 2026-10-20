@@ -14,8 +14,8 @@ type DayNightToggleProps = {
 };
 
 const OPTIONS = [
-  { value: 'day', label: experience.toggle.day, glyph: '昼', Icon: Sun },
-  { value: 'night', label: experience.toggle.night, glyph: '夜', Icon: Moon },
+  { value: 'day', label: experience.toggle.day, Icon: Sun },
+  { value: 'night', label: experience.toggle.night, Icon: Moon },
 ] as const;
 
 /**
@@ -44,7 +44,7 @@ export default function DayNightToggle({ mode, onChange, panelId }: DayNightTogg
         night ? 'border-gold/40 bg-white/[0.07]' : 'border-line bg-white/80',
       )}
     >
-      {OPTIONS.map(({ value, label, glyph, Icon }) => {
+      {OPTIONS.map(({ value, label, Icon }) => {
         const selected = mode === value;
         return (
           <button
@@ -79,9 +79,6 @@ export default function DayNightToggle({ mode, onChange, panelId }: DayNightTogg
             )}
             <Icon size={18} strokeWidth={1.8} aria-hidden="true" className="relative" />
             <span className="relative">{label}</span>
-            <span aria-hidden="true" className="font-glyph relative text-[15px] normal-case tracking-normal opacity-80">
-              {glyph}
-            </span>
           </button>
         );
       })}

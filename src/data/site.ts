@@ -3,6 +3,8 @@
  * Edit text here — components read from this file.
  */
 
+import { publicUrl } from '../lib/base';
+
 /** Public URL from `.env` (VITE_SITE_URL). Used for canonical/OG/JSON-LD. */
 export const SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://example.com').replace(/\/$/, '');
 
@@ -66,7 +68,7 @@ export const site = {
   },
 
   coPoweredBy: 'BSE (Bombay Stock Exchange)',
-  brochurePdf: '/swisf-2027-brochure.pdf',
+  brochurePdf: publicUrl('/swisf-2027-brochure.pdf'),
   copyright: '© 2027 SWISF Organising Committee, E-Cell NIT Meghalaya',
 } as const;
 
@@ -75,7 +77,10 @@ export const navLinks = [
   { label: 'What You Experience', to: '/experience' },
   { label: 'Project Sunray', to: '/project-sunray' },
   { label: 'Sponsors', to: '/sponsors' },
+  /*
+  TODO: Fix Team section
   { label: 'Team', to: '/team' },
+   */
 ] as const;
 
 export const partnerCta = { label: 'Partner With Us', to: '/sponsors#partner-with-us' } as const;

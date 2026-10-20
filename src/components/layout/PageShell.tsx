@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { useContext, useMemo, type ContextType, type ReactNode } from 'react';
+import { motion, PresenceContext, useReducedMotion } from 'framer-motion';
 import { usePageMeta } from '../../hooks/usePageMeta';
 import { cn } from '../../lib/cn';
 import ScrollToTop from './ScrollToTop';
@@ -11,6 +11,29 @@ type PageShellProps = {
   className?: string;
   children: ReactNode;
 };
+
+const noopRegister = () => () => {};
+
+/**
+ * Keeps page contents out of the route-level <AnimatePresence> in App.tsx so only
+ * <main> takes part in the page exit.
+ *
+ * Why: framer-motion's `layout` / `layoutId` elements register with the nearest
+ * presence but never unregister when they unmount (e.g. the Day/Night thumb on
+ * /experience remounts on every toggle). The route exit would then wait forever for
+ * an element that no longer exists, leaving the next page blank until a refresh.
+ * The `initial` flag is passed through so first-load behaviour is unchanged.
+ */
+function IsolatePresence({ children }: { children: ReactNode }) {
+  const parent = useContext(PresenceContext);
+  const parentId = parent?.id;
+  const parentInitial = parent?.initial;
+  const value = useMemo<ContextType<typeof PresenceContext>>(
+    () => (parentId === undefined ? null : { id: `${parentId}-page`, isPresent: true, initial: parentInitial, register: noopRegister }),
+    [parentId, parentInitial],
+  );
+  return <PresenceContext.Provider value={value}>{children}</PresenceContext.Provider>;
+}
 
 /** Wraps every route: page <title>/meta, scroll handling and the 0.35s fade + 12px slide transition. */
 export default function PageShell({ title, description, jsonLd, className, children }: PageShellProps) {
@@ -28,7 +51,7 @@ export default function PageShell({ title, description, jsonLd, className, child
       transition={{ duration: 0.35, ease: 'easeOut' }}
     >
       <ScrollToTop />
-      {children}
+      <IsolatePresence>{children}</IsolatePresence>
     </motion.main>
   );
 }

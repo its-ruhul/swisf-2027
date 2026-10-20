@@ -5,7 +5,6 @@ import sunriseBanner from '../../assets/images/sunrise-banner.webp';
 import { hero } from '../../data/home';
 import { site } from '../../data/site';
 import { cn } from '../../lib/cn';
-import CircuitTraces from '../ornaments/CircuitTraces';
 import GoldCloud from '../ornaments/GoldCloud';
 import { GoldDust } from '../ornaments/Particles';
 import StarField from '../ornaments/StarField';
