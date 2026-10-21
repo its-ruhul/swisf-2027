@@ -17,7 +17,7 @@ export default function SummitByDay() {
         </div>
         <div className="flex items-end gap-5 lg:col-span-7">
           <p className="panel-copy max-w-[36rem]">{summit.intro}</p>
-          <Seal glyphs="昼" meaning="Day" size="md" className="hidden shrink-0 sm:inline-flex" />
+          <Seal motif="sun" meaning="Day" size="md" className="hidden shrink-0 sm:inline-flex" />
         </div>
       </div>
 

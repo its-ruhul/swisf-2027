@@ -99,6 +99,16 @@
     animation: sheen 9s ease-in-out infinite;
   }
 
+  /* SUNRAY wordmark in the hero: cream with a slow gold sheen, like the official logo */
+  .hero-wordmark {
+    background-image: linear-gradient(100deg, #faf6ee 0%, #e6cf94 30%, #fff8e6 50%, #e6cf94 70%, #faf6ee 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: sheen 11s ease-in-out infinite;
+  }
+
   /* Gold gradient pill (primary call to action on dark backgrounds) */
   .btn-sun {
     background-image: linear-gradient(100deg, #f6c76b 0%, #e07b39 50%, #f6c76b 100%);

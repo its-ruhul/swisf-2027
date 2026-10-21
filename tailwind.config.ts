@@ -50,8 +50,6 @@ const config: Config = {
       fontFamily: {
         sans: ['Poppins', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
         display: ['"Cormorant Garamond"', 'Cormorant', 'Georgia', 'Times New Roman', 'serif'],
-        /** Brush-style kanji/hanzi for decorative seals and watermarks */
-        glyph: ['"Yuji Syuku"', '"Yu Mincho"', '"Hiragino Mincho ProN"', '"Songti SC"', 'SimSun', 'serif'],
       },
       minHeight: {
         /** One full screen below the sticky navbar */

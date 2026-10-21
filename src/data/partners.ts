@@ -39,6 +39,8 @@ export const partnersPage = {
   collaborate: {
     eyebrow: 'To collaborate',
     title: 'Let’s build SWISF 2027 together',
+    /** Opens an email to the organisers with this subject */
+    becomeSponsor: { label: 'Become a Sponsor', subject: 'SWISF 2027 – Sponsorship enquiry' },
     download: 'Download Brochure (PDF)',
   },
   logoWallTitle: 'Our 2027 Partners',

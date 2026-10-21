@@ -32,7 +32,7 @@ export default function HomeCta() {
       <GoldCloud variant="b" flip className="-right-20 bottom-0 w-64 opacity-70 sm:w-80" />
 
       <div className="container-x relative">
-        <Reveal>
+        <Reveal from="scale" amount={0.3}>
           <div className="relative isolate overflow-hidden rounded-[28px] bg-navy-deep text-cream shadow-[0_40px_90px_-35px_rgba(10,18,48,0.75)] ring-1 ring-gold/50">
             {/* background: circuit board, stars, dust */}
             <img
@@ -69,7 +69,7 @@ export default function HomeCta() {
             </div>
 
             <div className="relative grid items-center gap-10 px-7 py-14 sm:px-14 sm:py-16 lg:grid-cols-12 lg:gap-8 lg:px-20 lg:py-20">
-              <div className="lg:col-span-8">
+              <Reveal from="left" delay={0.3} className="lg:col-span-8">
                 <p className="flex items-center gap-3 text-[12px] font-medium uppercase tracking-[0.3em] text-gold-soft">
                   <Diamond className="bg-saffron" />
                   {homeCta.eyebrow}
@@ -86,11 +86,11 @@ export default function HomeCta() {
                     </Button>
                   ))}
                 </div>
-              </div>
-              <div className="relative hidden justify-center lg:col-span-4 lg:flex">
+              </Reveal>
+              <Reveal from="turn" delay={0.45} className="relative hidden justify-center lg:col-span-4 lg:flex">
                 <span aria-hidden="true" className="absolute inset-0 m-auto h-56 w-56 rounded-full bg-saffron/20 blur-3xl motion-safe:animate-glow-pulse" />
                 <SunrayLockup tone="dark" glint className="relative w-56 xl:w-64" />
-              </div>
+              </Reveal>
             </div>
           </div>
         </Reveal>

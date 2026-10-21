@@ -12,7 +12,7 @@ import Button from '../ui/Button';
 import Countdown from '../ui/Countdown';
 import { Diamond } from '../ui/DividerLabel';
 import Marquee from '../ui/Marquee';
-import { GlyphWatermark } from '../ui/Seal';
+import { MotifWatermark } from '../ui/Seal';
 import SwisfEmblem from '../ui/SwisfEmblem';
 
 /* Where the sun sits in sunrise-banner.webp (1588 × 584), as a fraction of the image. */
@@ -30,6 +30,9 @@ const lineReveal = {
   hidden: { y: '105%' },
   show: (i: number) => ({ y: '0%', transition: { duration: 0.9, ease: [0.2, 0.7, 0.2, 1], delay: 0.15 + i * 0.09 } }),
 };
+
+/* Phones: slightly shorter buttons so the hero fits one screen */
+const compactOnPhones = 'max-sm:min-h-[46px] max-sm:px-6 max-sm:py-2.5 max-sm:text-[12px]';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
@@ -81,7 +84,7 @@ export default function Hero() {
       ref={ref}
       aria-labelledby="hero-title"
       onPointerMove={onPointerMove}
-      className="relative isolate -mt-[var(--nav-h)] flex min-h-[100svh] flex-col overflow-hidden bg-navy-deep text-cream"
+      className="relative isolate -mt-[var(--nav-h)] flex h-[100svh] min-h-[500px] flex-col overflow-hidden bg-navy-deep text-cream"
     >
       {/* ── Photo, sized like object-fit: cover but anchored on the sun ── */}
       <motion.div aria-hidden="true" style={{ y: photoY }} className="absolute inset-0 -z-30">
@@ -162,7 +165,7 @@ export default function Hero() {
         <GoldCloud variant="a" eager className="-left-24 bottom-[14%] w-72 opacity-[0.22] sm:w-96" />
         <GoldCloud variant="b" eager flip className="-right-16 top-[30%] hidden w-80 opacity-[0.28] md:block lg:w-[26rem]" />
       </motion.div>
-      <GlyphWatermark glyphs="日出" className="right-[3%] top-[18%] hidden text-[clamp(5rem,13vh,9rem)] text-cream/[0.07] lg:block" />
+      <MotifWatermark motif="sun" className="right-[3%] top-[18%] hidden w-[clamp(7rem,18vh,12rem)] text-cream/[0.09] lg:block" />
       <GoldDust count={32} className="-z-10" />
 
       {/* ── Content ── */}
@@ -176,20 +179,35 @@ export default function Hero() {
             custom={0.05}
             initial={reduce ? false : 'hidden'}
             animate="show"
-            className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.34em] text-gold-soft sm:text-[13px]"
+            className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.34em] text-gold-soft sm:text-[13px] max-md:[@media(max-height:600px)]:hidden"
           >
             <span aria-hidden="true" className="h-px w-8 bg-gold sm:w-12" />
             {site.tagline}
             <Diamond className="bg-saffron" />
           </motion.p>
 
-          <h1 id="hero-title" className="mt-[clamp(8px,1.5vh,24px)] text-[clamp(2.55rem,min(7.4vw,8.2vh),7rem)] font-bold uppercase leading-[0.92] tracking-[-0.01em]">
+          {/* SUNRAY (serif wordmark, as on the official logo) + four lines; sized by width and height so the hero stays one screen */}
+          <h1
+            id="hero-title"
+            className="mt-[clamp(8px,1.5vh,24px)] text-[clamp(1.6rem,min(8.6vw,5vh),6rem)] font-bold uppercase leading-[0.92] tracking-[-0.01em] lg:text-[clamp(2.3rem,min(6.2vw,6.7vh),6.2rem)]"
+          >
+            <span className="block overflow-hidden pb-[0.06em]">
+              <motion.span
+                className="hero-wordmark block font-display text-[1.08em] font-semibold leading-[0.95] tracking-[0.2em]"
+                variants={lineReveal}
+                custom={0}
+                initial={reduce ? false : 'hidden'}
+                animate="show"
+              >
+                {site.wordmark}
+              </motion.span>
+            </span>
             {hero.titleLines.map((line, i) => (
               <span key={line} className="block overflow-hidden pb-[0.04em]">
                 <motion.span
                   className={cn('block', i >= 2 ? 'text-sun' : 'text-cream')}
                   variants={lineReveal}
-                  custom={i}
+                  custom={i + 1}
                   initial={reduce ? false : 'hidden'}
                   animate="show"
                 >
@@ -204,7 +222,7 @@ export default function Hero() {
             custom={0.6}
             initial={reduce ? false : 'hidden'}
             animate="show"
-            className="mt-[clamp(10px,1.8vh,26px)] text-[clamp(1.02rem,2.4vh,1.5rem)] font-light text-cream/90"
+            className="mt-[clamp(10px,1.8vh,26px)] text-[clamp(0.95rem,2.2vh,1.1rem)] font-light text-cream/90 md:text-[clamp(1.02rem,2.4vh,1.5rem)]"
           >
             {hero.coPowered}
           </motion.p>
@@ -216,10 +234,10 @@ export default function Hero() {
             animate="show"
             className="mt-[clamp(14px,2.4vh,36px)] flex flex-wrap gap-3 sm:gap-4"
           >
-            <Button href={registerHref} variant="sun" size="lg" icon={ArrowRight}>
+            <Button href={registerHref} variant="sun" size="lg" icon={ArrowRight} className={compactOnPhones}>
               {hero.register.label}
             </Button>
-            <Button to={hero.explore.to} variant="glass" size="lg">
+            <Button to={hero.explore.to} variant="glass" size="lg" className={compactOnPhones}>
               {hero.explore.label}
             </Button>
           </motion.div>
@@ -230,13 +248,14 @@ export default function Hero() {
           custom={0.95}
           initial={reduce ? false : 'hidden'}
           animate="show"
-          className="mt-[clamp(26px,3.6vh,40px)] flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
+          className="mt-[clamp(18px,3.2vh,40px)] flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
         >
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:gap-9">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:gap-9">
             {site.countdown.enabled && (
               <Countdown target={site.countdown.target} targetLabel={site.countdown.targetLabel} tba={site.countdown.datesToBeAnnounced} />
             )}
-            <ul className="space-y-2 whitespace-nowrap text-[14px] text-cream/90 sm:text-[15.5px]">
+            {/* on short phones the dates and venue give way so the hero still fits one screen */}
+            <ul className="space-y-2 whitespace-nowrap text-[14px] text-cream/90 sm:text-[15.5px] max-md:[@media(max-height:660px)]:hidden">
               <li className="flex items-center gap-3">
                 <CalendarDays size={18} strokeWidth={1.6} className="shrink-0 text-gold-soft" aria-hidden="true" />
                 {site.dates.full}
@@ -245,7 +264,7 @@ export default function Hero() {
                 <MapPin size={18} strokeWidth={1.6} className="shrink-0 text-gold-soft" aria-hidden="true" />
                 {site.location.full}
               </li>
-              <li className="flex items-center gap-3">
+              <li className="flex items-center gap-3 max-md:hidden">
                 <Landmark size={18} strokeWidth={1.6} className="shrink-0 text-gold-soft" aria-hidden="true" />
                 {hero.organiser}
               </li>

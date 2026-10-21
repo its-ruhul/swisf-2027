@@ -150,10 +150,10 @@ src/
   components/
     layout/                            Navbar, MobileSidebar, Footer, PageShell, ScrollToTop
     ui/                                SectionHeading, Eyebrow, IconCircle, Button, DividerLabel, Reveal, LogoLockup,
-                                       SunrayLockup, SwisfEmblem, Countdown, Marquee, Seal (+ GlyphWatermark), Motto,
+                                       SunrayLockup, SwisfEmblem, Countdown, Marquee, Seal (+ MotifWatermark), Motto,
                                        SocialLinks, icons
     ornaments/                         GoldCloud, CircuitTraces, DottedGlobe, SkylineStrip, Lantern, LatticeBorder,
-                                       MandalaWatermark, ArcFrame, StarField, Decor, Particles (GoldDust, FallingPetals,
+                                       MandalaWatermark, ArcFrame, StarField, Decor, Motif, Particles (GoldDust, FallingPetals,
                                        SkyLanterns), PrayerFlags, Seigaiha, Fireworks, AtomOrbit, Enso
     sections/                          Hero, Welcome, AboutSwisf, WhyNortheast, StatesRing, HomeCta,
                                        DayNightToggle, SummitByDay, FestivalByNight, NextGeneration, Partners,
@@ -192,12 +192,11 @@ On desktop, the Home panels, the Experience page and Project Sunray are each exa
 
 ### Cultural motifs
 
-Seigaiha waves, prayer flags (lung ta), a dharma wheel at the centre of the eight-states diagram, an ensō brush circle,
-hanko seals and faint brush calligraphy sit alongside the brochure's clouds, knots and lanterns. The calligraphy uses a
-tiny subset of the **Yuji Syuku** font containing only these characters:
-日出 (sunrise) · 歓迎 (welcome) · 創新 (innovation) · 東北 (northeast) · 昼 夜 (day, night) · 祭 (festival) · 未来 (future) ·
-合作 (partnership) · 無 (nothing — 404) · 光 (light) · 縁 (bond). To use a new character, add it (URL-encoded) to the `text=`
-parameter of the Yuji Syuku link in `index.html`.
+Seigaiha waves, prayer flags (lung ta), a dharma wheel at the centre of the eight-states diagram, an ensō brush circle
+and crimson hanko seals sit alongside the brochure's clouds, knots and lanterns. The seals and the faint background
+watermarks carry line-art motifs rather than characters — rising sun, plum blossom, endless knot, lantern, lotus,
+auspicious cloud and the Northeast hills (`src/components/ornaments/Motif.tsx`). Use them with
+`<Seal motif="blossom" meaning="Welcome" />` or `<MotifWatermark motif="cloud" className="…" />`.
 
 ## 8. Accessibility and motion
 

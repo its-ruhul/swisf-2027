@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { StateItem } from '../../data/home';
 import { accentHex } from '../../lib/accents';
 import { cn } from '../../lib/cn';
@@ -13,18 +12,20 @@ const HUB_R = 24;
 
 type StatesRingProps = {
   states: StateItem[];
+  /** Index of the highlighted state (shared with the state chips on phones) */
+  active: number | null;
+  onActiveChange: (index: number | null) => void;
   className?: string;
 };
 
 /**
  * "One stage for eight states": the eight Northeast states around a central
- * dharma wheel whose eight spokes point at them (東北 = "northeast" at the hub).
- * Hover or tap a state to enlarge its dot, light its spoke and show a tooltip;
+ * dharma wheel whose eight spokes point at them, with a small sun at the hub.
+ * Hover or tap a state to enlarge its dot, light its spoke and show a tooltip
+ * (on phones the state chips below drive the highlight instead);
  * Meghalaya (host state) pulses continuously.
  */
-export default function StatesRing({ states, className }: StatesRingProps) {
-  const [active, setActive] = useState<number | null>(null);
-
+export default function StatesRing({ states, active, onActiveChange: setActive, className }: StatesRingProps) {
   const points = states.map((state, i) => {
     const angle = ((-90 + (i * 360) / states.length) * Math.PI) / 180;
     const cos = Math.cos(angle);
@@ -99,17 +100,14 @@ export default function StatesRing({ states, className }: StatesRingProps) {
           })}
         </g>
         <circle cx={C} cy={C} r={HUB_R} fill="#0A1230" stroke="#C9A24A" strokeWidth="1.5" />
-        <text
-          x={C}
-          y={C + 1}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="#E6CF94"
-          fontSize="16"
-          className="font-glyph"
-        >
-          東北
-        </text>
+        {/* a small sun at the hub, its rays between the spokes: where India's sun rises first */}
+        <circle cx={C} cy={C} r={7} fill="#E9B954" />
+        <g stroke="#E6CF94" strokeWidth="1.6" strokeLinecap="round">
+          {Array.from({ length: 8 }, (_, i) => {
+            const a = ((i + 0.5) * Math.PI) / 4;
+            return <line key={i} x1={C + Math.cos(a) * 11} y1={C + Math.sin(a) * 11} x2={C + Math.cos(a) * 17} y2={C + Math.sin(a) * 17} />;
+          })}
+        </g>
 
         {/* states */}
         {points.map((p) => {
@@ -121,7 +119,7 @@ export default function StatesRing({ states, className }: StatesRingProps) {
               className="cursor-pointer"
               onMouseEnter={() => setActive(p.i)}
               onMouseLeave={() => setActive(null)}
-              onClick={() => setActive((current) => (current === p.i ? null : p.i))}
+              onClick={() => setActive(active === p.i ? null : p.i)}
             >
               {/* generous invisible hit area for touch */}
               <circle cx={p.x} cy={p.y} r={22} fill="transparent" />
@@ -168,9 +166,9 @@ export default function StatesRing({ states, className }: StatesRingProps) {
           );
         })}
 
-        {/* tooltip */}
+        {/* tooltip (too small to read on phones, where the chip lights up instead) */}
         {active !== null && (
-          <g pointerEvents="none" transform={`translate(${points[active].x} ${points[active].y - 30})`}>
+          <g pointerEvents="none" className="hidden sm:inline" transform={`translate(${points[active].x} ${points[active].y - 30})`}>
             <rect
               x={-(points[active].name.length * 4.4 + 18)}
               y={-26}

@@ -1,29 +1,29 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '../../lib/cn';
+import Motif, { type MotifName } from '../ornaments/Motif';
 
 type SealProps = {
-  /** One to four characters, set top-to-bottom (e.g. 日出, "sunrise") */
-  glyphs: string;
-  /** English meaning, read by screen readers and shown on hover */
+  /** The line-art motif carved into the seal (e.g. "blossom") */
+  motif: MotifName;
+  /** What the seal stands for, read by screen readers and shown on hover */
   meaning: string;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 };
 
 const sizes = {
-  sm: 'h-12 w-12 text-[17px] p-1',
-  md: 'h-16 w-16 text-[22px] p-1.5',
-  lg: 'h-20 w-20 text-[28px] p-2',
+  sm: 'h-12 w-12 p-1',
+  md: 'h-16 w-16 p-1.5',
+  lg: 'h-20 w-20 p-2',
 } as const;
 
 /**
  * A crimson hanko / chop seal — the red stamp that signs East Asian
- * calligraphy. It "stamps" into place the first time it scrolls into view.
+ * paintings — carved with a line-art motif. It "stamps" into place the first
+ * time it scrolls into view.
  */
-export default function Seal({ glyphs, meaning, size = 'md', className }: SealProps) {
+export default function Seal({ motif, meaning, size = 'md', className }: SealProps) {
   const reduce = useReducedMotion();
-  const chars = Array.from(glyphs);
-  const twoColumns = chars.length > 2;
   return (
     <motion.span
       role="img"
@@ -41,38 +41,20 @@ export default function Seal({ glyphs, meaning, size = 'md', className }: SealPr
       viewport={{ once: true, amount: 0.8 }}
       transition={{ type: 'spring', stiffness: 260, damping: 16 }}
     >
-      <span
-        aria-hidden="true"
-        className={cn(
-          'font-glyph h-full w-full rounded-[3px] border border-cream/70 leading-none',
-          twoColumns
-            ? 'grid grid-flow-col grid-rows-2 place-items-center [direction:rtl]'
-            : 'flex flex-col items-center justify-center gap-[0.08em]',
-        )}
-      >
-        {chars.map((c, i) => (
-          <span key={`${c}-${i}`} className="block">
-            {c}
-          </span>
-        ))}
+      <span aria-hidden="true" className="flex h-full w-full items-center justify-center rounded-[3px] border border-cream/70">
+        <Motif name={motif} strokeWidth={2.6} className="h-[84%] w-[84%]" />
       </span>
     </motion.span>
   );
 }
 
-type GlyphWatermarkProps = {
-  glyphs: string;
+type MotifWatermarkProps = {
+  motif: MotifName;
+  /** Position, width and a faint text colour, e.g. "right-[2%] top-[16%] w-40 text-navy/[0.05]" */
   className?: string;
 };
 
-/** Very large, very faint vertical calligraphy used as a background texture. */
-export function GlyphWatermark({ glyphs, className }: GlyphWatermarkProps) {
-  return (
-    <span
-      aria-hidden="true"
-      className={cn('font-glyph pointer-events-none absolute select-none leading-none [writing-mode:vertical-rl]', className)}
-    >
-      {glyphs}
-    </span>
-  );
+/** Very large, very faint oriental line art used as a background texture. */
+export function MotifWatermark({ motif, className }: MotifWatermarkProps) {
+  return <Motif name={motif} strokeWidth={1.1} className={cn('pointer-events-none absolute select-none', className)} />;
 }

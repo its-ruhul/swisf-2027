@@ -46,7 +46,7 @@ function MoonGate() {
         <div aria-hidden="true" className="absolute inset-0 rounded-full shadow-[inset_0_0_40px_rgba(10,18,48,0.35)]" />
       </div>
       <GoldCloud variant="b" className="-bottom-[6%] -left-[22%] w-[62%]" />
-      <Seal glyphs="歓迎" meaning="Welcome" size="md" className="absolute -right-[2%] top-[4%]" />
+      <Seal motif="blossom" meaning="Welcome" size="md" className="absolute -right-[2%] top-[4%]" />
     </div>
   );
 }
@@ -65,10 +65,8 @@ export default function Welcome() {
       <div className="container-x relative w-full py-14 lg:py-[clamp(20px,3.4vh,64px)]">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
-            <Reveal>
-              <SectionHeading id="welcome-heading" line1={welcome.heading.line1} line2={welcome.heading.line2} />
-            </Reveal>
-            <Reveal className="mt-[clamp(16px,3vh,32px)] max-w-[62ch]" delay={0.05}>
+            <SectionHeading id="welcome-heading" reveal line1={welcome.heading.line1} line2={welcome.heading.line2} />
+            <Reveal from="blur" className="mt-[clamp(16px,3vh,32px)] max-w-[62ch]" delay={0.25}>
               <p className="text-[clamp(16px,2.1vh,18px)] font-medium text-navy">{welcome.salutation}</p>
               <div className="panel-copy mt-3 space-y-[clamp(8px,1.4vh,14px)]">
                 {welcome.paragraphs.map((p, i) => (
@@ -88,9 +86,9 @@ export default function Welcome() {
             </Reveal>
           </div>
 
-          <div className="lg:col-span-5">
+          <Reveal from="turn" delay={0.15} className="lg:col-span-5">
             <MoonGate />
-          </div>
+          </Reveal>
         </div>
 
         {/* Three pillars */}

@@ -1,4 +1,4 @@
-import { Download, Mail, Phone } from 'lucide-react';
+import { Download, Handshake, Mail, Phone } from 'lucide-react';
 import { partners, partnersPage } from '../../data/partners';
 import { site } from '../../data/site';
 import { PatternBorder, PeachCloud, PlumBlossom } from '../ornaments/Decor';
@@ -11,7 +11,7 @@ import Button from '../ui/Button';
 import DividerLabel from '../ui/DividerLabel';
 import IconCircle from '../ui/IconCircle';
 import Reveal, { RevealItem } from '../ui/Reveal';
-import Seal, { GlyphWatermark } from '../ui/Seal';
+import Seal, { MotifWatermark } from '../ui/Seal';
 import SectionHeading from '../ui/SectionHeading';
 
 /** Our Partners: co-powered by BSE, partner categories (coming soon), collaborate banner and logo wall. */
@@ -24,13 +24,13 @@ export default function Partners() {
       <HangingLanterns variant="string" className="relative h-24 sm:h-28 lg:h-32" />
       <GoldCloud variant="b" className="-right-14 top-40 hidden w-72 sm:block" />
       <PeachCloud className="absolute -left-24 top-56 w-72 opacity-60 sm:w-96" />
-      <GlyphWatermark glyphs="合作" className="left-[2%] top-[30%] hidden text-[clamp(5rem,12vh,8rem)] text-crimson/[0.06] xl:block" />
+      <MotifWatermark motif="knot" className="left-[2%] top-[30%] hidden w-[clamp(7rem,17vh,11rem)] text-crimson/[0.08] xl:block" />
       <FallingPetals count={12} seed={17} />
 
       <div className="container-x relative pb-16 pt-4 sm:pb-20">
         <Reveal className="flex items-end justify-center gap-5">
           <SectionHeading as="h1" id="partners-heading" align="center" line1={p.heading.line1} line2={p.heading.line2} />
-          <Seal glyphs="合作" meaning="Partnership" size="md" className="mb-1" />
+          <Seal motif="knot" meaning="Partnership" size="md" className="mb-1" />
         </Reveal>
 
         {/* Co-powered by BSE */}
@@ -87,9 +87,19 @@ export default function Partners() {
             <div className="relative">
               <p className="eyebrow text-saffron-bright">{p.collaborate.eyebrow}</p>
               <h2 className="mt-3 text-2xl font-medium text-cream sm:text-3xl">{p.collaborate.title}</h2>
-              <Button href={site.brochurePdf} download variant="sun" icon={Download} iconPosition="left" className="mt-7">
-                {p.collaborate.download}
-              </Button>
+              <div className="mt-7 flex flex-col gap-3 xs:flex-row xs:flex-wrap">
+                <Button
+                  href={`mailto:${site.contact.email}?subject=${encodeURIComponent(p.collaborate.becomeSponsor.subject)}`}
+                  variant="sun"
+                  icon={Handshake}
+                  iconPosition="left"
+                >
+                  {p.collaborate.becomeSponsor.label}
+                </Button>
+                <Button href={site.brochurePdf} download variant="outline-light" icon={Download} iconPosition="left">
+                  {p.collaborate.download}
+                </Button>
+              </div>
             </div>
             <ul className="relative mt-8 space-y-2 lg:mt-0">
               <li>

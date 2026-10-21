@@ -57,7 +57,7 @@ function ConcertCircle() {
           ))}
         </div>
       </div>
-      <Seal glyphs="祭" meaning="Festival" size="md" className="absolute -left-1 bottom-[8%]" />
+      <Seal motif="lantern" meaning="Festival" size="md" className="absolute -left-1 bottom-[8%]" />
     </div>
   );
 }

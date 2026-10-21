@@ -30,6 +30,8 @@ type DividerLabelProps = {
   as?: 'p' | 'h2' | 'h3' | 'span' | 'div';
   id?: string;
   className?: string;
+  /** Extra classes for the label itself (e.g. tighter tracking on phones) */
+  labelClassName?: string;
 };
 
 /**
@@ -46,13 +48,14 @@ export default function DividerLabel({
   as: Tag = 'p',
   id,
   className,
+  labelClassName,
 }: DividerLabelProps) {
   const rule = cn('h-px shrink-0', line === 'saffron' ? 'bg-saffron' : 'bg-gold');
   return (
     <div className={cn('flex items-center gap-3 sm:gap-4', align === 'center' ? 'justify-center' : 'justify-start', className)}>
       {diamonds && <Diamond className={diamondClassName} />}
       {align === 'center' && <span aria-hidden="true" className={cn(rule, 'w-6 xs:w-10 sm:w-14')} />}
-      <Tag id={id} className={cn('eyebrow min-w-0 text-balance', align === 'center' && 'text-center', toneText[tone], '[margin-right:-0.35em]')}>
+      <Tag id={id} className={cn('eyebrow min-w-0 text-balance', align === 'center' && 'text-center', toneText[tone], '[margin-right:-0.35em]', labelClassName)}>
         {children}
       </Tag>
       <span aria-hidden="true" className={cn(rule, 'w-6 xs:w-10 sm:w-14')} />

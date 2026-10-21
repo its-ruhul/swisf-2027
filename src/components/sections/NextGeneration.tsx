@@ -17,7 +17,7 @@ import Button from '../ui/Button';
 import DividerLabel from '../ui/DividerLabel';
 import IconCircle from '../ui/IconCircle';
 import Reveal from '../ui/Reveal';
-import Seal, { GlyphWatermark } from '../ui/Seal';
+import Seal, { MotifWatermark } from '../ui/Seal';
 import SectionHeading from '../ui/SectionHeading';
 
 const mailto = (subject: string) => `mailto:${site.contact.email}?subject=${encodeURIComponent(subject)}`;
@@ -70,7 +70,7 @@ function SunriseCircle() {
         <img src={sunriseCircle} alt={imageAlt} width={720} height={720} loading="eager" decoding="async" className="h-full w-full scale-[1.04] object-cover" />
       </div>
       <span aria-hidden="true" className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_42%_8%,rgba(255,214,140,0.5),transparent_45%)] mix-blend-screen motion-safe:animate-glow-pulse" />
-      <Seal glyphs="未来" meaning="Future" size="md" className="absolute -right-[2%] bottom-[6%]" />
+      <Seal motif="lotus" meaning="Future" size="md" className="absolute -right-[2%] bottom-[6%]" />
     </div>
   );
 }
@@ -86,7 +86,7 @@ export default function NextGeneration() {
       <PeachCloud className="absolute -left-28 top-[38%] w-80 opacity-60" />
       <GoldCloud variant="b" className="-right-16 top-[12%] w-44 opacity-80 sm:w-56" />
       <CircuitTraces flip="x" density="light" terminalFill="#FAF6EE" className="absolute -right-3 bottom-0 hidden w-28 rotate-180 opacity-50 lg:block" />
-      <GlyphWatermark glyphs="未来" className="right-[1%] top-[16%] hidden text-[clamp(4rem,11vh,7rem)] text-saffron/[0.08] xl:block" />
+      <MotifWatermark motif="lotus" className="right-[1%] top-[16%] hidden w-[clamp(6rem,15vh,9.5rem)] text-saffron/[0.12] xl:block" />
       <GoldDust count={14} seed={31} className="opacity-70" />
 
       <div className="container-x relative flex w-full flex-1 flex-col justify-center py-10 lg:py-[clamp(10px,2vh,32px)]">

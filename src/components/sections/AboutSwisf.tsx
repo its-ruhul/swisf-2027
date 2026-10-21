@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
 import techCultureBand from '../../assets/images/tech-culture-band.webp';
 import { about } from '../../data/home';
@@ -9,7 +10,7 @@ import MandalaWatermark from '../ornaments/MandalaWatermark';
 import DividerLabel from '../ui/DividerLabel';
 import IconCircle from '../ui/IconCircle';
 import Reveal, { RevealItem } from '../ui/Reveal';
-import { GlyphWatermark } from '../ui/Seal';
+import { MotifWatermark } from '../ui/Seal';
 import SectionHeading from '../ui/SectionHeading';
 import StatCounter from './StatCounter';
 
@@ -22,7 +23,7 @@ export default function AboutSwisf() {
       </div>
       <GoldCloud variant="a" className="-right-16 -top-6 hidden w-[26%] max-w-[340px] opacity-70 lg:block" />
       <CircuitTraces flip="x" density="light" terminalFill="#FAF6EE" className="absolute -right-3 top-0 w-24 opacity-70 sm:w-32" />
-      <GlyphWatermark glyphs="創新" className="bottom-[14%] left-[1.5%] hidden text-[clamp(4rem,11vh,7.5rem)] text-navy/[0.05] xl:block" />
+      <MotifWatermark motif="cloud" className="bottom-[14%] left-[1.5%] hidden w-[clamp(6rem,15vh,10rem)] text-navy/[0.07] xl:block" />
       {/* technology & culture line art along the bottom edge */}
       <img
         src={techCultureBand}
@@ -38,10 +39,8 @@ export default function AboutSwisf() {
       <div className="container-x relative w-full py-14 lg:py-[clamp(20px,3.4vh,64px)]">
         <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
-            <Reveal>
-              <SectionHeading id="about-heading" line1={about.heading.line1} line2={about.heading.line2} />
-            </Reveal>
-            <Reveal className="panel-copy mt-[clamp(16px,3vh,32px)] max-w-prose space-y-[clamp(10px,1.8vh,18px)]" delay={0.05}>
+            <SectionHeading id="about-heading" reveal line1={about.heading.line1} line2={about.heading.line2} />
+            <Reveal from="blur" className="panel-copy mt-[clamp(16px,3vh,32px)] max-w-prose space-y-[clamp(10px,1.8vh,18px)]" delay={0.25}>
               <p>
                 <strong className="font-semibold text-navy">{about.lead}</strong>
                 {about.paragraphs[0]}
@@ -52,7 +51,7 @@ export default function AboutSwisf() {
             </Reveal>
           </div>
 
-          <div className="relative flex flex-col items-center lg:col-span-5">
+          <Reveal from="turn" delay={0.15} className="relative flex flex-col items-center lg:col-span-5">
             <div className="relative w-full max-w-[min(100%,44vh,440px)] max-lg:max-w-[380px]">
               <DottedGlobe variant="light" className="w-full" />
               <AtomOrbit className="absolute -right-2 -top-2 w-20 sm:w-24" />
@@ -61,19 +60,28 @@ export default function AboutSwisf() {
               <MapPin size={16} strokeWidth={1.6} className="text-saffron" aria-hidden="true" />
               {about.globeBadge}
             </span>
-          </div>
+          </Reveal>
         </div>
 
         {/* At a glance */}
-        <DividerLabel line="saffron" className="mt-14 lg:mt-[clamp(20px,4vh,48px)]" as="h3">
-          {about.glanceLabel}
-        </DividerLabel>
+        <Reveal from="blur" amount={0.8} className="mt-14 lg:mt-[clamp(20px,4vh,48px)]">
+          <DividerLabel line="saffron" as="h3">
+            {about.glanceLabel}
+          </DividerLabel>
+        </Reveal>
         <div className="relative mt-8 lg:mt-[clamp(16px,3vh,32px)]">
-          {/* thin line connecting the four circles */}
-          <span aria-hidden="true" className="absolute left-[12.5%] right-[12.5%] top-[28px] hidden border-t border-dashed border-gold/60 md:block" />
+          {/* thin line connecting the four circles, drawn left to right as it scrolls into view */}
+          <motion.span
+            aria-hidden="true"
+            className="absolute left-[12.5%] right-[12.5%] top-[28px] hidden origin-left border-t border-dashed border-gold/60 md:block"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.4, ease: [0.2, 0.7, 0.2, 1], delay: 0.2 }}
+          />
           <Reveal as="ul" stagger className="relative grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4">
             {about.stats.map((stat) => (
-              <RevealItem as="li" key={stat.label} className="group flex flex-col items-center text-center">
+              <RevealItem as="li" from="scale" key={stat.label} className="group flex flex-col items-center text-center">
                 <IconCircle icon={stat.icon} accent={stat.accent} size="md" fill="cream" />
                 <StatCounter value={stat.value} display={stat.display} accent={stat.accent} className="mt-3" />
                 <p className="mt-2 text-[12.5px] font-medium uppercase tracking-[0.3em] text-navy [margin-right:-0.3em]">{stat.label}</p>
