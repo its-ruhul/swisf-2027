@@ -73,7 +73,7 @@ export default function FestivalByNight() {
           <p className="mt-[clamp(12px,2.2vh,22px)] max-w-[34rem] text-[clamp(16px,2.1vh,19px)] font-semibold leading-snug text-cream">{lead}</p>
 
           <h3 className="sr-only">{highlightsLabel}</h3>
-          <Reveal as="ul" stagger amount={0.1} className="mt-[clamp(14px,2.8vh,28px)] grid gap-3 sm:grid-cols-2">
+          <Reveal as="ul" stagger className="mt-[clamp(14px,2.8vh,28px)] grid gap-3 sm:grid-cols-2">
             {highlights.map((item) => (
               <RevealItem
                 as="li"

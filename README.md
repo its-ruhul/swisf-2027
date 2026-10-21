@@ -159,7 +159,7 @@ src/
                                        DayNightToggle, SummitByDay, FestivalByNight, NextGeneration, Partners,
                                        TeamGrid, StatCounter
   data/                                site, home, summit, festival, sunray, partners, team
-  hooks/                               useCountdown, useScrolled, usePageMeta
+  hooks/                               useCountdown, useScrolled, usePageMeta, useScrollReveal
   lib/                                 accents (colour → class maps), cn, cssVars, random (seeded ornaments)
   assets/images, assets/logos          WebP artwork
 public/                                .htaccess, favicon.png, apple-touch-icon.png, og-image.jpg,
@@ -200,6 +200,8 @@ auspicious cloud and the Northeast hills (`src/components/ornaments/Motif.tsx`).
 
 ## 8. Accessibility and motion
 
+- Scroll animations (`Reveal`, section headings, seals, stat counters) replay every time they scroll into view and run in
+  reverse when you scroll back up past them. The trigger is in `src/hooks/useScrollReveal.ts`.
 - Semantic landmarks, one `<h1>` per page, skip link, alt text on every meaningful image (decorative art has empty alt).
 - Gold focus rings; all buttons and links have touch targets of 44px or more.
 - Mobile menu: focus is trapped inside, Esc / overlay / link click closes it, focus returns to the menu button, and body scroll is locked.

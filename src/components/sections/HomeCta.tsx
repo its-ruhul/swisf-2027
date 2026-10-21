@@ -32,7 +32,7 @@ export default function HomeCta() {
       <GoldCloud variant="b" flip className="-right-20 bottom-0 w-64 opacity-70 sm:w-80" />
 
       <div className="container-x relative">
-        <Reveal from="scale" amount={0.3}>
+        <Reveal from="scale">
           <div className="relative isolate overflow-hidden rounded-[28px] bg-navy-deep text-cream shadow-[0_40px_90px_-35px_rgba(10,18,48,0.75)] ring-1 ring-gold/50">
             {/* background: circuit board, stars, dust */}
             <img

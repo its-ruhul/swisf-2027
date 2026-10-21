@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { animate, useInView, useReducedMotion } from 'framer-motion';
+import { animate, useReducedMotion } from 'framer-motion';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { accentText, type Accent } from '../../lib/accents';
 import { cn } from '../../lib/cn';
 
@@ -11,19 +12,24 @@ type StatCounterProps = {
   className?: string;
 };
 
-/** Large coloured number that counts up once when scrolled into view. */
+/** Large coloured number that counts up every time it scrolls into view, and back down when you scroll up past it. */
 export default function StatCounter({ value, display, accent, className }: StatCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.6 });
+  const inView = useScrollReveal(ref);
   const reduce = useReducedMotion();
   const [current, setCurrent] = useState(value === null || reduce ? null : 0);
 
+  // always runs from the number currently shown, so a quick scroll back and forth never jumps
+  const shownRef = useRef(0);
   useEffect(() => {
-    if (!inView || value === null || reduce) return undefined;
-    const controls = animate(0, value, {
-      duration: 1.2,
-      ease: 'easeOut',
-      onUpdate: (v) => setCurrent(Math.round(v)),
+    if (value === null || reduce) return undefined;
+    const controls = animate(shownRef.current, inView ? value : 0, {
+      duration: inView ? 1.2 : 0.6,
+      ease: inView ? 'easeOut' : 'easeIn',
+      onUpdate: (v) => {
+        shownRef.current = v;
+        setCurrent(Math.round(v));
+      },
     });
     return () => controls.stop();
   }, [inView, value, reduce]);

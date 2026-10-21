@@ -69,7 +69,7 @@ export default function WhyNortheast() {
           </div>
 
           <div className="lg:col-span-4">
-            <Reveal from="blur" amount={0.8}>
+            <Reveal from="blur">
               <DividerLabel as="h3" labelClassName="max-sm:tracking-[0.2em] max-sm:[margin-right:-0.2em]">
                 {northeast.diagramLabel}
               </DividerLabel>
@@ -80,7 +80,7 @@ export default function WhyNortheast() {
 
             {/* Phones: the ring's labels are hidden, so the states are chips that light up their dot on the wheel */}
             <p className="mt-4 text-center text-[12px] text-ink-muted sm:hidden">Tap a state to find it on the wheel</p>
-            <Reveal as="ul" stagger amount={0.1} className="mx-auto mt-3 grid max-w-sm grid-cols-2 gap-2 sm:hidden">
+            <Reveal as="ul" stagger className="mx-auto mt-3 grid max-w-sm grid-cols-2 gap-2 sm:hidden">
               {northeast.states.map((state, i) => {
                 const selected = active === i;
                 return (

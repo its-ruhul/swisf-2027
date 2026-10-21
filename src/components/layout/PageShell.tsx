@@ -22,15 +22,17 @@ const noopRegister = () => () => {};
  * presence but never unregister when they unmount (e.g. the Day/Night thumb on
  * /experience remounts on every toggle). The route exit would then wait forever for
  * an element that no longer exists, leaving the next page blank until a refresh.
- * The `initial` flag is passed through so first-load behaviour is unchanged.
+ *
+ * The route-level `initial={false}` (no page fade on first load) is deliberately NOT
+ * passed on: framer-motion would start every element inside the page at its end state,
+ * so the hero intro and the scroll reveals would not play on the first visit.
  */
 function IsolatePresence({ children }: { children: ReactNode }) {
   const parent = useContext(PresenceContext);
   const parentId = parent?.id;
-  const parentInitial = parent?.initial;
   const value = useMemo<ContextType<typeof PresenceContext>>(
-    () => (parentId === undefined ? null : { id: `${parentId}-page`, isPresent: true, initial: parentInitial, register: noopRegister }),
-    [parentId, parentInitial],
+    () => (parentId === undefined ? null : { id: `${parentId}-page`, isPresent: true, register: noopRegister }),
+    [parentId],
   );
   return <PresenceContext.Provider value={value}>{children}</PresenceContext.Provider>;
 }

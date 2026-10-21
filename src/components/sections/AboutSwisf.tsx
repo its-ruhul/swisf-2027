@@ -1,7 +1,9 @@
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
 import techCultureBand from '../../assets/images/tech-culture-band.webp';
 import { about } from '../../data/home';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 import AtomOrbit from '../ornaments/AtomOrbit';
 import CircuitTraces from '../ornaments/CircuitTraces';
 import DottedGlobe from '../ornaments/DottedGlobe';
@@ -9,13 +11,15 @@ import GoldCloud from '../ornaments/GoldCloud';
 import MandalaWatermark from '../ornaments/MandalaWatermark';
 import DividerLabel from '../ui/DividerLabel';
 import IconCircle from '../ui/IconCircle';
-import Reveal, { RevealItem } from '../ui/Reveal';
+import Reveal, { EASE_IN_VIEW, EASE_OUT_OF_VIEW, RevealItem } from '../ui/Reveal';
 import { MotifWatermark } from '../ui/Seal';
 import SectionHeading from '../ui/SectionHeading';
 import StatCounter from './StatCounter';
 
 /** About SWISF 2027, the light globe and the "At a glance" stats — one screen tall on desktop. */
 export default function AboutSwisf() {
+  const connectorRef = useRef<HTMLSpanElement>(null);
+  const connectorDrawn = useScrollReveal(connectorRef);
   return (
     <section aria-labelledby="about-heading" className="panel relative flex min-h-panel items-center overflow-hidden bg-cream">
       <div className="absolute -left-48 -top-48 w-[620px] motion-safe:animate-spin-slower sm:-left-40 sm:-top-40">
@@ -64,20 +68,23 @@ export default function AboutSwisf() {
         </div>
 
         {/* At a glance */}
-        <Reveal from="blur" amount={0.8} className="mt-14 lg:mt-[clamp(20px,4vh,48px)]">
+        <Reveal from="blur" className="mt-14 lg:mt-[clamp(20px,4vh,48px)]">
           <DividerLabel line="saffron" as="h3">
             {about.glanceLabel}
           </DividerLabel>
         </Reveal>
         <div className="relative mt-8 lg:mt-[clamp(16px,3vh,32px)]">
-          {/* thin line connecting the four circles, drawn left to right as it scrolls into view */}
+          {/* thin line connecting the four circles: draws left to right as it scrolls into view, retracts when you scroll back up */}
           <motion.span
+            ref={connectorRef}
             aria-hidden="true"
             className="absolute left-[12.5%] right-[12.5%] top-[28px] hidden origin-left border-t border-dashed border-gold/60 md:block"
             initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.4, ease: [0.2, 0.7, 0.2, 1], delay: 0.2 }}
+            animate={
+              connectorDrawn
+                ? { scaleX: 1, transition: { duration: 1.4, ease: EASE_IN_VIEW, delay: 0.2 } }
+                : { scaleX: 0, transition: { duration: 0.7, ease: EASE_OUT_OF_VIEW } }
+            }
           />
           <Reveal as="ul" stagger className="relative grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4">
             {about.stats.map((stat) => (

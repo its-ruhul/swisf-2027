@@ -22,7 +22,7 @@ export default function SummitByDay() {
       </div>
 
       <h3 className="sr-only">{summit.gridLabel}</h3>
-      <Reveal as="ul" stagger amount={0.1} className="mt-[clamp(12px,1.9vh,32px)] grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-[clamp(10px,1.6vh,16px)]">
+      <Reveal as="ul" stagger className="mt-[clamp(12px,1.9vh,32px)] grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-[clamp(10px,1.6vh,16px)]">
         {summit.activities.map((activity, i) => {
           const accent = rotateAccent(i);
           return (
