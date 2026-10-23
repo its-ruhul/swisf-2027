@@ -8,7 +8,7 @@ import SectionHeading from '../components/ui/SectionHeading';
 import { seo, site } from '../data/site';
 import { teamPage } from '../data/team';
 
-/** /team — the people behind SWISF 2027. */
+/** /team — the people behind WISF 2027. */
 export default function Team() {
   return (
     <PageShell title={seo.team.title} description={seo.team.description}>

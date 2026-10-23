@@ -2,7 +2,7 @@
   "name": "swisf-2027",
   "private": true,
   "version": "1.0.0",
-  "description": "SUNRAY – World Innovation Summit & Festival 2027 (SWISF 2027) website. Organised by E-Cell, NIT Meghalaya.",
+  "description": "World Innovation Summit & Festival 2027 (WISF 2027) website. Organised by E-Cell, NIT Meghalaya.",
   "type": "module",
   "scripts": {
     "dev": "vite",

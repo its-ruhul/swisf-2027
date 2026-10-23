@@ -1,6 +1,6 @@
-# SWISF 2027 — SUNRAY World Innovation Summit & Festival
+# WISF 2027 — World Innovation Summit & Festival
 
-Website for **SUNRAY – World Innovation Summit & Festival 2027**, Shillong, Meghalaya.
+Website for **World Innovation Summit & Festival 2027**, Shillong, Meghalaya.
 Organised by **E-Cell, NIT Meghalaya**, co-organised by **BSE**. The design follows the printed brochure:
 two-tone headings, gold cloud and circuit ornaments, outlined icon circles and the cream / navy / saffron palette.
 
@@ -8,9 +8,9 @@ two-tone headings, gold cloud and circuit ornaments, outlined icon circles and t
 
 | Route | Page |
 | --- | --- |
-| `/` | Home: full-screen sunrise hero with countdown and ticker, then one-screen panels: welcome letter, About SWISF 2027, Why the Northeast; boxed closing banner |
+| `/` | Home: full-screen sunrise hero with countdown and ticker, then one-screen panels: welcome letter, About WISF 2027, Why the Northeast; boxed closing banner |
 | `/experience` | One screen with a **Day / Night** switch: the Summit by Day, or the Festival by Night (`/experience#festival` opens at night) |
-| `/project-sunray` | One screen: The Next Generation, the Project Sunray journey and schools sign-up |
+| `/project-sunray` | One screen: The Next Generation, the Project Centre journey and schools sign-up |
 | `/sponsors` | co-organised by BSE, partner categories marked “Coming soon” (`#partner-with-us`), collaborate banner, partner logo wall |
 | `/team` | Leadership and departments, filterable by department |
 | anything else | 404: "The sun hasn't risen here" |
@@ -61,10 +61,10 @@ All text, lists and icons live in typed data files. You don't need to touch any 
 | File | What it controls |
 | --- | --- |
 | `src/data/site.ts` | Event name, tagline, dates, location, **countdown**, phone, email, **social links**, navigation, organiser blurb, per-page `<title>`/description |
-| `src/data/home.ts` | **Hero** (title lines, buttons, ticker), welcome letter, three pillars, About text, "At a glance" stats, Why the Northeast, the eight states, region/SWISF lists, closing banner |
+| `src/data/home.ts` | **Hero** (title lines, buttons, ticker), welcome letter, three pillars, About text, "At a glance" stats, Why the Northeast, the eight states, region/WISF lists, closing banner |
 | `src/data/summit.ts` | Experience page title and Day/Night labels, Summit activities (8), conversation topics |
 | `src/data/festival.ts` | Festival copy, highlights, closing line |
-| `src/data/sunray.ts` | Project Sunray copy, the four journey steps, schools call-to-action |
+| `src/data/sunray.ts` | Project Centre copy, the four journey steps, schools call-to-action |
 | `src/data/partners.ts` | BSE card, partner categories (“Coming soon”), **partner logo list** |
 | `src/data/team.ts` | Departments and **team members** |
 
@@ -185,7 +185,7 @@ Brochure saffron and gold are too light for small text on cream, so text uses sl
 
 ### Layout: one screen per section
 
-On desktop, the Home panels, the Experience page and Project Sunray are each exactly one screen tall below the navbar
+On desktop, the Home panels, the Experience page and Project Centre are each exactly one screen tall below the navbar
 (`min-h-panel` = `100svh − 76px`); the home hero fills the whole screen behind a transparent navbar. Inside a panel
 (`.panel`), headings, copy and spacing scale with the viewport height (`vh` clamps), so the content fits from 1024×768 up to
 1920×1080. On phones the panels simply grow with their content. If you add copy to a panel, check it at 1366×768 and 1024×768.

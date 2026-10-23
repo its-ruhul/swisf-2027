@@ -9,9 +9,8 @@ import { publicUrl } from '../lib/base';
 export const SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://example.com').replace(/\/$/, '');
 
 export const site = {
-  shortName: 'SWISF 2027',
-  name: 'SUNRAY – World Innovation Summit & Festival 2027',
-  wordmark: 'SUNRAY',
+  shortName: 'WISF 2027',
+  name: 'World Innovation Summit & Festival 2027',
   subtitle: 'World Innovation Summit & Festival 2027',
   tagline: 'Where India’s sun rises first',
   motto: ['Innovate', 'Inspire', 'Celebrate'],
@@ -69,13 +68,13 @@ export const site = {
 
   coPoweredBy: 'BSE (Bombay Stock Exchange)',
   brochurePdf: publicUrl('/swisf-2027-brochure.pdf'),
-  copyright: '© 2027 SWISF Organising Committee, E-Cell NIT Meghalaya',
+  copyright: '© 2027 WISF Organising Committee, E-Cell NIT Meghalaya',
 } as const;
 
 export const navLinks = [
   { label: 'Home', to: '/' },
   { label: 'What You Experience', to: '/experience' },
-  { label: 'Project Sunray', to: '/project-sunray' },
+  { label: 'Project Centre', to: '/project-sunray' },
   { label: 'Sponsors', to: '/sponsors' },
   /*
   TODO: Fix Team section
@@ -88,31 +87,31 @@ export const partnerCta = { label: 'Partner With Us', to: '/sponsors#partner-wit
 /** Per-page <title> and meta description. */
 export const seo = {
   home: {
-    title: 'SWISF 2027 | SUNRAY – World Innovation Summit & Festival, Shillong',
+    title: 'WISF 2027 | World Innovation Summit & Festival, Shillong',
     description:
-      'SUNRAY – World Innovation Summit & Festival 2027 brings founders, investors, students, policymakers and artists to Shillong, Meghalaya for three days of ideas, capital and celebration. Organised by E-Cell, NIT Meghalaya, co-organised by BSE.',
+      'World Innovation Summit & Festival 2027 brings founders, investors, students, policymakers and artists to Shillong, Meghalaya for three days of ideas, capital and celebration. Organised by E-Cell, NIT Meghalaya, co-organised by BSE.',
   },
   experience: {
-    title: 'What You Experience | SWISF 2027, Shillong',
+    title: 'What You Experience | WISF 2027, Shillong',
     description:
       'Ideas by day, music by night: keynotes, panels, a startup pitch arena, investor connect and an expo by day; concerts, jam sessions and a night market by night.',
   },
   sunray: {
-    title: 'Project Sunray — The Next Generation | SWISF 2027',
+    title: 'Project Centre — The Next Generation | WISF 2027',
     description:
-      'Through E-Cell’s Project Sunray, SWISF 2027 reaches schools across Meghalaya and the Northeast. Students build, present and learn alongside founders and mentors.',
+      'Through E-Cell’s Project Centre, WISF 2027 reaches schools across Meghalaya and the Northeast. Students build, present and learn alongside founders and mentors.',
   },
   sponsors: {
-    title: 'Sponsors & Partners | SWISF 2027, co-organised by BSE',
+    title: 'Sponsors & Partners | WISF 2027, co-organised by BSE',
     description:
-      'co-organised by BSE. Partner with SUNRAY – World Innovation Summit & Festival 2027 as an associate, startup arena, festival, knowledge, hospitality or media partner.',
+      'co-organised by BSE. Partner with World Innovation Summit & Festival 2027 as an associate, startup arena, festival, knowledge, hospitality or media partner.',
   },
   team: {
-    title: 'Team | SWISF 2027 — E-Cell, NIT Meghalaya',
-    description: 'Meet the people behind SWISF 2027, organised by E-Cell, NIT Meghalaya.',
+    title: 'Team | WISF 2027 — E-Cell, NIT Meghalaya',
+    description: 'Meet the people behind WISF 2027, organised by E-Cell, NIT Meghalaya.',
   },
   notFound: {
-    title: 'Page not found | SWISF 2027',
+    title: 'Page not found | WISF 2027',
     description: 'The page you were looking for does not exist.',
   },
 } as const;

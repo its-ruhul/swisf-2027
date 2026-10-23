@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ------------------------------------------------------------------
-   SWISF 2027 — global styles
+   WISF 2027 — global styles
    Colour tokens mirror tailwind.config.ts so plain CSS can use them.
 ------------------------------------------------------------------- */
 :root {
@@ -97,16 +97,6 @@
     background-clip: text;
     color: transparent;
     animation: sheen 9s ease-in-out infinite;
-  }
-
-  /* SUNRAY wordmark in the hero: cream with a slow gold sheen, like the official logo */
-  .hero-wordmark {
-    background-image: linear-gradient(100deg, #faf6ee 0%, #e6cf94 30%, #fff8e6 50%, #e6cf94 70%, #faf6ee 100%);
-    background-size: 220% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: sheen 11s ease-in-out infinite;
   }
 
   /* Gold gradient pill (primary call to action on dark backgrounds) */
@@ -462,7 +452,7 @@
   animation: fog-drift var(--dur, 90s) linear infinite;
 }
 
-/* A glint of light sweeping across the SWISF emblem */
+/* A glint of light sweeping across the WISF emblem */
 @keyframes glint {
   0%,
   55% {

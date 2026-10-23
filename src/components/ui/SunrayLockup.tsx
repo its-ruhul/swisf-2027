@@ -1,5 +1,5 @@
-import logoDark from '../../assets/logos/swisf-logo-dark.webp';
-import logoLight from '../../assets/logos/swisf-logo.webp';
+import logoDark from '../../assets/logos/swisf-emblem.webp';
+import logoLight from '../../assets/logos/swisf-emblem.webp';
 import { site } from '../../data/site';
 import { cssVars } from '../../lib/cssVars';
 import { cn } from '../../lib/cn';
@@ -20,7 +20,7 @@ export default function SunrayLockup({ tone = 'light', glint = false, className 
     <span className={cn('relative inline-block', className ?? 'w-48 sm:w-56')} style={{ aspectRatio: '800 / 718' }}>
       <img
         src={src}
-        alt={`${site.wordmark} — ${site.subtitle} (SWISF · 2027)`}
+        alt={`${site.name} logo`}
         width={800}
         height={718}
         loading="lazy"

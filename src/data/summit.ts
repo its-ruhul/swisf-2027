@@ -36,7 +36,7 @@ export const summit = {
     { icon: Coins, number: '07', title: 'Financial Literacy Sessions', text: 'Investor awareness for students, families and the public' },
     { icon: Store, number: '08', title: 'Expo of Stalls', text: 'Startups, incubators, government schemes and local enterprise' },
   ] as { icon: LucideIcon; number: string; title: string; text: string }[],
-  conversationsLabel: 'Conversations at SWISF 2027',
+  conversationsLabel: 'Conversations at WISF 2027',
   conversations: [
     'Raising Capital',
     'Going Public',

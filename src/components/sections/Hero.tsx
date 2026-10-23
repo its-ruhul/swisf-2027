@@ -42,7 +42,7 @@ const fadeUp = {
 /**
  * Full-screen hero: the Meghalaya sunrise over a sea of clouds, slowly
  * zooming, with god-rays turning around the sun, drifting fog, gold dust,
- * the SWISF emblem rising on the horizon, a live countdown and a ticker.
+ * the WISF emblem rising on the horizon, a live countdown and a ticker.
  * The navbar floats transparently over it.
  */
 export default function Hero() {
@@ -118,7 +118,7 @@ export default function Hero() {
                   background: 'radial-gradient(circle, rgba(255,214,140,0.75) 0%, rgba(242,154,94,0.35) 28%, transparent 66%)',
                 }}
               />
-              {/* the SWISF emblem rising on the horizon */}
+              {/* the WISF emblem rising on the horizon */}
               <div
                 className="absolute w-[19%] -translate-x-1/2 mix-blend-screen"
                 style={{ left: `${SUN_X * 100}%`, bottom: `${(1 - SUN_Y) * 100 - 1.9}%` }}
@@ -186,28 +186,17 @@ export default function Hero() {
             <Diamond className="bg-saffron" />
           </motion.p>
 
-          {/* SUNRAY (serif wordmark, as on the official logo) + four lines; sized by width and height so the hero stays one screen */}
+          {/* four lines, sized by width and height so the hero stays one screen */}
           <h1
             id="hero-title"
-            className="mt-[clamp(8px,1.5vh,24px)] text-[clamp(1.6rem,min(8.6vw,5vh),6rem)] font-bold uppercase leading-[0.92] tracking-[-0.01em] lg:text-[clamp(2.3rem,min(6.2vw,6.7vh),6.2rem)]"
+            className="mt-[clamp(8px,1.5vh,24px)] text-[clamp(1.75rem,min(9.6vw,6.2vh),6rem)] font-bold uppercase leading-[0.92] tracking-[-0.01em] lg:text-[clamp(2.55rem,min(7.4vw,8.2vh),7rem)]"
           >
-            <span className="block overflow-hidden pb-[0.06em]">
-              <motion.span
-                className="hero-wordmark block font-display text-[1.08em] font-semibold leading-[0.95] tracking-[0.2em]"
-                variants={lineReveal}
-                custom={0}
-                initial={reduce ? false : 'hidden'}
-                animate="show"
-              >
-                {site.wordmark}
-              </motion.span>
-            </span>
             {hero.titleLines.map((line, i) => (
               <span key={line} className="block overflow-hidden pb-[0.04em]">
                 <motion.span
                   className={cn('block', i >= 2 ? 'text-sun' : 'text-cream')}
                   variants={lineReveal}
-                  custom={i + 1}
+                  custom={i}
                   initial={reduce ? false : 'hidden'}
                   animate="show"
                 >
@@ -290,7 +279,7 @@ export default function Hero() {
       {/* ── Ticker ── */}
       <Marquee
         items={hero.ticker}
-        label="SWISF 2027 highlights"
+        label="WISF 2027 highlights"
         duration={48}
         className="absolute inset-x-0 bottom-0 h-[52px] items-center border-t border-gold/30 bg-navy-deep/70 backdrop-blur-md"
         itemClassName="text-[11px] font-medium uppercase tracking-[0.3em] text-cream/80 sm:text-[12px]"

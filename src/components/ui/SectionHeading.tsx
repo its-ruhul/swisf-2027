@@ -29,7 +29,7 @@ const lineUp: Variants = {
 
 /**
  * Two-line uppercase section heading — the brochure's signature pattern,
- * e.g. "WELCOME" / "TO SWISF 2027".
+ * e.g. "WELCOME" / "TO WISF 2027".
  */
 export default function SectionHeading({
   line1,

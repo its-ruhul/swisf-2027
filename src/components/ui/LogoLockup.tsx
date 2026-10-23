@@ -11,12 +11,12 @@ type LogoLockupProps = {
   showBse?: boolean;
   /** Hide the BSE half between `lg` and `xl` to keep the desktop navbar on one line */
   compactBse?: boolean;
-  /** Wrap the SWISF half in a link to the home page */
+  /** Wrap the WISF half in a link to the home page */
   homeLink?: boolean;
   className?: string;
 };
 
-/** SWISF emblem + "SWISF 2027" | gold divider | BSE logo over "co-organised by". */
+/** WISF emblem + "WISF 2027" | gold divider | BSE logo over "co-organised by". */
 export default function LogoLockup({ tone = 'light', showBse = true, compactBse = false, homeLink = false, className }: LogoLockupProps) {
   const dark = tone === 'dark';
 

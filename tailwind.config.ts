@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 /**
- * SWISF 2027 design tokens — taken from the printed brochure.
+ * WISF 2027 design tokens — taken from the printed brochure.
  *
  * Brand colours are used as-is for ornaments, icons, borders and rules.
  * The `*-ink` variants are slightly deeper versions of the same hues, used only
@@ -49,7 +49,6 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Poppins', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-        display: ['"Cormorant Garamond"', 'Cormorant', 'Georgia', 'Times New Roman', 'serif'],
       },
       minHeight: {
         /** One full screen below the sticky navbar */

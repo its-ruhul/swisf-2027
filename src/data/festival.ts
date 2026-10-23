@@ -7,7 +7,7 @@ import type { Accent } from '../lib/accents';
 export const festival = {
   heading: { line1: 'The Festival', line2: 'By Night' },
   lead: 'Shillong, the concert capital of India, comes alive for three nights.',
-  body: 'When the summit closes each evening, the city takes over. Concerts on all three nights, jam sessions and a night market turn SWISF 2027 into a celebration of the region’s music, food and enterprise.',
+  body: 'When the summit closes each evening, the city takes over. Concerts on all three nights, jam sessions and a night market turn WISF 2027 into a celebration of the region’s music, food and enterprise.',
   imageAlt:
     'Illustrated night concert: a band on a lit stage with lasers and fireworks, a sunburst backdrop and a crowd with raised hands',
   highlightsLabel: 'Highlights',

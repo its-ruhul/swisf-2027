@@ -16,7 +16,7 @@ import { MotifWatermark } from '../ui/Seal';
 import SectionHeading from '../ui/SectionHeading';
 import StatCounter from './StatCounter';
 
-/** About SWISF 2027, the light globe and the "At a glance" stats — one screen tall on desktop. */
+/** About WISF 2027, the light globe and the "At a glance" stats — one screen tall on desktop. */
 export default function AboutSwisf() {
   const connectorRef = useRef<HTMLSpanElement>(null);
   const connectorDrawn = useScrollReveal(connectorRef);

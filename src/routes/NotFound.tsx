@@ -30,7 +30,7 @@ export default function NotFound() {
             className="mt-6"
           />
           <p className="body-copy mx-auto mt-6 max-w-md">
-            The page you were looking for doesn’t exist or has moved. Head back to the home page to explore SWISF 2027.
+            The page you were looking for doesn’t exist or has moved. Head back to the home page to explore WISF 2027.
           </p>
           <Button to="/" icon={ArrowLeft} iconPosition="left" className="mt-8">
             Back to home

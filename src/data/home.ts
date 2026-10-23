@@ -1,5 +1,5 @@
 /**
- * Home page content: welcome letter, pillars, About SWISF, stats and
+ * Home page content: welcome letter, pillars, About WISF, stats and
  * "Why the Northeast". Copy reproduced from the brochure.
  */
 import {
@@ -31,8 +31,8 @@ export const hero = {
   titleLines: ['World', 'Innovation', 'Summit &', 'Festival'],
   coPowered: 'co-organised by Bombay Stock Exchange',
   /** Until registrations open, "Register" sends an email to the organisers */
-  register: { label: 'Register Interest', subject: 'SWISF 2027 – Register my interest' },
-  explore: { label: 'Explore SWISF', to: '/experience' },
+  register: { label: 'Register Interest', subject: 'WISF 2027 – Register my interest' },
+  explore: { label: 'Explore WISF', to: '/experience' },
   organiser: 'Organised by E-Cell, NIT Meghalaya',
   photoAlt: 'Sunrise over a sea of clouds in the Meghalaya hills, with people gathered on a ridge to watch',
   scrollLabel: 'Scroll to explore',
@@ -51,15 +51,15 @@ export const hero = {
 };
 
 export const welcome = {
-  heading: { line1: 'Welcome', line2: 'to SWISF 2027' },
+  heading: { line1: 'Welcome', line2: 'to WISF 2027' },
   salutation: 'Dear Innovators,',
   paragraphs: [
     'Every day in India begins in the Northeast. In 2027, so will the conversation on innovation.',
-    'The SUNRAY-World Innovation Summit & Festival 2027 brings founders, investors, students, policymakers, artists and guests from across India and beyond to Shillong for three days of ideas, capital and celebration.',
+    'The World Innovation Summit & Festival 2027 brings founders, investors, students, policymakers, artists and guests from across India and beyond to Shillong for three days of ideas, capital and celebration.',
     'Our purpose is simple: to give the Northeast’s innovators the mentorship, connections and global exposure they deserve, and to build a lasting bridge to India’s innovation and finance ecosystem.',
     'Join us where India’s sun rises first.',
   ],
-  signOff: { regards: 'Warm regards,', name: 'Organising committee', org: 'SWISF 2027' },
+  signOff: { regards: 'Warm regards,', name: 'Organising committee', org: 'WISF 2027' },
   pillarsTitle: 'Our three pillars',
   pillars: [
     { icon: Lightbulb, accent: 'royal', title: 'Innovation', text: 'Ideas, startups and the people building them' },
@@ -69,11 +69,11 @@ export const welcome = {
 };
 
 export const about = {
-  heading: { line1: 'About', line2: 'SWISF 2027' },
-  /** First paragraph starts with a bold “SWISF 2027”. */
-  lead: 'SWISF 2027',
+  heading: { line1: 'About', line2: 'WISF 2027' },
+  /** First paragraph starts with a bold “WISF 2027”. */
+  lead: 'WISF 2027',
   paragraphs: [
-    ' is a three-day summit and festival in Shillong, Meghalaya, organised by the SWISF organising committee, comprising members of E-Cell, NIT Meghalaya and leaders from industry, capital markets, government, academia and the startup ecosystem, in collaboration with the Bombay Stock Exchange (BSE).',
+    ' is a three-day summit and festival in Shillong, Meghalaya, organised by the WISF organising committee, comprising members of E-Cell, NIT Meghalaya and leaders from industry, capital markets, government, academia and the startup ecosystem, in collaboration with the Bombay Stock Exchange (BSE).',
     'By day, the summit brings founders, investors, students and leaders into one room. By night, the festival fills the city with music.',
     'It is one stage for the entire Northeast, built to connect the region’s talent with India’s innovation and finance ecosystem, and with the world.',
   ],
@@ -92,7 +92,7 @@ export type StateItem = { name: string; accent: Accent; host?: boolean };
 export const northeast = {
   heading: { line1: 'Why the', line2: 'Northeast' },
   lead: 'Despite its immense potential, the Northeast’s contribution to India’s startup ecosystem remains very low.',
-  body: 'The talent is here, and so are the ideas. What the region’s founders lack is access: mentors who have built companies, investors who rarely travel this far, knowledge of capital markets, and a stage the world is watching. SWISF 2027 exists to give them that national and global exposure.',
+  body: 'The talent is here, and so are the ideas. What the region’s founders lack is access: mentors who have built companies, investors who rarely travel this far, knowledge of capital markets, and a stage the world is watching. WISF 2027 exists to give them that national and global exposure.',
   diagramLabel: 'One stage for eight states',
   /** Clockwise from the top, matching the brochure diagram. */
   states: [
@@ -117,7 +117,7 @@ export const northeast = {
     ] as { icon: LucideIcon; text: string }[],
   },
   swisfBrings: {
-    title: 'What SWISF brings',
+    title: 'What WISF brings',
     accent: 'saffron' as Accent,
     items: [
       { icon: Presentation, text: 'Mentors with real experience' },
@@ -132,12 +132,12 @@ export const northeast = {
 export const homeCta = {
   eyebrow: 'Late April – Early May 2027 · Shillong',
   /** The highlight is set in the saffron-gold gradient */
-  title: { lead: 'Be part of', highlight: 'SWISF 2027' },
+  title: { lead: 'Be part of', highlight: 'WISF 2027' },
   text: 'Three days of ideas, capital and celebration, where India’s sun rises first.',
   /** The first link is the main (gold) button */
   links: [
     { label: 'What You Experience', to: '/experience' },
-    { label: 'Project Sunray', to: '/project-sunray' },
+    { label: 'Project Centre', to: '/project-sunray' },
     { label: 'Partner With Us', to: '/sponsors' },
   ],
 };

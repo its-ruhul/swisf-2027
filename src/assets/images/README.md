@@ -29,7 +29,7 @@ The favicons (`public/favicon.png`, `public/apple-touch-icon.png`) are the centr
 | File | Size | Shows | Used in | Source |
 | --- | --- | --- | --- | --- |
 | `sunrise-banner.webp` | 1588×584 | Sunrise over a sea of clouds, ridge with people | Home: full-screen hero background | Brochure PDF (hi-res) |
-| `sunrise-circle.webp` | 720×720 | Hilltop sunrise over clouds (square, shown as a circle) | Project Sunray | Brochure PDF |
+| `sunrise-circle.webp` | 720×720 | Hilltop sunrise over clouds (square, shown as a circle) | Project Centre | Brochure PDF |
 | `dragon-waves.webp` | 1600×619 | Painted dragon in sunlit clouds and waves | Home: Welcome "moon gate" circle | Brochure PDF (hi-res) |
 | `festival-concert.webp` | 900×900 | Night concert / jam session: stage, lasers, fireworks, crowd | Experience: Night | Brochure PDF |
 | `tech-culture-band.webp` | 1600×309 | Tech & culture line art: turbines, solar, rocket, satellite, atoms, skyline, bridge, handshake, brain | Home: About (faint, along the bottom) | Brochure PDF (hi-res) |
@@ -48,7 +48,7 @@ The favicons (`public/favicon.png`, `public/apple-touch-icon.png`) are the centr
 | `gold-cloud-b.webp` | 800×428 | Gold auspicious cloud (compact) | most sections | Assets folder |
 | `crimson-cloud.webp` | 760×287 | Crimson cloud with scale pattern | Why the Northeast | Brochure PDF (hi-res cut) |
 | `knot-corner.webp` | 380×395 | Crimson Tibetan-knot corner | Why the Northeast | Brochure PDF (hi-res cut) |
-| `chinese-knot.webp` | 260×545 | Hanging red Chinese knot | Project Sunray | Brochure PDF |
+| `chinese-knot.webp` | 260×545 | Hanging red Chinese knot | Project Centre | Brochure PDF |
 | `lantern-frame.webp` | 160×758 | Tall red frame with a lantern | Experience: Day (right edge, xl+) | Brochure PDF |
 | `lanterns-pair.webp` | 900×463 | Two red lanterns on a string | Experience: Day (top-left) | Brochure PDF |
 | `lanterns-string.webp` | 1440×604 | Row of hanging paper lanterns | Sponsors: top (repeated) | Brochure PDF |
@@ -56,7 +56,7 @@ The favicons (`public/favicon.png`, `public/apple-touch-icon.png`) are the centr
 | `peach-cloud-a.webp`, `peach-cloud-b.webp` | ~560px | Soft watercolour peach clouds | section edges | Brochure PDF (hi-res) |
 | `festival-pattern.webp` | 1600×937 | Red/gold peonies, dragons, coins, lanterns | Experience: Night (bottom band) | Brochure PDF |
 | `medallion-strip.webp` | 823×80 (tile) | Red medallion border | Experience: Day (top) | Brochure PDF |
-| `swirl-border.webp` | 831×160 (tile) | Red-and-cream swirl clouds | Project Sunray: top | Brochure PDF |
+| `swirl-border.webp` | 831×160 (tile) | Red-and-cream swirl clouds | Project Centre: top | Brochure PDF |
 | `pattern-border.webp` | 724×48 (tile) | Small orange floral border | Sponsors: bottom | Brochure PDF |
 | `lattice-tile.webp` | 129×240 (tile) | Gold geometric lattice | Why the Northeast: bottom | Brochure PDF (hi-res) |
 

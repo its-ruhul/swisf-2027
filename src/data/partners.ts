@@ -23,9 +23,9 @@ export const partnersPage = {
     width: 450,
     height: 246,
   },
-  coPoweredLine: 'With BSE alongside, SWISF 2027 brings the Northeast closer to India’s capital markets.',
+  coPoweredLine: 'With BSE alongside, WISF 2027 brings the Northeast closer to India’s capital markets.',
   partnerLabel: 'Partner with us',
-  partnerIntro: 'SWISF 2027 welcomes collaborators who share our vision for the Northeast.',
+  partnerIntro: 'WISF 2027 welcomes collaborators who share our vision for the Northeast.',
   /** Partner categories — each shows a faded "Coming soon" until the partner is announced */
   tiers: [
     { icon: Crown, accent: 'saffron', title: 'Associate Partner' },
@@ -38,9 +38,9 @@ export const partnersPage = {
   comingSoon: 'Coming soon',
   collaborate: {
     eyebrow: 'To collaborate',
-    title: 'Let’s build SWISF 2027 together',
+    title: 'Let’s build WISF 2027 together',
     /** Opens an email to the organisers with this subject */
-    becomeSponsor: { label: 'Become a Sponsor', subject: 'SWISF 2027 – Sponsorship enquiry' },
+    becomeSponsor: { label: 'Become a Sponsor', subject: 'WISF 2027 – Sponsorship enquiry' },
     download: 'Download Brochure (PDF)',
   },
   logoWallTitle: 'Our 2027 Partners',

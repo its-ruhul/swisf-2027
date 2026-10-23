@@ -23,7 +23,7 @@ type SwisfEmblemProps = {
 };
 
 /**
- * The SWISF sunrise emblem (rays, arcs, star, gold sun and crimson diamond),
+ * The WISF sunrise emblem (rays, arcs, star, gold sun and crimson diamond),
  * cropped from the official logo without the wordmark. Always rendered at its
  * true aspect ratio.
  */
