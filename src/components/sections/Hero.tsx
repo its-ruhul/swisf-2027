@@ -76,7 +76,7 @@ export default function Hero() {
     document.getElementById('welcome')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
   };
 
-  const registerHref = `mailto:${site.contact.email}?subject=${encodeURIComponent(hero.register.subject)}`;
+  const registerHref = 'https://docs.google.com/forms/d/e/1FAIpQLSdiSSxW1asiCMmIvWgwXst9Wi8NQkeZfdRyw1hNryG2iFBqkg/viewform?usp=publish-editor';
   const priorityAttrs = { fetchpriority: 'high' };
 
   return (

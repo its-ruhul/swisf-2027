@@ -89,7 +89,7 @@ export default function Partners() {
               <h2 className="mt-3 text-2xl font-medium text-cream sm:text-3xl">{p.collaborate.title}</h2>
               <div className="mt-7 flex flex-col gap-3 xs:flex-row xs:flex-wrap">
                 <Button
-                  href={`mailto:${site.contact.email}?subject=${encodeURIComponent(p.collaborate.becomeSponsor.subject)}`}
+                  href={'https://docs.google.com/forms/d/e/1FAIpQLSc7I0uFaWnvl4fOpTjLCdPF8V7Qc8Jc4Sjh_zHG6Wd_Cxd-Jw/viewform?usp=publish-editor'}
                   variant="sun"
                   icon={Handshake}
                   iconPosition="left"

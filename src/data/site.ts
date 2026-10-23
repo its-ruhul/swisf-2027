@@ -52,12 +52,12 @@ export const site = {
     linkedin: {
       label: 'LinkedIn',
       handle: 'E-Cell NIT Meghalaya',
-      url: 'https://www.linkedin.com/search/results/all/?keywords=E-Cell%20NIT%20Meghalaya',
+      url: 'https://www.linkedin.com/company/e-cell-nit-meghalaya/posts/',
     },
     youtube: {
       label: 'YouTube',
       handle: 'E-Cell NIT Meghalaya',
-      url: 'https://www.youtube.com/results?search_query=E-Cell+NIT+Meghalaya',
+      url: 'https://www.youtube.com/@nitm_ecell',
     },
   },
 
