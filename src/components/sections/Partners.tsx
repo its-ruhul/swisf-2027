@@ -14,7 +14,7 @@ import Reveal, { RevealItem } from '../ui/Reveal';
 import Seal, { MotifWatermark } from '../ui/Seal';
 import SectionHeading from '../ui/SectionHeading';
 
-/** Our Partners: co-powered by BSE, partner categories (coming soon), collaborate banner and logo wall. */
+/** Our Partners: co-organised by BSE, partner categories (coming soon), collaborate banner and logo wall. */
 export default function Partners() {
   const p = partnersPage;
   return (
@@ -33,7 +33,7 @@ export default function Partners() {
           <Seal motif="knot" meaning="Partnership" size="md" className="mb-1" />
         </Reveal>
 
-        {/* Co-powered by BSE */}
+        {/* co-organised by BSE */}
         <DividerLabel className="mt-12" as="h2">
           {p.coPoweredLabel}
         </DividerLabel>

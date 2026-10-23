@@ -29,7 +29,7 @@ export type IconItem = { icon: LucideIcon; accent: Accent; title: string; text: 
 export const hero = {
   /** Set on four lines; the last two are drawn in the saffron-gold gradient */
   titleLines: ['World', 'Innovation', 'Summit &', 'Festival'],
-  coPowered: 'Co-powered by Bombay Stock Exchange',
+  coPowered: 'co-organised by Bombay Stock Exchange',
   /** Until registrations open, "Register" sends an email to the organisers */
   register: { label: 'Register Interest', subject: 'SWISF 2027 – Register my interest' },
   explore: { label: 'Explore SWISF', to: '/experience' },
@@ -46,7 +46,7 @@ export const hero = {
     'Investor Connect',
     'Concerts all three nights',
     'Eight states · One stage',
-    'Co-powered by BSE',
+    'co-organised by BSE',
   ],
 };
 

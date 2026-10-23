@@ -90,7 +90,7 @@ export const seo = {
   home: {
     title: 'SWISF 2027 | SUNRAY – World Innovation Summit & Festival, Shillong',
     description:
-      'SUNRAY – World Innovation Summit & Festival 2027 brings founders, investors, students, policymakers and artists to Shillong, Meghalaya for three days of ideas, capital and celebration. Organised by E-Cell, NIT Meghalaya, co-powered by BSE.',
+      'SUNRAY – World Innovation Summit & Festival 2027 brings founders, investors, students, policymakers and artists to Shillong, Meghalaya for three days of ideas, capital and celebration. Organised by E-Cell, NIT Meghalaya, co-organised by BSE.',
   },
   experience: {
     title: 'What You Experience | SWISF 2027, Shillong',
@@ -100,12 +100,12 @@ export const seo = {
   sunray: {
     title: 'Project Sunray — The Next Generation | SWISF 2027',
     description:
-      'Through E-Cell’s Project Centre, SWISF 2027 reaches schools across Meghalaya and the Northeast. Students build, present and learn alongside founders and mentors.',
+      'Through E-Cell’s Project Sunray, SWISF 2027 reaches schools across Meghalaya and the Northeast. Students build, present and learn alongside founders and mentors.',
   },
   sponsors: {
-    title: 'Sponsors & Partners | SWISF 2027, co-powered by BSE',
+    title: 'Sponsors & Partners | SWISF 2027, co-organised by BSE',
     description:
-      'Co-powered by BSE. Partner with SUNRAY – World Innovation Summit & Festival 2027 as an associate, startup arena, festival, knowledge, hospitality or media partner.',
+      'co-organised by BSE. Partner with SUNRAY – World Innovation Summit & Festival 2027 as an associate, startup arena, festival, knowledge, hospitality or media partner.',
   },
   team: {
     title: 'Team | SWISF 2027 — E-Cell, NIT Meghalaya',

@@ -1,7 +1,7 @@
 # SWISF 2027 — SUNRAY World Innovation Summit & Festival
 
 Website for **SUNRAY – World Innovation Summit & Festival 2027**, Shillong, Meghalaya.
-Organised by **E-Cell, NIT Meghalaya**, co-powered by **BSE**. The design follows the printed brochure:
+Organised by **E-Cell, NIT Meghalaya**, co-organised by **BSE**. The design follows the printed brochure:
 two-tone headings, gold cloud and circuit ornaments, outlined icon circles and the cream / navy / saffron palette.
 
 **Stack:** React 18 · Vite 5 · TypeScript · Tailwind CSS 3 · React Router 6 · Framer Motion 11 · lucide-react
@@ -10,8 +10,8 @@ two-tone headings, gold cloud and circuit ornaments, outlined icon circles and t
 | --- | --- |
 | `/` | Home: full-screen sunrise hero with countdown and ticker, then one-screen panels: welcome letter, About SWISF 2027, Why the Northeast; boxed closing banner |
 | `/experience` | One screen with a **Day / Night** switch: the Summit by Day, or the Festival by Night (`/experience#festival` opens at night) |
-| `/project-sunray` | One screen: The Next Generation, the Project Centre journey and schools sign-up |
-| `/sponsors` | Co-powered by BSE, partner categories marked “Coming soon” (`#partner-with-us`), collaborate banner, partner logo wall |
+| `/project-sunray` | One screen: The Next Generation, the Project Sunray journey and schools sign-up |
+| `/sponsors` | co-organised by BSE, partner categories marked “Coming soon” (`#partner-with-us`), collaborate banner, partner logo wall |
 | `/team` | Leadership and departments, filterable by department |
 | anything else | 404: "The sun hasn't risen here" |
 

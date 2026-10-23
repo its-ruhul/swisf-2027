@@ -1,12 +1,12 @@
 /**
- * Project Sunray — The Next Generation (E-Cell's Project Centre).
+ * Project Sunray — The Next Generation (E-Cell's Project Sunray).
  */
 import { BookOpen, Megaphone, Presentation, Wrench, type LucideIcon } from 'lucide-react';
 import type { Accent } from '../lib/accents';
 
 export const nextGeneration = {
   heading: { line1: 'The Next', line2: 'Generation' },
-  lead: 'Through E-Cell’s Project Centre, SWISF 2027 reaches schools across Meghalaya and the Northeast.',
+  lead: 'Through E-Cell’s Project Sunray, SWISF 2027 reaches schools across Meghalaya and the Northeast.',
   body: 'Students build, present and learn alongside founders and mentors, and their families get a front-row seat to the region’s innovation story.',
   imageAlt: 'Sunrise over the clouds seen from a hilltop in Meghalaya, with people gathered along the ridge',
   journeyLabel: 'The journey',
@@ -47,7 +47,7 @@ export const nextGeneration = {
   quote: { text: 'Bringing teachers, parents and young minds into the', highlight: 'innovation story.' },
   schools: {
     title: 'Is your school ready to take part?',
-    text: 'Write to the Project Centre team to bring your students into Project Sunray, or to mentor a school team.',
+    text: 'Write to the Project Sunray team to bring your students into Project Sunray, or to mentor a school team.',
     register: { label: 'Register Interest', subject: 'Project Sunray – School Registration' },
     mentor: { label: 'Become a Mentor', subject: 'Project Sunray – Mentor' },
   },

@@ -86,7 +86,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Partners: organised by | co-powered by — logo left, label and name beside it */}
+        {/* Partners: organised by | co-organised by — logo left, label and name beside it */}
         <div className="mt-10 flex flex-col gap-6 border-t border-gold/25 pt-8 sm:mt-12 sm:flex-row sm:items-center sm:gap-10 sm:pt-10">
           <PartnerMark
             label="Regional Partner"
@@ -95,7 +95,7 @@ export default function Footer() {
           />
           <span aria-hidden="true" className="hidden h-14 w-px bg-gold/50 sm:block" />
           <PartnerMark
-            label="Co-powered by"
+            label="co-organised by"
             name="Bombay Stock Exchange"
             logo={
               <span className="flex h-12 w-full items-center justify-center rounded-lg bg-cream px-2">

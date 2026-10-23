@@ -75,7 +75,7 @@ function SunriseCircle() {
   );
 }
 
-/** Project Sunray — The Next Generation (E-Cell's Project Centre). One screen tall on desktop. */
+/** Project Sunray — The Next Generation (E-Cell's Project Sunray). One screen tall on desktop. */
 export default function NextGeneration() {
   const { heading, lead, body, journeyLabel, quote, schools } = nextGeneration;
   return (
@@ -93,7 +93,7 @@ export default function NextGeneration() {
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
           <div className="pl-12 sm:pl-16 lg:col-span-7 lg:pl-14">
             <Reveal>
-              <p className="eyebrow text-[11px] text-saffron-ink">Project Sunray · E-Cell Project Centre</p>
+              <p className="eyebrow text-[11px] text-saffron-ink">Project Sunray · E-Cell Project Sunray</p>
               <SectionHeading as="h1" id="sunray-heading" line1={heading.line1} line2={heading.line2} className="mt-2" />
             </Reveal>
             <Reveal delay={0.05}>

@@ -24,7 +24,7 @@ export type Department =
   | 'Content & Social Media'
   | 'Finance'
   | 'Hospitality & Logistics'
-  | 'Project Centre (Project Sunray)';
+  | 'Project Sunray (Project Sunray)';
 
 export interface TeamMember {
   id: string;
@@ -49,7 +49,7 @@ export const departments: { name: Department; slug: string; accent: Accent }[] =
   { name: 'Content & Social Media', slug: 'content', accent: 'saffron' },
   { name: 'Finance', slug: 'finance', accent: 'teal' },
   { name: 'Hospitality & Logistics', slug: 'hospitality', accent: 'violet' },
-  { name: 'Project Centre (Project Sunray)', slug: 'project-centre', accent: 'crimson' },
+  { name: 'Project Sunray (Project Sunray)', slug: 'project-centre', accent: 'crimson' },
 ];
 
 export const teamPage = {
@@ -123,9 +123,9 @@ export const team: TeamMember[] = [
   { id: 'hospitality-member-2', name: 'Member Name', role: 'Member', department: 'Hospitality & Logistics' },
   { id: 'hospitality-member-3', name: 'Member Name', role: 'Member', department: 'Hospitality & Logistics' },
 
-  // Project Centre (Project Sunray)
-  { id: 'project-centre-head', name: 'Head Name', role: 'Head', title: 'Project Centre Head', department: 'Project Centre (Project Sunray)' },
-  { id: 'project-centre-member-1', name: 'Member Name', role: 'Member', department: 'Project Centre (Project Sunray)' },
-  { id: 'project-centre-member-2', name: 'Member Name', role: 'Member', department: 'Project Centre (Project Sunray)' },
-  { id: 'project-centre-member-3', name: 'Member Name', role: 'Member', department: 'Project Centre (Project Sunray)' },
+  // Project Sunray (Project Sunray)
+  { id: 'project-centre-head', name: 'Head Name', role: 'Head', title: 'Project Sunray Head', department: 'Project Sunray (Project Sunray)' },
+  { id: 'project-centre-member-1', name: 'Member Name', role: 'Member', department: 'Project Sunray (Project Sunray)' },
+  { id: 'project-centre-member-2', name: 'Member Name', role: 'Member', department: 'Project Sunray (Project Sunray)' },
+  { id: 'project-centre-member-3', name: 'Member Name', role: 'Member', department: 'Project Sunray (Project Sunray)' },
 ];

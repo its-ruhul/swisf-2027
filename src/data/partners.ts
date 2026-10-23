@@ -16,7 +16,7 @@ import type { Accent } from '../lib/accents';
 
 export const partnersPage = {
   heading: { line1: 'Our', line2: 'Partners' },
-  coPoweredLabel: 'Co-powered by',
+  coPoweredLabel: 'co-organised by',
   coPowered: {
     name: 'BSE (Bombay Stock Exchange)',
     logo: bseLogo,

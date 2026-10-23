@@ -16,7 +16,7 @@ type LogoLockupProps = {
   className?: string;
 };
 
-/** SWISF emblem + "SWISF 2027" | gold divider | BSE logo over "Co-powered by". */
+/** SWISF emblem + "SWISF 2027" | gold divider | BSE logo over "co-organised by". */
 export default function LogoLockup({ tone = 'light', showBse = true, compactBse = false, homeLink = false, className }: LogoLockupProps) {
   const dark = tone === 'dark';
 
@@ -61,7 +61,7 @@ export default function LogoLockup({ tone = 'light', showBse = true, compactBse 
                 dark ? 'text-gold-soft' : 'text-gold-ink',
               )}
             >
-              Co-powered by
+              co-organised by
             </span>
           </span>
         </span>
