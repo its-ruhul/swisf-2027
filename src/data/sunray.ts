@@ -47,8 +47,7 @@ export const nextGeneration = {
   quote: { text: 'Bringing teachers, parents and young minds into the', highlight: 'innovation story.' },
   schools: {
     title: 'Is your school ready to take part?',
-    text: 'Write to the Project Sunray team to bring your students into Project Sunray, or to mentor a school team.',
+    text: 'Write to the Project Sunray team to bring your students into Project Sunray.',
     register: { label: 'Register Interest', subject: 'Project Sunray – School Registration' },
-    mentor: { label: 'Become a Mentor', subject: 'Project Sunray – Mentor' },
   },
 };

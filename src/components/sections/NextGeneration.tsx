@@ -128,15 +128,13 @@ export default function NextGeneration() {
               <IconCircle icon={School} accent="gold" size="md" tone="dark" interactive={false} />
               <div>
                 <h2 className="text-xl font-semibold text-cream sm:text-2xl lg:text-xl xl:text-2xl">{schools.title}</h2>
-                <p className="mt-1 max-w-xl text-[14px] text-cream/75 lg:hidden xl:block">{schools.text}</p>
+                <p className="mt-1 max-w-xl text-[14px] text-cream/75">{schools.text}</p>
               </div>
             </div>
-            <div className="relative mt-6 flex flex-col gap-3 xs:flex-row lg:mt-0 lg:shrink-0">
+            {/* phones: under the text, lined up with it; desktop: on the right */}
+            <div className="relative mt-5 pl-[72px] lg:mt-0 lg:shrink-0 lg:pl-0">
               <Button href={mailto(schools.register.subject)} variant="sun" icon={Mail} iconPosition="left">
                 {schools.register.label}
-              </Button>
-              <Button href={mailto(schools.mentor.subject)} variant="outline-light">
-                {schools.mentor.label}
               </Button>
             </div>
           </div>
