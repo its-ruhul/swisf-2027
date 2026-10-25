@@ -61,9 +61,9 @@ export const site = {
   },
 
   organiser: {
-    eyebrow: 'About the organisers',
-    name: 'E-Cell, NIT Meghalaya',
-    text: 'The student-run Entrepreneurship Cell building startup culture at NIT Meghalaya, an Institute of National Importance under the Ministry of Education, Government of India.',
+    eyebrow: 'SCOTLAND OF THE EAST',
+    name: 'Shillong',
+    text: 'Nestled in the heart of Meghalaya, a beautiful state in Northeast India meaning “Abode of clouds” is a city named Shillong which is known as the “Scotland of East”.',
   },
 
   coPoweredBy: 'BSE (Bombay Stock Exchange)',

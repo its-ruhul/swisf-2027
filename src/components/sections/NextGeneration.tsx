@@ -135,9 +135,6 @@ export default function NextGeneration() {
               <Button href={mailto(schools.register.subject)} variant="sun" icon={Mail} iconPosition="left">
                 {schools.register.label}
               </Button>
-              <Button href={mailto(schools.mentor.subject)} variant="outline-light">
-                {schools.mentor.label}
-              </Button>
             </div>
           </div>
         </Reveal>
