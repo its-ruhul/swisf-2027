@@ -1,4 +1,4 @@
-import { Download, Handshake, Mail, Phone } from 'lucide-react';
+import { Download, Mail, Phone } from 'lucide-react';
 import { partners, partnersPage } from '../../data/partners';
 import { site } from '../../data/site';
 import { PatternBorder, PeachCloud, PlumBlossom } from '../ornaments/Decor';
