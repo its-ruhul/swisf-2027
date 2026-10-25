@@ -82,7 +82,7 @@ export default function Footer() {
               <span aria-hidden="true" className="h-px w-10 bg-gold" />
             </div>
             <SocialLinks tone="dark" className="mt-4" />
-            <p className="mt-3 text-sm text-cream/70">@{site.socials.instagram.handle}</p>
+            {/*<p className="mt-3 text-sm text-cream/70">@{site.socials.instagram.handle}</p>*/}
           </div>
         </div>
 

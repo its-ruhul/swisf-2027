@@ -46,17 +46,17 @@ export const site = {
     instagram: {
       label: 'Instagram',
       handle: 'ecell_nitmeghalaya',
-      url: 'https://www.instagram.com/ecell_nitmeghalaya/',
+      url: 'https://swisf.github.io/wisf/',
     },
     linkedin: {
       label: 'LinkedIn',
       handle: 'E-Cell NIT Meghalaya',
-      url: 'https://www.linkedin.com/company/e-cell-nit-meghalaya/posts/',
+      url: 'https://swisf.github.io/wisf/',
     },
     youtube: {
       label: 'YouTube',
       handle: 'E-Cell NIT Meghalaya',
-      url: 'https://www.youtube.com/@nitm_ecell',
+      url: 'https://swisf.github.io/wisf/',
     },
   },
 
