@@ -89,12 +89,6 @@ export default function Footer() {
         {/* Partners: organised by | co-organised by — logo left, label and name beside it */}
         <div className="mt-10 flex flex-col gap-6 border-t border-gold/25 pt-8 sm:mt-12 sm:flex-row sm:items-center sm:gap-10 sm:pt-10">
           <PartnerMark
-            label="Regional Partner"
-            name="E-Cell, NIT Meghalaya"
-            logo={<img src={ecellCrest} alt="E-Cell NIT Meghalaya crest" width={320} height={255} loading="lazy" className="h-14 w-auto" />}
-          />
-          <span aria-hidden="true" className="hidden h-14 w-px bg-gold/50 sm:block" />
-          <PartnerMark
             label="co-organised by"
             name="Bombay Stock Exchange"
             logo={
@@ -102,6 +96,12 @@ export default function Footer() {
                 <img src={bseLogo} alt="BSE logo" width={450} height={246} loading="lazy" className="h-9 w-auto" />
               </span>
             }
+          />
+          <span aria-hidden="true" className="hidden h-14 w-px bg-gold/50 sm:block" />
+          <PartnerMark
+            label="co-organisd by"
+            name="E-Cell, NIT Meghalaya"
+            logo={<img src={ecellCrest} alt="E-Cell NIT Meghalaya crest" width={320} height={255} loading="lazy" className="h-14 w-auto" />}
           />
         </div>
 
