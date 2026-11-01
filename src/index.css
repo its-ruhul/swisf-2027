@@ -27,6 +27,8 @@
 
 @layer base {
   html {
+    /* framer-motion measures scroll offsets against the root, which must not be static */
+    position: relative;
     scroll-behavior: smooth;
     scroll-padding-top: calc(var(--nav-h) + 16px);
     -webkit-text-size-adjust: 100%;
@@ -99,14 +101,12 @@
     animation: sheen 9s ease-in-out infinite;
   }
 
-  /* SUNRAY wordmark in the hero: cream with a slow gold sheen, like the official logo */
-  .hero-wordmark {
-    background-image: linear-gradient(100deg, #faf6ee 0%, #e6cf94 30%, #fff8e6 50%, #e6cf94 70%, #faf6ee 100%);
-    background-size: 220% 100%;
+  /* The SUNRAY wordmark: Sun's gold running into Ray's crimson (deep enough to read on cream) */
+  .text-sunray {
+    background-image: linear-gradient(100deg, #a97a33 0%, #c65f21 45%, #b5122b 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: sheen 11s ease-in-out infinite;
   }
 
   /* Gold gradient pill (primary call to action on dark backgrounds) */
@@ -443,9 +443,9 @@
 }
 
 .firework {
-  transform-box: fill-box;
-  transform-origin: center;
   animation: firework var(--dur, 6s) ease-out var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+  opacity: 0;
 }
 
 /* Low fog drifting across the hero photo */
@@ -515,6 +515,150 @@
   mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.6) 25%, transparent 68%);
 }
 
+/* Mascot wings: a slow beat around the shoulder, narrowing slightly at the top of the stroke */
+@keyframes wing-beat {
+  0%,
+  100% {
+    transform: rotate(calc(var(--beat, 3deg) * -1.4)) scaleX(1);
+  }
+  42% {
+    transform: rotate(var(--beat, 3deg)) scaleX(0.975);
+  }
+}
+
+.mascot-wing {
+  animation: wing-beat var(--period, 5s) cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+/* The whole figure breathes up and down */
+@keyframes mascot-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, var(--float, -6px), 0);
+  }
+}
+
+.mascot-float {
+  animation: mascot-float var(--period, 7s) ease-in-out infinite;
+  will-change: transform;
+}
+
+/* A glint that opens, turns and closes */
+@keyframes sparkle {
+  0%,
+  62%,
+  100% {
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  78% {
+    transform: translate(-50%, -50%) scale(1) rotate(40deg);
+    opacity: 1;
+  }
+}
+
+.sparkle {
+  animation: sparkle 4.6s ease-in-out var(--delay, 0s) infinite;
+}
+
+/* Sparks thrown out in a ring when a mascot reacts */
+@keyframes burst {
+  from {
+    transform: rotate(var(--a)) translateX(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(var(--a)) translateX(var(--d)) scale(0.2);
+    opacity: 0;
+  }
+}
+
+.burst-dot {
+  animation: burst 0.95s cubic-bezier(0.15, 0.7, 0.3, 1) both;
+}
+
+/* Concert light sweeping the night sky behind Ray */
+@keyframes beam-sway {
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(var(--from, -14deg));
+  }
+  50% {
+    transform: translateX(-50%) rotate(var(--to, 14deg));
+  }
+}
+
+.stage-beam {
+  transform-origin: 50% 100%;
+  clip-path: polygon(44% 100%, 56% 100%, 100% 0, 0 0);
+  animation: beam-sway var(--dur, 8s) ease-in-out var(--delay, 0s) infinite;
+  will-change: transform;
+}
+
+/* Sun and Ray circling the globe, with their portraits kept upright */
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-counter {
+  from {
+    transform: rotate(var(--start, 0deg));
+  }
+  to {
+    transform: rotate(calc(var(--start, 0deg) - 360deg));
+  }
+}
+
+.orbit-spin {
+  animation: orbit-spin var(--orbit, 34s) linear infinite;
+  will-change: transform;
+}
+
+.orbit-counter {
+  transform: rotate(var(--start, 0deg));
+  animation: orbit-counter var(--orbit, 34s) linear infinite;
+  will-change: transform;
+}
+
+/* The light they leave behind on the orbit: a tapering arc on a thin ring */
+.comet-trail {
+  background: conic-gradient(from 0deg, rgba(224, 123, 57, 0) 0deg 150deg, rgba(224, 123, 57, 0.15) 220deg, rgba(246, 199, 107, 0.95) 322deg, rgba(246, 199, 107, 0) 322.1deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent calc(100% - 4px), #000 calc(100% - 3.5px));
+  mask-image: radial-gradient(closest-side, transparent calc(100% - 4px), #000 calc(100% - 3.5px));
+}
+
+/* A spark running along a line, from one stop to the next */
+@keyframes run-along {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  12%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.run-along {
+  animation: run-along 3.4s ease-in-out var(--delay, 0s) infinite;
+}
+
+/* Looping animations stop while their section is off screen (usePauseOffscreen) */
+[data-paused='true'],
+[data-paused='true'] * {
+  animation-play-state: paused !important;
+}
+
 /* Pause marquees on hover so a phrase can be read */
 .marquee-track:hover {
   animation-play-state: paused;
@@ -542,7 +686,11 @@
   .petal,
   .sky-lantern,
   .firework,
-  .glint {
+  .glint,
+  .sparkle,
+  .burst-dot,
+  .stage-beam,
+  .run-along {
     display: none;
   }
 }

@@ -75,6 +75,8 @@ export const site = {
 export const navLinks = [
   { label: 'Home', to: '/' },
   { label: 'What You Experience', to: '/experience' },
+  { label: 'Project Centre', to: '/project-sunray' },
+  { label: 'Mascots', to: '/mascots' },
   { label: 'Project Sunray', to: '/project-sunray' },
   { label: 'Sponsors', to: '/sponsors' },
   /*
@@ -101,6 +103,11 @@ export const seo = {
     title: 'Project Sunray — The Next Generation | SWISF 2027',
     description:
       'Through E-Cell’s Project Sunray, SWISF 2027 reaches schools across Meghalaya and the Northeast. Students build, present and learn alongside founders and mentors.',
+  },
+  mascots: {
+    title: 'Mascots | Meet Sun and Ray, SWISF 2027',
+    description:
+      'Meet Sun and Ray, the official mascots of SWISF 2027 in Shillong. Sun brings the light of new ideas; her fiery dragon companion Ray brings the energy to make them happen.',
   },
   sponsors: {
     title: 'Sponsors & Partners | SWISF 2027, co-organised by BSE',

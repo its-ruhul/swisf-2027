@@ -15,8 +15,14 @@ type LayerProps = {
   className?: string;
 };
 
-/** Glowing gold motes drifting upwards. */
-export function GoldDust({ count = 28, seed = 7, className }: LayerProps) {
+const DUST = {
+  gold: { fill: 'radial-gradient(circle, #FFF1C9 0%, #E9B954 45%, rgba(233,185,84,0) 72%)', glow: 'rgba(246, 199, 107, 0.65)', speed: 1 },
+  ember: { fill: 'radial-gradient(circle, #FFE7B0 0%, #F2742B 45%, rgba(229,69,40,0) 72%)', glow: 'rgba(242, 116, 43, 0.75)', speed: 0.6 },
+} as const;
+
+/** Glowing motes drifting upwards: gold dust, or embers (which rise faster). */
+export function GoldDust({ count = 28, seed = 7, tone = 'gold', className }: LayerProps & { tone?: keyof typeof DUST }) {
+  const look = DUST[tone];
   const motes = useMemo(() => {
     const rand = mulberry32(seed);
     return Array.from({ length: count }, (_, i) => ({
@@ -24,13 +30,13 @@ export function GoldDust({ count = 28, seed = 7, className }: LayerProps) {
       left: rand() * 100,
       bottom: rand() * 30 - 8,
       size: 2 + rand() * 3.5,
-      dur: 11 + rand() * 12,
+      dur: (11 + rand() * 12) * look.speed,
       delay: -rand() * 20,
       sway: (rand() - 0.5) * 80,
       rise: -(45 + rand() * 50),
       opacity: 0.45 + rand() * 0.5,
     }));
-  }, [count, seed]);
+  }, [count, seed, look.speed]);
 
   return (
     <div aria-hidden="true" className={cn('pointer-events-none absolute inset-0 overflow-hidden', className)}>
@@ -51,8 +57,8 @@ export function GoldDust({ count = 28, seed = 7, className }: LayerProps) {
               bottom: `${m.bottom}%`,
               width: m.size,
               height: m.size,
-              background: 'radial-gradient(circle, #FFF1C9 0%, #E9B954 45%, rgba(233,185,84,0) 72%)',
-              boxShadow: `0 0 ${m.size * 3}px rgba(246, 199, 107, 0.65)`,
+              background: look.fill,
+              boxShadow: `0 0 ${m.size * 3}px ${look.glow}`,
             },
           )}
         />
@@ -61,22 +67,41 @@ export function GoldDust({ count = 28, seed = 7, className }: LayerProps) {
   );
 }
 
-/** Plum-blossom petals drifting down across a section. */
-export function FallingPetals({ count = 14, seed = 11, className }: LayerProps) {
+const FALLING = {
+  petal: {
+    colours: ['#E5455F', '#F4A6B5', '#F7C6CF', '#E07B39'],
+    minSize: 9,
+    spin: [360, 360],
+    shape: 'M10 1C14 5 16 10 10 19C4 10 6 5 10 1Z',
+    vein: 'M10 4V15',
+    veinColour: '#FFFFFF',
+  },
+  feather: {
+    colours: ['#E9B954', '#F6C76B', '#F2A24F', '#D9A441'],
+    minSize: 15,
+    spin: [50, 170],
+    shape: 'M11 0C15 5 15.5 12 10.6 20C6 14.5 6.4 5.5 11 0Z',
+    vein: 'M10.9 2C11.4 8 11.2 14 10.6 20',
+    veinColour: '#FFF6D8',
+  },
+} as const;
+
+/** Plum-blossom petals or golden feathers drifting down across a section. */
+export function FallingPetals({ count = 14, seed = 11, kind = 'petal', className }: LayerProps & { kind?: keyof typeof FALLING }) {
+  const look = FALLING[kind];
   const petals = useMemo(() => {
     const rand = mulberry32(seed);
-    const colours = ['#E5455F', '#F4A6B5', '#F7C6CF', '#E07B39'];
     return Array.from({ length: count }, (_, i) => ({
       id: i,
       left: rand() * 100,
-      size: 9 + rand() * 9,
+      size: look.minSize + rand() * look.minSize,
       dur: 13 + rand() * 12,
       delay: -rand() * 24,
       sway: (rand() - 0.5) * 160,
-      spin: (rand() > 0.5 ? 1 : -1) * (360 + rand() * 360),
-      colour: colours[Math.floor(rand() * colours.length)],
+      spin: (rand() > 0.5 ? 1 : -1) * (look.spin[0] + rand() * look.spin[1]),
+      colour: look.colours[Math.floor(rand() * look.colours.length)],
     }));
-  }, [count, seed]);
+  }, [count, seed, look]);
 
   return (
     <div aria-hidden="true" className={cn('pointer-events-none absolute inset-0 overflow-hidden', className)}>
@@ -90,8 +115,8 @@ export function FallingPetals({ count = 14, seed = 11, className }: LayerProps) 
             { left: `${p.left}%`, width: p.size, height: p.size },
           )}
         >
-          <path d="M10 1C14 5 16 10 10 19C4 10 6 5 10 1Z" fill={p.colour} fillOpacity="0.85" />
-          <path d="M10 4V15" stroke="#FFFFFF" strokeOpacity="0.45" strokeWidth="0.8" />
+          <path d={look.shape} fill={p.colour} fillOpacity="0.85" />
+          <path d={look.vein} stroke={look.veinColour} strokeOpacity="0.45" strokeWidth="0.8" fill="none" />
         </svg>
       ))}
     </div>

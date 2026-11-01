@@ -22,7 +22,7 @@ export default function LogoLockup({ tone = 'light', showBse = true, compactBse 
 
   const swisf = (
     <span className="flex items-center gap-2.5 sm:gap-3">
-      <SwisfEmblem eager glint className="h-8 sm:h-9" />
+      <SwisfEmblem eager className="h-8 sm:h-9" />
       <span
         className={cn(
           'whitespace-nowrap text-[14px] font-bold tracking-[0.2em] transition-colors duration-300 sm:text-[15px]',

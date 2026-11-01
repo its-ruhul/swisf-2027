@@ -11,6 +11,7 @@ two-tone headings, gold cloud and circuit ornaments, outlined icon circles and t
 | `/` | Home: full-screen sunrise hero with countdown and ticker, then one-screen panels: welcome letter, About SWISF 2027, Why the Northeast; boxed closing banner |
 | `/experience` | One screen with a **Day / Night** switch: the Summit by Day, or the Festival by Night (`/experience#festival` opens at night) |
 | `/project-sunray` | One screen: The Next Generation, the Project Sunray journey and schools sign-up |
+| `/mascots` | Meet the mascots: a split dawn/night opening screen, then one screen each for Sun and Ray, and "Together they are SUNRAY" |
 | `/sponsors` | co-organised by BSE, partner categories marked “Coming soon” (`#partner-with-us`), collaborate banner, partner logo wall |
 | `/team` | Leadership and departments, filterable by department |
 | anything else | 404: "The sun hasn't risen here" |
@@ -65,6 +66,7 @@ All text, lists and icons live in typed data files. You don't need to touch any 
 | `src/data/summit.ts` | Experience page title and Day/Night labels, Summit activities (8), conversation topics |
 | `src/data/festival.ts` | Festival copy, highlights, closing line |
 | `src/data/sunray.ts` | Project Sunray copy, the four journey steps, schools call-to-action |
+| `src/data/mascots.ts` | Sun and Ray: names, taglines, descriptions, what they stand for, the labels on their artwork; "Together they are SUNRAY" |
 | `src/data/partners.ts` | BSE card, partner categories (“Coming soon”), **partner logo list** |
 | `src/data/team.ts` | Departments and **team members** |
 
@@ -130,6 +132,17 @@ Logos show in grayscale and turn to colour on hover. Transparent PNG/WebP, at le
 The "Download Brochure (PDF)" buttons link to `public/swisf-2027-brochure.pdf`. Replace that file to update it (keep the name).
 
 ## 5. Images
+
+### Mascot art
+
+`src/assets/images/mascots/` holds each mascot in three layers (body, left wing, right wing) so the wings can beat, plus
+`layout.json`, which says where each wing sits and where its shoulder is. All of it is generated. To use new or higher-resolution
+artwork of the same pictures (Pillow and numpy needed, nothing here runs in the browser):
+
+```bash
+python scripts/cut-mascots.py path/to/sun.png path/to/ray.png
+```
+
 
 Every image is in `src/assets/images/` or `src/assets/logos/` as WebP. **[`src/assets/images/README.md`](src/assets/images/README.md)** lists each file, what it shows, where it's used and where it came from.
 To swap an image, replace the file and keep the same name (ideally similar proportions).

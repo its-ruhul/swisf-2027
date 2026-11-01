@@ -10,12 +10,14 @@ import Home from './routes/Home';
 const routeImports = {
   experience: () => import('./routes/Experience'),
   sunray: () => import('./routes/ProjectSunray'),
+  mascots: () => import('./routes/Mascots'),
   sponsors: () => import('./routes/Sponsors'),
   team: () => import('./routes/Team'),
   notFound: () => import('./routes/NotFound'),
 };
 const Experience = lazy(routeImports.experience);
 const ProjectSunray = lazy(routeImports.sunray);
+const Mascots = lazy(routeImports.mascots);
 const Sponsors = lazy(routeImports.sponsors);
 const Team = lazy(routeImports.team);
 const NotFound = lazy(routeImports.notFound);
@@ -41,7 +43,7 @@ function Lazy({ children }: { children: ReactNode }) {
   return (
     <Suspense
       fallback={
-        <div className="min-h-[70vh]" aria-busy="true">
+        <div className="min-h-[100svh]" aria-busy="true">
           <span className="sr-only">Loading…</span>
         </div>
       }
@@ -69,6 +71,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/experience" element={<Lazy><Experience /></Lazy>} />
           <Route path="/project-sunray" element={<Lazy><ProjectSunray /></Lazy>} />
+          <Route path="/mascots" element={<Lazy><Mascots /></Lazy>} />
           <Route path="/sponsors" element={<Lazy><Sponsors /></Lazy>} />
           <Route path="/team" element={<Lazy><Team /></Lazy>} />
           <Route path="/404" element={<Lazy><NotFound /></Lazy>} />

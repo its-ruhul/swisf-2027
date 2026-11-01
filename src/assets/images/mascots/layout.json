@@ -1,0 +1,50 @@
+{
+  "sun": {
+    "width": 823,
+    "height": 1000,
+    "left": {
+      "pixelWidth": 270,
+      "pixelHeight": 335,
+      "left": 2.92,
+      "top": 11.9,
+      "width": 32.81,
+      "height": 33.5,
+      "originX": 99.45,
+      "originY": 79.21
+    },
+    "right": {
+      "pixelWidth": 231,
+      "pixelHeight": 381,
+      "left": 71.81,
+      "top": 9.0,
+      "width": 28.07,
+      "height": 38.1,
+      "originX": -11.42,
+      "originY": 78.15
+    }
+  },
+  "ray": {
+    "width": 788,
+    "height": 1000,
+    "left": {
+      "pixelWidth": 164,
+      "pixelHeight": 501,
+      "left": 1.78,
+      "top": 19.9,
+      "width": 20.81,
+      "height": 50.1,
+      "originX": 112.1,
+      "originY": 49.31
+    },
+    "right": {
+      "pixelWidth": 372,
+      "pixelHeight": 435,
+      "left": 52.03,
+      "top": 13.5,
+      "width": 47.21,
+      "height": 43.5,
+      "originX": -6.75,
+      "originY": 74.81
+    }
+  }
+}
