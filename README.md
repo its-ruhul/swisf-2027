@@ -135,13 +135,19 @@ The "Download Brochure (PDF)" buttons link to `public/swisf-2027-brochure.pdf`. 
 
 ### Mascot art
 
-`src/assets/images/mascots/` holds each mascot in three layers (body, left wing, right wing) so the wings can beat, plus
-`layout.json`, which says where each wing sits and where its shoulder is. All of it is generated. To use new or higher-resolution
-artwork of the same pictures (Pillow and numpy needed, nothing here runs in the browser):
+`src/assets/images/mascots/` holds each mascot in three layers (body, left wing, right wing) so the wings can beat, each at two
+sizes that the browser chooses between, plus a small portrait and `layout.json`, which says where each wing sits and where its
+shoulder is. All of it is generated, and nothing here runs in the browser.
+
+The supplied art is only 484×600, so the current files were enlarged 4× with [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN)
+(the portable `realesrgan-ncnn-vulkan` download, which isn't part of this project). The AI redraws the fine detail, so
+check faces, hands and the badges after a re-run. To regenerate (needs Pillow and numpy):
 
 ```bash
-python scripts/cut-mascots.py path/to/sun.png path/to/ray.png
+python scripts/cut-mascots.py path/to/sun.png path/to/ray.png --upscaler path/to/realesrgan-ncnn-vulkan.exe
 ```
+
+If you get a real high-resolution export of the same pictures, leave out `--upscaler`: real detail always beats an upscale.
 
 
 Every image is in `src/assets/images/` or `src/assets/logos/` as WebP. **[`src/assets/images/README.md`](src/assets/images/README.md)** lists each file, what it shows, where it's used and where it came from.
@@ -167,14 +173,15 @@ src/
                                        SocialLinks, icons
     ornaments/                         GoldCloud, CircuitTraces, DottedGlobe, SkylineStrip, Lantern, LatticeBorder,
                                        MandalaWatermark, ArcFrame, StarField, Decor, Motif, Particles (GoldDust, FallingPetals,
-                                       SkyLanterns), PrayerFlags, Seigaiha, Fireworks, AtomOrbit, Enso
+                                       SkyLanterns), PrayerFlags, Seigaiha, Fireworks, AtomOrbit, Enso, MascotArt, Ridge, RisingSun
     sections/                          Hero, Welcome, AboutSwisf, WhyNortheast, StatesRing, HomeCta,
-                                       DayNightToggle, SummitByDay, FestivalByNight, NextGeneration, Partners,
-                                       TeamGrid, StatCounter
-  data/                                site, home, summit, festival, sunray, partners, team
-  hooks/                               useCountdown, useScrolled, usePageMeta, useScrollReveal
+                                       DayNightToggle, SummitByDay, FestivalByNight, NextGeneration, MascotsHero, MeetSun,
+                                       MeetRay, MascotCopy, MascotsTogether, Partners, TeamGrid, StatCounter
+  data/                                site, home, summit, festival, sunray, mascots, partners, team
+  hooks/                               useCountdown, useScrolled, usePageMeta, useScrollReveal, usePauseOffscreen, usePointerLean
   lib/                                 accents (colour → class maps), cn, cssVars, random (seeded ornaments)
   assets/images, assets/logos          WebP artwork
+scripts/cut-mascots.py                 turns the mascot artwork into the layered WebPs (dev only)
 public/                                .htaccess, favicon.png, apple-touch-icon.png, og-image.jpg,
                                        robots.txt, sitemap.xml, swisf-2027-brochure.pdf
 ```
@@ -222,3 +229,6 @@ auspicious cloud and the Northeast hills (`src/components/ornaments/Motif.tsx`).
 - `prefers-reduced-motion` turns off every non-essential animation (photo zoom, god-rays, fog, gold dust, petals, flags, fireworks,
   sky lanterns, glints, tickers, clouds, lanterns, globe, reveals, page transitions). Looping effects animate only
   `transform` and `opacity`, and particles are seeded so they never re-shuffle between renders.
+- To keep a page smooth, loop only `transform` and `opacity` on HTML elements or a whole `<svg>`, which run on the compositor. Looping
+  anything else (`background-position`, `stroke-dashoffset`, shapes inside an SVG, `<animateMotion>`) repaints on the main thread every
+  frame, as long as it runs and even when it is off screen. `usePauseOffscreen` stops the loops in a section or SVG while it is out of view.

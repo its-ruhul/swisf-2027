@@ -1,22 +1,28 @@
 #!/usr/bin/env python3
 """Turn the mascot artwork into the layered WebPs used by the /mascots page.
 
-    python scripts/cut-mascots.py <sun-image> <ray-image> [--preview <dir>]
+    python scripts/cut-mascots.py <sun-image> <ray-image> --upscaler <realesrgan-ncnn-vulkan.exe>
 
-For each mascot this writes body + left wing + right wing to
-src/assets/images/mascots/, plus layout.json, which tells MascotArt.tsx where
-each wing sits and where its shoulder is.
+For each mascot this writes body + left wing + right wing at two sizes, and a
+small portrait, to src/assets/images/mascots/, plus layout.json, which tells
+MascotArt.tsx where each wing sits and where its shoulder is.
 
-The supplied art is flat on white, so the mascot is first cut out of the white.
-Art that already has transparency skips that step. All coordinates below are on
-the 484 x 600 canvas of the supplied art and scale with the input, so a
-higher-resolution export of the same picture works without any other change.
+The supplied art is only 484 x 600, so --upscaler enlarges it 4x with Real-ESRGAN
+first (github.com/xinntao/Real-ESRGAN, the portable "ncnn-vulkan" download; it is
+not part of this project). Leave the option out if you have a real high-resolution
+export of the same pictures: that always beats an upscale. Sizes are read from the
+height of the input and all coordinates below are on the 600px-tall supplied art.
+
+The art is flat on white, so the mascot is then cut out of the white. Art that
+already has transparency skips that step.
 
 Requires Pillow and numpy (dev only, nothing here runs in the browser).
 """
 import argparse
 import json
 import os
+import subprocess
+import tempfile
 from collections import deque
 
 import numpy as np
@@ -25,8 +31,16 @@ from PIL import Image, ImageDraw, ImageFilter
 BASE_W, BASE_H = 484, 600
 OUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'src', 'assets', 'images', 'mascots')
 
-# Output height in pixels. The art is drawn up to about 880 CSS pixels tall.
-TARGET_HEIGHT = 1000
+# Output heights in pixels, as (file suffix, height), largest first, and MascotArt.tsx lets the browser choose. The
+# small files are just big enough for a screen 1920 physical pixels wide; the large ones cover high-density and very
+# large screens, where the art is drawn up to about 1,430 pixels tall.
+SIZES = (('', 1800), ('-sm', 1150))
+PORTRAIT_SIZE = 360
+# What counts as background white: bright and with no tint, unlike warm highlights on feathers and hair. An upscaled
+# background drifts a little below pure white, so anything this close is cleared completely rather than left as haze.
+WHITE = 0.955
+WHITE_TINT = 0.035
+OFF_WHITE = 0.03
 
 MASCOTS = {
     'sun': {
@@ -40,10 +54,14 @@ MASCOTS = {
         ],
         # sky left behind between the crown's spikes: pale, colourless specks
         'speck_zones': [[(150, 20), (345, 20), (350, 165), (305, 135), (290, 106), (200, 110), (180, 135), (150, 165)]],
-        'speck_keep': (243, 85, 19),  # the orb at the top of the crown is meant to be bright
+        # white that is paint, not background: the crown's orb; her face and earrings
+        'keep_white': [[(224, 66), (262, 66), (262, 104), (224, 104)], [(222, 112), (280, 112), (300, 165), (300, 205), (208, 205), (208, 165)]],
         't_out': 0.86,
         't_protect': 0.975,
-        'hole_min_pure': 0.1,
+        # the two upscaler models blended: the anime one is crisp, the general one keeps texture (her sash)
+        'anime_share': 0.7,
+        # the portrait on the Together panel: its centre in % of the artwork, and how far it zooms in
+        'portrait': {'x': 50, 'y': 21, 'zoom': 3},
         'edge_fade': {'right': 8, 'left': 6},
         'extend_wing': None,
         'crop': (0, 12, 484, 600),
@@ -70,10 +88,13 @@ MASCOTS = {
         'erase': [],
         't_out': 0.80,
         't_protect': 0.97,
-        'hole_min_pure': 0.05,
+        # the anime model alone smooths away his scales
+        'anime_share': 0.5,
+        'portrait': {'x': 31, 'y': 18, 'zoom': 3.2},
         'edge_fade': {'bottom': 5},
         'speck_zones': [],
-        'speck_keep': None,
+        # white that is paint, not background: the catchlight in his eye and his teeth
+        'keep_white': [[(195, 100), (280, 100), (280, 170), (195, 170)]],
         # the wing runs off the right edge of the picture: finish it with a tip like its other lobes, painted
         # by extending the edge colours along the wing's fan of bones (fan centre, then the new outline)
         'extend_wing': {'fan': (373, 152), 'top': (482, 220), 'top_ctrl': (506, 244), 'tip': (525, 302), 'bottom_ctrl': (491, 280), 'bottom': (482, 311), 'inner_x': 470},
@@ -110,7 +131,7 @@ def components(mask):
     h, w = mask.shape
     labels = -np.ones(mask.shape, np.int32)
     found = []
-    for sy, sx in zip(*np.nonzero(mask)):
+    for sy, sx in zip(*(a.tolist() for a in np.nonzero(mask))):
         if labels[sy, sx] >= 0:
             continue
         queue = deque([(sy, sx)])
@@ -132,7 +153,7 @@ def components(mask):
 def flood(seed, passable):
     h, w = passable.shape
     seen = seed.copy()
-    queue = deque(zip(*np.nonzero(seed)))
+    queue = deque(zip(*(a.tolist() for a in np.nonzero(seed))))
     while queue:
         y, x = queue.popleft()
         for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
@@ -155,33 +176,34 @@ def dilate(mask, radius):
     return out
 
 
+def background(rgb, keep):
+    """White that belongs to the background: connected to the outside, or trapped in hair and outside the areas where white is paint."""
+    low = rgb.min(axis=2)
+    seed = np.zeros(low.shape, bool)
+    for pts, touches in components((low >= WHITE) & (rgb.max(axis=2) - low <= WHITE_TINT)):
+        ys, xs = zip(*pts)
+        if touches or keep[ys, xs].mean() < 0.5:
+            seed[ys, xs] = True
+    return seed
+
+
 def cut_from_white(rgb, spec, scale):
     """Soft alpha from how white a pixel is, for white connected to the outside (or trapped in hair)."""
     h, w, _ = rgb.shape
     low = rgb.min(axis=2)
-    low8 = (low * 255).round().astype(np.int32)
     protect = poly_mask((w, h), spec['protect'], scale)
     protect_np = np.asarray(protect) > 127
     fade_limit = spec['t_out'] + (spec['t_protect'] - spec['t_out']) * blurred(protect, 3 * scale)
+    paint = np.asarray(poly_mask((w, h), spec['keep_white'], scale)) > 127
 
-    seed = np.zeros((h, w), bool)
-    for pts, touches in components(low8 >= 250):
-        ys, xs = zip(*pts)
-        is_hole = np.mean(low8[ys, xs] == 255) >= spec['hole_min_pure'] and protect_np[ys, xs].mean() < 0.5
-        if touches or is_hole:
-            seed[ys, xs] = True
-
-    fading = flood(seed, low >= fade_limit)
+    fading = flood(background(rgb, protect_np | paint), low >= fade_limit)
     alpha = np.ones((h, w), np.float32)
-    alpha[fading] = np.clip((1 - low[fading]) / (1 - fade_limit[fading]), 0, 1)
+    fully_clear = np.maximum(1 - OFF_WHITE, fade_limit + 0.01)
+    alpha[fading] = np.clip((fully_clear[fading] - low[fading]) / (fully_clear[fading] - fade_limit[fading]), 0, 1)
 
     if spec['speck_zones']:
         zone = np.asarray(poly_mask((w, h), spec['speck_zones'], scale)) > 127
-        pale = zone & (low >= 0.7) & ((rgb.max(axis=2) - low) <= 0.12)
-        if spec['speck_keep']:
-            cx, cy, r = (v * scale for v in spec['speck_keep'])
-            yy, xx = np.mgrid[0:h, 0:w]
-            pale &= (xx - cx) ** 2 + (yy - cy) ** 2 > r * r
+        pale = zone & ~paint & (low >= 0.7) & ((rgb.max(axis=2) - low) <= 0.12)
         for pts, _ in components(pale):
             if len(pts) <= 45 * scale * scale:
                 ys, xs = zip(*pts)
@@ -189,7 +211,7 @@ def cut_from_white(rgb, spec, scale):
 
     # Rim pixels were painted half-way to white, so they read as a pale outline on dark backgrounds.
     # Take the true colour from the darkest neighbour and turn the rest of the pixel into transparency.
-    radius = max(1, int(round(2 * scale)))
+    radius = max(1, int(round(min(2 * scale, 5))))
     rim = dilate(alpha < 0.5, radius) & (alpha >= 0.5) & ~protect_np
     white = np.ones(3, np.float32)
     for y, x in zip(*np.nonzero(rim)):
@@ -259,8 +281,8 @@ def extend_wing(rgba, spec, scale):
 def soften_outline(rgba, scale):
     """A hair of softening along the outline, so it does not stair-step when enlarged."""
     alpha = rgba[..., 3]
-    near = dilate(alpha < 0.98, max(1, int(round(scale))))
-    radius = 0.6 * scale
+    near = dilate(alpha < 0.98, max(1, int(round(min(scale, 1.5)))))
+    radius = 0.6 * min(scale, 1.5)
     colour = rgba[..., :3].copy()
     soft_alpha = soft(alpha, radius)
     new_alpha = np.where(near, soft_alpha, alpha)
@@ -272,7 +294,6 @@ def soften_outline(rgba, scale):
 
 
 def premultiplied_resize(rgba, size):
-    a = rgba[..., 3:]
     channels = [Image.fromarray(np.clip(rgba[..., i] * rgba[..., 3], 0, 1) * 255) for i in range(3)]
     channels.append(Image.fromarray(rgba[..., 3] * 255))
     resized = [np.asarray(c.resize(size, Image.LANCZOS)).astype(np.float32) / 255 for c in channels]
@@ -289,7 +310,7 @@ def soft(channel, radius=6):
     return np.asarray(Image.fromarray((channel * 255).round().astype(np.uint8)).filter(ImageFilter.GaussianBlur(radius))).astype(np.float32) / 255
 
 
-def sharpen(im):
+def sharpen(im, enlarged):
     # let the colour bleed under the transparent pixels first, or sharpening draws a halo around the outline
     data = np.asarray(im).astype(np.float32) / 255
     soft_alpha = np.maximum(soft(data[..., 3]), 1e-3)
@@ -297,15 +318,46 @@ def sharpen(im):
     for i in range(3):
         bleed = soft(data[..., i] * data[..., 3]) / soft_alpha
         filled[..., i] = np.where(data[..., 3] < 0.6, np.clip(bleed, 0, 1), data[..., i])
-    rgb = Image.fromarray((filled * 255).round().astype(np.uint8), 'RGB').filter(ImageFilter.UnsharpMask(radius=1.8, percent=60, threshold=2))
+    mask = ImageFilter.UnsharpMask(radius=1.8, percent=60, threshold=2) if enlarged else ImageFilter.UnsharpMask(radius=1.0, percent=35, threshold=2)
+    rgb = Image.fromarray((filled * 255).round().astype(np.uint8), 'RGB').filter(mask)
     rgb.putalpha(im.getchannel('A'))
     return rgb
 
 
-def build(name, path, preview_dir):
+def prepare(name, src):
+    """The picture the upscaler should see. A painted-in wing tip goes in now, at source size, so that it gets
+    enlarged along with the rest of the wing; painted on afterwards it would look streaky next to it."""
     spec = MASCOTS[name]
-    src = Image.open(path)
-    scale = src.width / BASE_W
+    if not spec['extend_wing']:
+        return src.convert('RGB')
+    rgb = np.asarray(src.convert('RGB')).astype(np.float32) / 255
+    scale = src.height / BASE_H
+    alpha = cut_from_white(rgb, spec, scale)
+    a = np.maximum(alpha, 1e-3)[..., None]
+    colour = np.where(alpha[..., None] > 0.995, rgb, np.clip((rgb - (1 - a)) / a, 0, 1))
+    painted = extend_wing(np.dstack([colour, alpha]), spec['extend_wing'], scale)
+    on_white = painted[..., :3] * painted[..., 3:] + (1 - painted[..., 3:])
+    return Image.fromarray((np.clip(on_white, 0, 1) * 255).round().astype(np.uint8), 'RGB')
+
+
+def upscale(name, prepared, exe):
+    """4x with both Real-ESRGAN models, blended."""
+    models = os.path.join(os.path.dirname(os.path.abspath(exe)), 'models')
+    results = {}
+    with tempfile.TemporaryDirectory() as tmp:
+        source = os.path.join(tmp, 'source.png')
+        prepared.save(source)
+        for key, model in (('anime', 'realesrgan-x4plus-anime'), ('general', 'realesrgan-x4plus')):
+            out = os.path.join(tmp, f'{key}.png')
+            subprocess.run([exe, '-i', source, '-o', out, '-n', model, '-s', '4', '-m', models, '-f', 'png'], check=True, capture_output=True)
+            results[key] = Image.open(out).convert('RGB')
+            results[key].load()
+    return Image.blend(results['general'], results['anime'], MASCOTS[name]['anime_share'])
+
+
+def build(name, src, preview_dir):
+    spec = MASCOTS[name]
+    scale = src.height / BASE_H
     print(f'{name}: {src.width}x{src.height} {src.mode}, scale {scale:.2f}')
 
     if src.mode in ('RGBA', 'LA') and np.asarray(src.convert('RGBA'))[..., 3].min() < 200:
@@ -340,7 +392,7 @@ def build(name, path, preview_dir):
     colour = np.where(alpha[..., None] > 0.995, rgb, np.clip((rgb - (1 - a)) / a, 0, 1))
     rgba = np.dstack([colour, alpha])
 
-    if spec['extend_wing']:
+    if spec['extend_wing'] and src.width / scale < BASE_W + 1:
         rgba = extend_wing(rgba, spec['extend_wing'], scale)
     rgba = soften_outline(rgba, scale)
     h, w, _ = rgba.shape
@@ -356,37 +408,57 @@ def build(name, path, preview_dir):
 
     crop = tuple(int(round(v * scale)) for v in spec['crop'])
     cw, ch = crop[2] - crop[0], crop[3] - crop[1]
-    upscale = TARGET_HEIGHT / ch
-    final = (int(round(cw * upscale)), int(round(ch * upscale)))
+    height = SIZES[0][1]
+    ratio = height / ch
+    final = (int(round(cw * ratio)), int(round(ch * ratio)))
 
     def layer(mask):
         data = rgba.copy()
         data[..., 3] = rgba[..., 3] * mask
-        data = data[crop[1]:crop[3], crop[0]:crop[2]]
-        return sharpen(to_image(premultiplied_resize(data, final)))
+        return premultiplied_resize(data[crop[1]:crop[3], crop[0]:crop[2]], final)
 
     os.makedirs(OUT_DIR, exist_ok=True)
-    table = {'width': final[0], 'height': final[1]}
+    table = {'width': final[0], 'height': final[1], 'smallWidth': int(round(final[0] * SIZES[1][1] / height))}
 
-    def save(im, label, tight):
-        box = im.getchannel('A').point(lambda v: 255 if v > 3 else 0).getbbox() if tight else (0, 0, im.width, im.height)
-        part = im.crop(box)
+    def write(data, label):
+        image = sharpen(to_image(data), ratio > 1)
         out = os.path.join(OUT_DIR, f'{name}-{label}.webp')
-        part.save(out, 'WEBP', quality=82, alpha_quality=85, method=6)
-        print(f'  {name}-{label}.webp {part.width}x{part.height} {os.path.getsize(out) // 1024} KB')
-        return part, box
+        image.save(out, 'WEBP', quality=82, alpha_quality=85, method=6)
+        print(f'  {name}-{label}.webp {image.width}x{image.height} {os.path.getsize(out) // 1024} KB')
+        return image
 
-    body, _ = save(layer(body_mask), 'body', False)
+    def save(data, label, tight):
+        box = to_image(data).getchannel('A').point(lambda v: 255 if v > 3 else 0).getbbox() if tight else (0, 0, final[0], final[1])
+        part = data[box[1]:box[3], box[0]:box[2]]
+        large = None
+        for suffix, size in SIZES:
+            k = size / height
+            resized = part if k == 1 else premultiplied_resize(part, (max(1, int(round(part.shape[1] * k))), max(1, int(round(part.shape[0] * k)))))
+            image = write(resized, f'{label}{suffix}')
+            large = large or image
+        return large, box
+
+    body_data = layer(body_mask)
+    body, _ = save(body_data, 'body', False)
+
+    # the portrait for the Together panel, cut from the body layer and only as big as it is ever drawn
+    p = spec['portrait']
+    half = final[0] / p['zoom'] / 2
+    cx, cy = final[0] * p['x'] / 100, final[1] * p['y'] / 100
+    corner = (int(round(cx - half)), int(round(cy - half)))
+    side_px = int(round(half * 2))
+    write(premultiplied_resize(body_data[corner[1]:corner[1] + side_px, corner[0]:corner[0] + side_px], (PORTRAIT_SIZE, PORTRAIT_SIZE)), 'portrait')
 
     placed = {}
     for side, wing in spec['wings'].items():
         part, box = save(layer(full[side]), f'wing-{side}', True)
-        px = (wing['pivot'][0] * scale - crop[0]) * upscale
-        py = (wing['pivot'][1] * scale - crop[1]) * upscale
+        px = (wing['pivot'][0] * scale - crop[0]) * ratio
+        py = (wing['pivot'][1] * scale - crop[1]) * ratio
         placed[side] = (part, box, (px, py))
         table[side] = {
             'pixelWidth': box[2] - box[0],
             'pixelHeight': box[3] - box[1],
+            'smallWidth': max(1, int(round((box[2] - box[0]) * SIZES[1][1] / height))),
             'left': round(box[0] / final[0] * 100, 2),
             'top': round(box[1] / final[1] * 100, 2),
             'width': round((box[2] - box[0]) / final[0] * 100, 2),
@@ -400,7 +472,7 @@ def build(name, path, preview_dir):
         # how the layers look at rest and at both ends of the wing beat, on the backgrounds they will meet
         angles = {'rest': (0, 0), 'up': (2.4, -2.4), 'down': (-3.6, 3.6)}
         backs = {'night': (10, 18, 48, 255), 'cream': (250, 246, 238, 255)}
-        sheet = Image.new('RGB', (final[0] * 3 // 2 + 20, final[1] * 2 // 2 + 10), 'white')
+        sheet = Image.new('RGB', ((final[0] // 2 + 10) * 3, (final[1] // 2 + 10) * 2), 'white')
         for row, back in enumerate(backs.values()):
             for col, (left_deg, right_deg) in enumerate(angles.values()):
                 frame = Image.new('RGBA', final, back)
@@ -422,9 +494,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('sun')
     parser.add_argument('ray')
+    parser.add_argument('--upscaler', help='path to realesrgan-ncnn-vulkan, to enlarge low-resolution art first')
+    parser.add_argument('--keep-upscaled', help='also save the enlarged pictures to this folder')
     parser.add_argument('--preview', help='also write a sheet of the wing beat to this folder')
     args = parser.parse_args()
-    layout = {'sun': build('sun', args.sun, args.preview), 'ray': build('ray', args.ray, args.preview)}
+    layout = {}
+    for name, path in (('sun', args.sun), ('ray', args.ray)):
+        src = Image.open(path)
+        if args.upscaler:
+            src = upscale(name, prepare(name, src), args.upscaler)
+            if args.keep_upscaled:
+                os.makedirs(args.keep_upscaled, exist_ok=True)
+                src.save(os.path.join(args.keep_upscaled, f'{name}.png'))
+        layout[name] = build(name, src, args.preview)
     with open(os.path.join(OUT_DIR, 'layout.json'), 'w', encoding='utf-8') as f:
         json.dump(layout, f, indent=2)
         f.write('\n')

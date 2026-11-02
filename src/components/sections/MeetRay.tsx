@@ -137,10 +137,10 @@ export default function MeetRay() {
         </motion.div>
       </div>
 
-      <GoldDust tone="ember" count={26} seed={9} className="z-10 max-sm:[&>*:nth-child(even)]:hidden" />
+      <GoldDust tone="ember" count={18} seed={9} className="z-10 max-sm:[&>*:nth-child(even)]:hidden" />
 
       <div className="relative z-20 shrink-0">
-        <FestivalBand position="center 82%" className="!h-9 sm:!h-11" />
+        <FestivalBand className="!h-9 sm:!h-11" />
       </div>
     </section>
   );

@@ -487,20 +487,14 @@
 /* "Scroll to explore" line */
 @keyframes scroll-cue {
   0% {
-    transform: scaleY(0);
-    transform-origin: top;
+    transform: translateY(-100%);
   }
-  45% {
-    transform: scaleY(1);
-    transform-origin: top;
-  }
+  45%,
   55% {
-    transform: scaleY(1);
-    transform-origin: bottom;
+    transform: translateY(0);
   }
   100% {
-    transform: scaleY(0);
-    transform-origin: bottom;
+    transform: translateY(100%);
   }
 }
 

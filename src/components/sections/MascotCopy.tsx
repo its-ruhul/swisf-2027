@@ -60,7 +60,7 @@ export default function MascotCopy({ mascot, tone, motif, className }: MascotCop
         </p>
       </Reveal>
 
-      <Reveal from="blur" delay={0.3} className="mt-[clamp(12px,2.2vh,22px)] max-w-[33rem]">
+      <Reveal delay={0.3} className="mt-[clamp(12px,2.2vh,22px)] max-w-[33rem]">
         <p className={cn('text-[clamp(16px,2.15vh,19px)] font-semibold leading-snug', dark ? 'text-cream' : 'text-navy')}>{mascot.lead}</p>
         <p className={cn('panel-copy mt-2', dark && '!text-cream/80')}>
           <Highlighted text={mascot.body} words={mascot.highlights} className={dark ? 'font-semibold text-gold-soft' : 'font-semibold text-navy'} />

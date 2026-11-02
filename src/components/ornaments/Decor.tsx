@@ -4,7 +4,7 @@
  */
 import chineseKnot from '../../assets/images/chinese-knot.webp';
 import crimsonCloud from '../../assets/images/crimson-cloud.webp';
-import festivalPattern from '../../assets/images/festival-pattern.webp';
+import festivalBand from '../../assets/images/festival-band.webp';
 import knotCorner from '../../assets/images/knot-corner.webp';
 import lanternFrame from '../../assets/images/lantern-frame.webp';
 import medallionStrip from '../../assets/images/medallion-strip.webp';
@@ -125,16 +125,16 @@ export function PatternBorder({ className }: BandProps) {
 }
 
 /** Deep red band with gold peonies, dragons, coins and clouds (festival borders). */
-export function FestivalBand({ className, position = 'center 30%' }: BandProps & { position?: string }) {
+export function FestivalBand({ className }: BandProps) {
   return (
     <div
       aria-hidden="true"
       className={cn('relative h-20 w-full bg-festival sm:h-24 lg:h-28', className)}
       style={{
-        backgroundImage: `url(${festivalPattern})`,
+        backgroundImage: `url(${festivalBand})`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        backgroundPosition: position,
+        backgroundPosition: 'center 78%',
       }}
     >
       <span className="absolute inset-x-0 bottom-0 h-px bg-gold/70" />

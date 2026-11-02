@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
-import rayBody from '../../assets/images/mascots/ray-body.webp';
-import sunBody from '../../assets/images/mascots/sun-body.webp';
+import rayPortrait from '../../assets/images/mascots/ray-portrait.webp';
+import sunPortrait from '../../assets/images/mascots/sun-portrait.webp';
 import { together, type MascotName } from '../../data/mascots';
 import { usePauseOffscreen } from '../../hooks/usePauseOffscreen';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
@@ -18,31 +18,15 @@ import IconCircle from '../ui/IconCircle';
 import Reveal, { EASE_IN_VIEW, EASE_OUT_OF_VIEW, RevealItem } from '../ui/Reveal';
 import { MotifWatermark } from '../ui/Seal';
 
-/** Portraits cut from the full figures: how far to zoom in and which point to centre, in % of the artwork. */
-const PORTRAIT = {
-  sun: { src: sunBody, width: 823, height: 1000, zoom: 3, x: 50, y: 21 },
-  ray: { src: rayBody, width: 788, height: 1000, zoom: 3.2, x: 31, y: 18 },
-} as const;
+const PORTRAIT = { sun: sunPortrait, ray: rayPortrait } as const;
 
 function Medallion({ name, angle }: { name: MascotName; angle: number }) {
-  const art = PORTRAIT[name];
   return (
     <div className="absolute inset-0" style={{ transform: `rotate(${angle}deg)` }}>
       <div className="absolute left-1/2 top-0 aspect-square w-[21%] -translate-x-1/2 -translate-y-[38%]">
         {/* the frame stays upright while the orbit turns */}
         <div className="orbit-counter h-full w-full overflow-hidden rounded-full bg-gradient-to-b from-[#FFF3D1] to-[#F6C98A] shadow-[0_10px_26px_-8px_rgba(14,26,61,0.55)] ring-2 ring-gold" style={cssVars({ '--start': `${-angle}deg` })}>
-          <img
-            src={art.src}
-            alt=""
-            aria-hidden="true"
-            width={art.width}
-            height={art.height}
-            loading="lazy"
-            decoding="async"
-            draggable={false}
-            className="absolute max-w-none select-none"
-            style={{ width: `${art.zoom * 100}%`, left: `${50 - art.x * art.zoom}%`, top: `${50 - (art.y * art.zoom * art.height) / art.width}%` }}
-          />
+          <img src={PORTRAIT[name]} alt="" aria-hidden="true" width={360} height={360} loading="lazy" decoding="async" draggable={false} className="block h-full w-full select-none" />
         </div>
       </div>
     </div>
@@ -146,7 +130,7 @@ export default function MascotsTogether() {
         <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-6 lg:pl-14">
             <Wordmark />
-            <Reveal from="blur" delay={0.3} className="mt-[clamp(10px,2vh,20px)] max-w-[34rem]">
+            <Reveal delay={0.3} className="mt-[clamp(10px,2vh,20px)] max-w-[34rem]">
               <p className="text-[clamp(17px,2.4vh,21px)] font-semibold leading-snug text-navy">{together.lead}</p>
               <p className="panel-copy mt-2">{together.body}</p>
             </Reveal>

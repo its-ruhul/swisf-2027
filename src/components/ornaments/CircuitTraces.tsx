@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+import { usePauseOffscreen } from '../../hooks/usePauseOffscreen';
 import { cssVars } from '../../lib/cssVars';
 import { cn } from '../../lib/cn';
 
@@ -33,7 +35,7 @@ type CircuitTracesProps = {
   terminalFill?: string;
 };
 
-/** Thin gold PCB traces with hollow circle terminals and a faint travelling glow. */
+/** Thin gold PCB traces with hollow circle terminals and a faint travelling glow (which stops while off screen). */
 export default function CircuitTraces({
   className,
   animated = true,
@@ -41,6 +43,8 @@ export default function CircuitTraces({
   flip = 'none',
   terminalFill = '#0A1230',
 }: CircuitTracesProps) {
+  const ref = useRef<SVGSVGElement>(null);
+  usePauseOffscreen(ref);
   const traces = density === 'full' ? TRACES : TRACES.filter((_, i) => LIGHT.includes(i));
   const flipClass = {
     none: '',
@@ -51,6 +55,7 @@ export default function CircuitTraces({
 
   return (
     <svg
+      ref={ref}
       aria-hidden="true"
       focusable="false"
       viewBox="0 0 240 300"

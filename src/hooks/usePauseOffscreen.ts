@@ -5,7 +5,7 @@ import { useEffect, type RefObject } from 'react';
  * (see `[data-paused]` in index.css). Sets an attribute rather than React state,
  * so scrolling past a section never re-renders it.
  */
-export function usePauseOffscreen(ref: RefObject<HTMLElement>) {
+export function usePauseOffscreen(ref: RefObject<HTMLElement | SVGElement>) {
   useEffect(() => {
     const el = ref.current;
     if (!el || typeof IntersectionObserver === 'undefined') return undefined;

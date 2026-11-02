@@ -98,17 +98,17 @@ export default function MascotsHero() {
       {/* ── Dawn ── */}
       <Layer className="bg-gradient-to-b from-[#FDF4E0] via-[#FCE8C2] to-[#F9D49B]">
         <motion.div className="absolute inset-0" style={{ x: farX, y: farY }}>
-          <RisingSun className="absolute left-1/2 top-[6%] w-[94%] -translate-x-1/2 sm:w-[60%] lg:left-[27%] lg:top-[12%] lg:w-[min(50%,calc((100svh-var(--nav-h))*0.92))]" />
+          <RisingSun className="absolute left-1/2 top-[6%] w-[94%] -translate-x-1/2 sm:w-[60%] lg:bottom-0 lg:left-[27%] lg:top-auto lg:w-[min(50%,calc((100svh-var(--nav-h))*0.92))]" />
           <GoldCloud variant="a" eager className="-left-20 top-[3%] w-56 opacity-70 sm:w-80" />
           <GoldCloud variant="b" eager flip className="left-[30%] top-[2%] hidden w-56 opacity-60 lg:block" />
         </motion.div>
-        <Ridge seed={21} from="#DDB08C" to="#EFC79A" className="absolute inset-x-0 bottom-0 h-[40%] max-lg:bottom-[38%] max-lg:h-[24%]" />
-        <Ridge seed={8} from="#C4876C" to="#E0A97E" rough={0.5} className="absolute inset-x-0 bottom-0 h-[33%] max-lg:bottom-[36%] max-lg:h-[20%]" />
+        <Ridge seed={21} from="#DDB08C" to="#EFC79A" className="absolute inset-x-0 bottom-0 h-[24%] max-lg:bottom-[38%] lg:h-[min(40%,30vw)]" />
+        <Ridge seed={8} from="#C4876C" to="#E0A97E" rough={0.5} className="absolute inset-x-0 bottom-0 h-[20%] max-lg:bottom-[36%] lg:h-[min(33%,25vw)]" />
         <FallingPetals kind="feather" count={9} seed={13} className="max-sm:[&>*:nth-child(even)]:hidden" />
       </Layer>
 
       {/* ── Sun: in front of the night on wide screens, cut off by it on phones (which hides the hem of her robe) ── */}
-      <div className="absolute z-10 w-[min(84vw,46svh)] max-lg:left-1/2 max-lg:top-[10.5%] max-lg:-translate-x-1/2 lg:bottom-[-14%] lg:left-[5%] lg:z-30 lg:w-[min(46vw,calc((100svh-var(--nav-h))*0.92))] xl:left-[6%]">
+      <div className="absolute z-10 w-[min(84vw,46svh)] max-lg:left-1/2 max-lg:top-[10.5%] max-lg:-translate-x-1/2 lg:bottom-0 lg:left-[5%] lg:translate-y-[14%] lg:z-30 lg:w-[min(46vw,calc((100svh-var(--nav-h))*0.92))] xl:left-[6%]">
         <motion.div style={{ x: artX }}>
           <MascotArt name="sun" eager excited={near === 'sun'} className="w-full" />
         </motion.div>
@@ -117,7 +117,9 @@ export default function MascotsHero() {
       {/* ── Night ── */}
       <div aria-hidden="true" className={cn('pointer-events-none absolute inset-0 z-20 [transform:translateX(var(--split))]', SLIDE, NIGHT_CLIP)}>
         <div className={cn('absolute inset-0 bg-gradient-to-b from-navy-deep via-night to-night-2 [transform:translateX(calc(var(--split)*-1))]', SLIDE)}>
-          <StarField count={120} seed={52} className="absolute inset-0 h-full w-full" />
+          {/* stars clipped away by the slanted edge can't animate on the compositor, so only those well inside it twinkle */}
+          <StarField count={80} seed={52} twinkle={false} className="absolute inset-0" />
+          <StarField count={50} seed={53} className="absolute inset-x-0 bottom-0 top-[56%] lg:inset-y-0 lg:left-[60%]" />
           <Fireworks className="absolute inset-x-0 top-0 h-[70%] w-full opacity-80" />
           <SkyLanterns count={7} seed={31} className="max-sm:[&>*:nth-child(even)]:hidden" />
           {/* moon */}
@@ -126,8 +128,8 @@ export default function MascotsHero() {
             className="absolute left-[78%] top-[70%] aspect-square w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full motion-safe:animate-glow-pulse lg:left-[72%] lg:top-[50%] lg:w-[52%]"
             style={{ background: 'radial-gradient(circle, rgba(229,69,95,0.42) 0%, rgba(224,123,57,0.2) 42%, transparent 68%)' }}
           />
-          <Ridge seed={34} from="#3B2A7A" to="#241A62" className="absolute inset-x-0 bottom-0 h-[40%] max-lg:h-[28%]" />
-          <Ridge seed={12} from="#241A62" to="#150F45" rough={0.5} className="absolute inset-x-0 bottom-0 h-[33%] max-lg:h-[20%]" />
+          <Ridge seed={34} from="#3B2A7A" to="#241A62" className="absolute inset-x-0 bottom-0 h-[28%] lg:h-[min(40%,30vw)]" />
+          <Ridge seed={12} from="#241A62" to="#150F45" rough={0.5} className="absolute inset-x-0 bottom-0 h-[20%] lg:h-[min(33%,25vw)]" />
           <GoldDust tone="ember" count={16} seed={23} />
         </div>
       </div>
@@ -145,14 +147,14 @@ export default function MascotsHero() {
       </svg>
 
       {/* ── Ray, looking across at Sun ── */}
-      <div className="absolute z-30 w-[min(84vw,46svh)] max-lg:bottom-[-5%] max-lg:left-1/2 max-lg:-translate-x-[47%] lg:bottom-[-12%] lg:right-[4%] lg:w-[min(45vw,calc((100svh-var(--nav-h))*0.86))] xl:right-[6%]">
+      <div className="absolute z-30 w-[min(84vw,46svh)] max-lg:bottom-[-5%] max-lg:left-1/2 max-lg:-translate-x-[47%] lg:bottom-0 lg:right-[4%] lg:translate-y-[12%] lg:w-[min(45vw,calc((100svh-var(--nav-h))*0.86))] xl:right-[6%]">
         <motion.div style={{ x: artX }}>
           <MascotArt name="ray" eager excited={near === 'ray'} className="w-full" />
         </motion.div>
       </div>
 
       {/* ── The mountains in front, and the names on them ── */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-[35] h-[9%] lg:h-[25%]">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-[35] h-[9%] lg:h-[min(25%,18vw)]">
         <Ridge seed={5} from="#23195F" to="#0A1230" rough={0.48} className="absolute inset-x-0 bottom-0 hidden h-full lg:block" />
         <Ridge seed={44} from="#101A45" to="#0A1230" rough={0.5} className="absolute inset-x-0 bottom-0 h-full lg:h-[66%]" />
       </div>

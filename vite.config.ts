@@ -6,9 +6,10 @@ import react from '@vitejs/plugin-react';
 // Dev runs at the server root; the build uses relative asset URLs so `dist/` works
 // at the domain root or in any sub-folder (the router basename is detected at runtime,
 // see src/lib/base.ts).
-export default defineConfig(({ command }) => ({
+export default defineConfig(() => ({
   plugins: [react()],
-  base: command === 'build' ? './' : '/',
+  // base: command === 'build' ? './' : '/',
+  base: '/swisf-2027/',
   build: {
     target: 'es2020',
     assetsInlineLimit: 4096,

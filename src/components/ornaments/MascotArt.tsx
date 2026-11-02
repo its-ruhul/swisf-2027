@@ -1,11 +1,17 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { motion, useAnimationControls, useReducedMotion, type Variants } from 'framer-motion';
 import layout from '../../assets/images/mascots/layout.json';
+import rayBodySmall from '../../assets/images/mascots/ray-body-sm.webp';
 import rayBody from '../../assets/images/mascots/ray-body.webp';
+import rayWingLeftSmall from '../../assets/images/mascots/ray-wing-left-sm.webp';
 import rayWingLeft from '../../assets/images/mascots/ray-wing-left.webp';
+import rayWingRightSmall from '../../assets/images/mascots/ray-wing-right-sm.webp';
 import rayWingRight from '../../assets/images/mascots/ray-wing-right.webp';
+import sunBodySmall from '../../assets/images/mascots/sun-body-sm.webp';
 import sunBody from '../../assets/images/mascots/sun-body.webp';
+import sunWingLeftSmall from '../../assets/images/mascots/sun-wing-left-sm.webp';
 import sunWingLeft from '../../assets/images/mascots/sun-wing-left.webp';
+import sunWingRightSmall from '../../assets/images/mascots/sun-wing-right-sm.webp';
 import sunWingRight from '../../assets/images/mascots/sun-wing-right.webp';
 import type { MascotName } from '../../data/mascots';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
@@ -13,10 +19,25 @@ import { cssVars } from '../../lib/cssVars';
 import { cn } from '../../lib/cn';
 import { EASE_IN_VIEW, EASE_OUT_OF_VIEW } from '../ui/Reveal';
 
+type Files = { small: string; large: string };
+
+const srcSet = (files: Files, smallWidth: number, largeWidth: number) => `${files.small} ${smallWidth}w, ${files.large} ${largeWidth}w`;
+
+/**
+ * How wide a layer is drawn, given its share of the figure's width. It is one rule for every
+ * panel, so they all choose the same file and the browser never downloads both sizes. Below
+ * 1024px it understates the true width (up to 460px or 92vw): the extra pixels of the large
+ * files can't be seen on a phone or tablet, so those stay on the small ones.
+ */
+const drawnWidth = (share = 1) => `(min-width: 1024px) ${46 * share}vw, (min-width: 500px) ${440 * share}px, ${70 * share}vw`;
+
 const ART = {
   sun: {
-    body: sunBody,
-    wings: { left: sunWingLeft, right: sunWingRight },
+    body: { small: sunBodySmall, large: sunBody },
+    wings: {
+      left: { small: sunWingLeftSmall, large: sunWingLeft },
+      right: { small: sunWingRightSmall, large: sunWingRight },
+    },
     // Sun's feathered wings beat slowly and gently; Ray's are quicker and wider
     period: 5.6,
     beat: 2.4,
@@ -33,8 +54,11 @@ const ART = {
     ],
   },
   ray: {
-    body: rayBody,
-    wings: { left: rayWingLeft, right: rayWingRight },
+    body: { small: rayBodySmall, large: rayBody },
+    wings: {
+      left: { small: rayWingLeftSmall, large: rayWingLeft },
+      right: { small: rayWingRightSmall, large: rayWingRight },
+    },
     period: 3.8,
     beat: 3.4,
     float: -5,
@@ -196,7 +220,9 @@ export default function MascotArt({ name, alt = '', eager = false, excited = fal
               >
                 <img
                   {...shared}
-                  src={art.wings[side]}
+                  sizes={drawnWidth(wing.width / 100)}
+                  srcSet={srcSet(art.wings[side], wing.smallWidth, wing.pixelWidth)}
+                  src={art.wings[side].small}
                   alt=""
                   aria-hidden="true"
                   width={wing.pixelWidth}
@@ -212,7 +238,9 @@ export default function MascotArt({ name, alt = '', eager = false, excited = fal
           })}
           <img
             {...shared}
-            src={art.body}
+            sizes={drawnWidth()}
+            srcSet={srcSet(art.body, box.smallWidth, box.width)}
+            src={art.body.small}
             alt={alt}
             aria-hidden={alt ? undefined : true}
             width={box.width}

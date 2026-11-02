@@ -75,9 +75,8 @@ export const site = {
 export const navLinks = [
   { label: 'Home', to: '/' },
   { label: 'What You Experience', to: '/experience' },
-  { label: 'Project Centre', to: '/project-sunray' },
-  { label: 'Mascots', to: '/mascots' },
   { label: 'Project Sunray', to: '/project-sunray' },
+  { label: 'Mascots', to: '/mascots' },
   { label: 'Sponsors', to: '/sponsors' },
   /*
   TODO: Fix Team section

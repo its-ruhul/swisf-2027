@@ -70,7 +70,7 @@ function NightSky() {
         <Lantern className="w-8" stringLength={10} delay={1.6} />
       </div>
       <div className="absolute inset-x-0 bottom-0">
-        <FestivalBand position="center 82%" className="!h-10 sm:!h-12" />
+        <FestivalBand className="!h-10 sm:!h-12" />
       </div>
     </motion.div>
   );

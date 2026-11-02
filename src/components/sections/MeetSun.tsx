@@ -14,7 +14,7 @@ import Seigaiha from '../ornaments/Seigaiha';
 import MascotCopy, { MascotCallout } from './MascotCopy';
 
 /* The disc and the figure are separate layers (mountains pass between them) in the same box. */
-const ART_BOX = 'lg:absolute lg:bottom-[-11%] lg:right-[1%] lg:w-[min(46%,calc((100svh-var(--nav-h))*0.83))] xl:right-[2%] 2xl:right-[-6%] 2xl:w-[min(52%,calc((100svh-var(--nav-h))*0.83))]';
+const ART_BOX = 'lg:absolute lg:bottom-0 lg:right-[1%] lg:translate-y-[11%] lg:w-[min(46%,calc((100svh-var(--nav-h))*0.83))] xl:right-[2%] 2xl:right-[-6%] 2xl:w-[min(52%,calc((100svh-var(--nav-h))*0.83))]';
 
 /**
  * Sun at dawn: she rises from behind the mountains with the sun at her back and
@@ -79,22 +79,21 @@ export default function MeetSun() {
         </div>
 
         {/* her robe runs down behind the nearest ridge */}
-        <motion.div
-          className={`relative z-10 mx-auto -mb-[9%] mt-6 w-[min(92vw,460px)] lg:mb-0 lg:mt-0 ${ART_BOX}`}
-          style={{ x: leanX, y: leanY }}
-        >
-          <MascotArt name="sun" alt={sun.alt} className="w-full">
-            {sun.callouts.map((callout, i) => (
-              <MascotCallout key={callout.title} callout={callout} tone="light" delay={0.7 + i * 0.35} />
-            ))}
-          </MascotArt>
-        </motion.div>
+        <div className={`relative z-10 mx-auto -mb-[9%] mt-6 w-[min(92vw,460px)] lg:mb-0 lg:mt-0 ${ART_BOX}`}>
+          <motion.div style={{ x: leanX, y: leanY }}>
+            <MascotArt name="sun" alt={sun.alt} className="w-full">
+              {sun.callouts.map((callout, i) => (
+                <MascotCallout key={callout.title} callout={callout} tone="light" delay={0.7 + i * 0.35} />
+              ))}
+            </MascotArt>
+          </motion.div>
+        </div>
       </div>
 
       <FallingPetals kind="feather" count={12} seed={29} className="z-10 max-sm:[&>*:nth-child(even)]:hidden" />
 
       {/* nearest ridges, in front of her */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[clamp(70px,17vh,170px)]">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[clamp(70px,17vh,170px)] lg:h-[clamp(70px,min(17vh,14vw),170px)]">
         <Ridge seed={58} from="#5A3A63" to="#231B5C" tilt={0.5} rough={0.5} className="absolute inset-x-0 bottom-0 h-full" />
         <Ridge seed={90} from="#14143F" to="#0A1230" tilt={0.42} rough={0.46} className="absolute inset-x-0 bottom-0 h-[64%]" />
       </div>

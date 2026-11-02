@@ -5,6 +5,8 @@ import { mulberry32 } from '../../lib/random';
 type StarFieldProps = {
   count?: number;
   seed?: number;
+  /** Let some of the stars twinkle */
+  twinkle?: boolean;
   className?: string;
 };
 
@@ -13,7 +15,7 @@ type StarFieldProps = {
  * SVG; the few that twinkle are separate elements, so their opacity animates on
  * the compositor and the (full-screen) SVG never has to repaint.
  */
-export default function StarField({ count = 110, seed = 2027, className }: StarFieldProps) {
+export default function StarField({ count = 110, seed = 2027, twinkle = true, className }: StarFieldProps) {
   const stars = useMemo(() => {
     const rand = mulberry32(seed);
     return Array.from({ length: count }, (_, i) => ({
@@ -21,11 +23,11 @@ export default function StarField({ count = 110, seed = 2027, className }: StarF
       x: rand() * 1000,
       y: rand() * 1000,
       r: rand() < 0.12 ? 1.6 + rand() * 0.8 : 0.6 + rand() * 0.8,
-      twinkle: rand() < 0.2,
+      twinkle: rand() < 0.08 && twinkle,
       delay: (rand() * 4).toFixed(2),
       opacity: 0.35 + rand() * 0.55,
     }));
-  }, [count, seed]);
+  }, [count, seed, twinkle]);
 
   const colour = (r: number) => (r > 1.5 ? '#F6E7C1' : '#FFFFFF');
 

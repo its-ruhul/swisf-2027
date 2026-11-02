@@ -1,4 +1,4 @@
-import { useId, useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import globeDark from '../../assets/images/globe-dark.webp';
 import globeLight from '../../assets/images/globe-light.webp';
@@ -41,6 +41,8 @@ const VARIANTS = {
   },
 } as const;
 
+const NODE_GLOW = 'radial-gradient(closest-side, #FFE2A8 0%, rgba(242, 162, 79, 0.75) 35%, rgba(224, 123, 57, 0) 100%)';
+
 type DottedGlobeProps = {
   variant?: 'dark' | 'light';
   className?: string;
@@ -57,7 +59,6 @@ type DottedGlobeProps = {
 export default function DottedGlobe({ variant = 'dark', className, priority = false, decorative = false }: DottedGlobeProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const gid = `node-${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const v = VARIANTS[variant];
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
@@ -82,39 +83,17 @@ export default function DottedGlobe({ variant = 'dark', className, priority = fa
           className="block h-auto w-full select-none"
           {...priorityAttrs}
         />
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          viewBox={`0 0 ${v.width} ${v.height}`}
-          className="pointer-events-none absolute inset-0 h-full w-full"
-        >
-          <defs>
-            <radialGradient id={gid}>
-              <stop offset="0" stopColor="#FFE2A8" stopOpacity="1" />
-              <stop offset="0.35" stopColor="#F2A24F" stopOpacity="0.75" />
-              <stop offset="1" stopColor="#E07B39" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          {v.nodes.map(([nx, ny, size], i) => {
-            const cx = (nx / 100) * v.width;
-            const cy = (ny / 100) * v.height;
-            return (
-              <g key={`${nx}-${ny}`}>
-                {i === 0 && (
-                  <circle cx={cx} cy={cy} r={14} fill="none" stroke="#F2A24F" strokeWidth="1.5" className="svg-pulse" />
-                )}
-                <circle
-                  cx={cx}
-                  cy={cy}
-                  r={16 * size}
-                  fill={`url(#${gid})`}
-                  className="globe-node"
-                  style={cssVars({ '--delay': `${(i * 0.45) % 3}s` })}
-                />
-              </g>
-            );
-          })}
-        </svg>
+        {v.nodes.map(([nx, ny, size], i) => (
+          <span
+            key={`${nx}-${ny}`}
+            aria-hidden="true"
+            className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ left: `${nx}%`, top: `${ny}%`, width: `${(32 * size * 100) / v.width}%`, aspectRatio: '1' }}
+          >
+            {i === 0 && <span className="svg-pulse absolute inset-[6%] rounded-full border border-[#F2A24F]" />}
+            <span className="globe-node block h-full w-full rounded-full" style={cssVars({ '--delay': `${(i * 0.45) % 3}s` }, { background: NODE_GLOW })} />
+          </span>
+        ))}
       </div>
     </motion.div>
   );
