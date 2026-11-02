@@ -55,6 +55,16 @@ Replace `https://example.com` with your real domain in these three places:
 
 If a deep link shows a Hostinger 404, the `.htaccess` file is missing or `mod_rewrite` is off. Re-upload it.
 
+### GitHub Pages
+
+Every push to `main` builds and deploys the site through `.github/workflows/deploy.yml`.
+
+In the repository's **Settings → Pages**, **Source** must be **GitHub Actions**. With *Deploy from a branch*, Pages publishes
+the raw source files over the built site, and the page is blank.
+
+Links such as `/swisf-2027/team` work when opened or refreshed directly because the workflow copies `index.html` to `404.html`.
+Visitors see the right page, but it's sent with a 404 status, so search engines may skip those URLs. Use Hostinger for the real launch.
+
 ## 4. Editing content
 
 All text, lists and icons live in typed data files. You don't need to touch any component to change the copy.

@@ -3,9 +3,10 @@
  *
  * The production build uses a relative base (`base: './'` in vite.config.ts), so the
  * same `dist/` works at the domain root (`https://site.com/`) or in any sub-folder
- * (`https://site.com/swisf-demo/`) without rebuilding. Every bundled chunk lives in
- * `<deploy-root>/assets/`, so the deploy root is the part of this module's URL
- * before `/assets/`. In dev the app is always served from `/`.
+ * (`https://site.com/swisf-demo/`) without rebuilding. GitHub Pages builds pass an absolute
+ * `--base` instead. Either way every bundled chunk lives in `<deploy-root>/assets/`, so the
+ * deploy root is the part of this module's URL before `/assets/`. In dev the app is always
+ * served from `/`.
  */
 function detectBase(): string {
   if (import.meta.env.DEV) return '';
