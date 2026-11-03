@@ -242,3 +242,4 @@ auspicious cloud and the Northeast hills (`src/components/ornaments/Motif.tsx`).
 - To keep a page smooth, loop only `transform` and `opacity` on HTML elements or a whole `<svg>`, which run on the compositor. Looping
   anything else (`background-position`, `stroke-dashoffset`, shapes inside an SVG, `<animateMotion>`) repaints on the main thread every
   frame, as long as it runs and even when it is off screen. `usePauseOffscreen` stops the loops in a section or SVG while it is out of view.
+
