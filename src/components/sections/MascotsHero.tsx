@@ -18,7 +18,7 @@ import { Diamond } from '../ui/DividerLabel';
 
 /* The night sky is the same size as the page and clipped along a diagonal. Moving the wrapper one way and its
    contents the other slides the diagonal with transforms alone, so the sky never has to repaint. */
-const NIGHT_CLIP = 'lg:[clip-path:polygon(56%_0,130%_0,130%_100%,44%_100%)] max-lg:[clip-path:polygon(-30%_55%,130%_40%,130%_100%,-30%_100%)]';
+const NIGHT_CLIP = 'lg:[clip-path:polygon(56%_0,130%_0,130%_100%,44%_100%)] max-lg:[clip-path:polygon(-30%_59.5%,130%_35.5%,130%_100%,-30%_100%)]';
 const SLIDE = 'transition-transform duration-700 ease-[cubic-bezier(0.22,0.8,0.24,1)]';
 
 function NameLink({ mascot, align, delay, className }: { mascot: Mascot; align: 'left' | 'right'; delay: number; className?: string }) {
@@ -37,10 +37,10 @@ function NameLink({ mascot, align, delay, className }: { mascot: Mascot; align: 
           align === 'right' && 'text-right',
         )}
       >
-        <span className="text-sun block [animation:none] text-[clamp(1.9rem,min(8.5vw,11.5vh),6.6rem)] font-bold uppercase leading-[0.95] tracking-[0.05em]">{mascot.name}</span>
+        <span className="text-sun block [animation:none] text-[clamp(1.9rem,min(8.5vw,11.5vh),6.6rem)] font-bold uppercase leading-[0.95] tracking-[0.05em] max-lg:text-[clamp(1.6rem,7.5vw,2.5rem)]">{mascot.name}</span>
         <span
           className={cn(
-            'mt-1 flex items-center gap-2 text-[10px] font-medium uppercase leading-snug tracking-[0.14em] text-cream/90 sm:text-[12px] lg:tracking-[0.2em]',
+            'mt-1 flex items-center gap-2 text-[12px] font-medium uppercase leading-snug tracking-[0.2em] text-cream/90 max-lg:hidden',
             align === 'right' && 'justify-end',
           )}
         >
@@ -123,7 +123,7 @@ export default function MascotsHero() {
           <Fireworks className="absolute inset-x-0 top-0 h-[70%] w-full opacity-80" />
           <SkyLanterns count={7} seed={31} className="max-sm:[&>*:nth-child(even)]:hidden" />
           {/* moon */}
-          <span className="absolute right-[6%] top-[46%] h-14 w-14 rounded-full bg-[#F4E7C2] shadow-[0_0_60px_18px_rgba(230,207,148,0.28),inset_-10px_-6px_0_0_rgba(201,162,74,0.45)] lg:right-[4%] lg:top-[8%] lg:h-20 lg:w-20" />
+          <span className="absolute right-[6%] top-[54%] h-12 w-12 rounded-full bg-[#F4E7C2] shadow-[0_0_60px_18px_rgba(230,207,148,0.28),inset_-10px_-6px_0_0_rgba(201,162,74,0.45)] lg:right-[4%] lg:top-[8%] lg:h-20 lg:w-20" />
           <div
             className="absolute left-[78%] top-[70%] aspect-square w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full motion-safe:animate-glow-pulse lg:left-[72%] lg:top-[50%] lg:w-[52%]"
             style={{ background: 'radial-gradient(circle, rgba(229,69,95,0.42) 0%, rgba(224,123,57,0.2) 42%, transparent 68%)' }}
@@ -159,8 +159,9 @@ export default function MascotsHero() {
         <Ridge seed={44} from="#101A45" to="#0A1230" rough={0.5} className="absolute inset-x-0 bottom-0 h-full lg:h-[66%]" />
       </div>
 
-      <NameLink mascot={sun} align="left" delay={0.45} className="max-lg:left-3 max-lg:top-[42%] lg:bottom-[clamp(12px,3vh,30px)] lg:left-16" />
-      <NameLink mascot={ray} align="right" delay={0.6} className="max-lg:bottom-3 max-lg:right-3 lg:bottom-[clamp(12px,3vh,30px)] lg:right-16" />
+      {/* phones: mirrored either side of the line, which runs from 55% at the left edge to 40% at the right */}
+      <NameLink mascot={sun} align="left" delay={0.45} className="max-lg:bottom-[calc(50%+8px)] max-lg:left-4 lg:bottom-[clamp(12px,3vh,30px)] lg:left-16" />
+      <NameLink mascot={ray} align="right" delay={0.6} className="max-lg:right-4 max-lg:top-[calc(45%+8px)] lg:bottom-[clamp(12px,3vh,30px)] lg:right-16" />
 
       <Link
         to={{ hash: '#sun' }}
